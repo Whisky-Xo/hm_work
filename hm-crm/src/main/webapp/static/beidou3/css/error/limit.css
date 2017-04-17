@@ -1,0 +1,203 @@
+/**-- 权限不足错误页面样式 --**/
+BODY {
+	FONT-SIZE: 9pt;
+	COLOR: #000000;
+	FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif, 宋体
+}
+
+P {
+	FONT-SIZE: 9pt;
+	COLOR: #000000;
+	FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif, 宋体
+}
+
+TD {
+	FONT-SIZE: 9pt;
+	COLOR: #000000;
+	FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif, 宋体
+}
+
+TH {
+	FONT-SIZE: 9pt;
+	COLOR: #000000;
+	FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif, 宋体
+}
+
+BODY {
+	SCROLLBAR-FACE-COLOR: #eeeeee;
+	BACKGROUND-IMAGE: url(/skin/skin_1/bg.gif);
+	SCROLLBAR-HIGHLIGHT-COLOR: #ffffff;
+	SCROLLBAR-SHADOW-COLOR: #dee3e7;
+	SCROLLBAR-3DLIGHT-COLOR: #d1d7dc;
+	SCROLLBAR-ARROW-COLOR: #000000;
+	SCROLLBAR-TRACK-COLOR: #ededed;
+	SCROLLBAR-DARKSHADOW-COLOR: #808080;
+	BACKGROUND-COLOR: #ffffff
+}
+
+INPUT {
+	BORDER-TOP-WIDTH: 1px;
+	PADDING-RIGHT: 1px;
+	PADDING-LEFT: 1px;
+	BORDER-LEFT-WIDTH: 1px;
+	FONT-SIZE: 9pt;
+	BORDER-LEFT-COLOR: #c0c0c0;
+	BORDER-BOTTOM-WIDTH: 1px;
+	BORDER-BOTTOM-COLOR: #c0c0c0;
+	PADDING-BOTTOM: 1px;
+	CURSOR: hand;
+	COLOR: #000000;
+	BORDER-TOP-COLOR: #c0c0c0;
+	PADDING-TOP: 1px;
+	FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif, 宋体;
+	HEIGHT: 18px;
+	BACKGROUND-COLOR: #ffffff;
+	BORDER-RIGHT-WIDTH: 1px;
+	BORDER-RIGHT-COLOR: #c0c0c0
+}
+
+TEXTAREA {
+	BORDER-TOP-WIDTH: 1px;
+	BORDER-LEFT-WIDTH: 1px;
+	FONT-SIZE: 9pt;
+	BORDER-LEFT-COLOR: #c0c0c0;
+	BORDER-BOTTOM-WIDTH: 1px;
+	BORDER-BOTTOM-COLOR: #c0c0c0;
+	CURSOR: hand;
+	COLOR: #000000;
+	BORDER-TOP-COLOR: #c0c0c0;
+	FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif, 宋体;
+	BACKGROUND-COLOR: #ffffff;
+	BORDER-RIGHT-WIDTH: 1px;
+	BORDER-RIGHT-COLOR: #c0c0c0
+}
+
+SELECT {
+	BORDER-TOP-WIDTH: 1px;
+	BORDER-LEFT-WIDTH: 1px;
+	FONT-SIZE: 9pt;
+	BORDER-LEFT-COLOR: #c0c0c0;
+	BORDER-BOTTOM-WIDTH: 1px;
+	BORDER-BOTTOM-COLOR: #c0c0c0;
+	CURSOR: hand;
+	COLOR: #000000;
+	BORDER-TOP-COLOR: #c0c0c0;
+	FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif, 宋体;
+	BACKGROUND-COLOR: #ffffff;
+	BORDER-RIGHT-WIDTH: 1px;
+	BORDER-RIGHT-COLOR: #c0c0c0
+}
+
+.bg {
+	BACKGROUND-COLOR: #ffffff
+}
+
+.bg_td {
+	BACKGROUND-COLOR: #f7f7f7
+}
+
+.bg_tds {
+	BACKGROUND-COLOR: #eeeeee
+}
+
+.bg_table {
+	BACKGROUND-COLOR: #ffffff
+}
+
+.bg_frame {
+	BACKGROUND-COLOR: #00659c
+}
+
+.tablew {
+	WIDTH: 98%
+}
+
+.table {
+	BORDER-RIGHT: 1px;
+	BORDER-TOP: 1px;
+	BORDER-LEFT: 1px;
+	WIDTH: 98%;
+	BORDER-BOTTOM: 1px;
+	BACKGROUND-COLOR: #ffffff
+}
+
+.tims {
+	FONT-SIZE: 7pt;
+	COLOR: #808080;
+	FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif
+}
+
+.htd {
+	LINE-HEIGHT: 150%
+}
+
+.btd {
+	FONT-WEIGHT: bold
+}
+
+.bw {
+	WORD-WRAP: break-word
+}
+
+.tf {
+	TABLE-LAYOUT: fixed
+}
+
+.gray {
+	COLOR: #808080
+}
+
+.red {
+	COLOR: #ff0000
+}
+
+.red2 {
+	COLOR: #cc3300
+}
+
+.blue {
+	COLOR: #0066cc
+}
+
+.ftd {
+	COLOR: #ffffff
+}
+
+.fbg {
+	COLOR: #ffffff
+}
+
+.div_alt {
+	BORDER-RIGHT: black 1px solid;
+	PADDING-RIGHT: 2px;
+	BORDER-TOP: black 1px solid;
+	PADDING-LEFT: 2px;
+	PADDING-BOTTOM: 2px;
+	MARGIN-LEFT: 18px;
+	BORDER-LEFT: black 1px solid;
+	WIDTH: 240px;
+	COLOR: #000000;
+	PADDING-TOP: 2px;
+	BORDER-BOTTOM: black 1px solid;
+	BACKGROUND-COLOR: #ffffe1
+}
+
+A {
+	COLOR: #000000;
+	TEXT-DECORATION: none
+}
+
+A:hover {
+	COLOR: #ff0000;
+	TEXT-DECORATION: underline
+}
+
+A.h_menu {
+	COLOR: #333333;
+	TEXT-DECORATION: none
+}
+
+A.h_menu:hover {
+	COLOR: #ff0000;
+	TEXT-DECORATION: underline
+}

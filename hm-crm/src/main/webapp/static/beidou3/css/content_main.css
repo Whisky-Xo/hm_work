@@ -1,0 +1,59 @@
+#table_tab {
+	height: 35px;
+}
+
+#table_tab ul {
+	height: 100%;
+	line-height: 35px;
+	border-top: 1px #ccc solid;
+	border-left: 1px #ccc solid;
+	display: inline-block;
+	width: auto;
+}
+
+#table_tab ul li {
+	width: 116px;
+	height: 34px;
+	line-height: 34px;
+	float: left;
+	text-align: center;
+	border-right: 1px #ccc solid;
+	cursor: pointer;
+}
+
+#data_table table {
+	border-collapse: collapse;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	border-collapse: collapse;
+	cellspacing:0px;
+}
+.conte_table{border-collapse:collapse;}
+#data_table thead {
+	background: #F4F4F4;
+}
+#data_head_all tr td,#data_head_new tr td,#data_head_trace tr td,#data_head_order tr td,#data_head tr td,#data_head_success tr td,#data_head_invalid tr td{border-top: 1px #ccc solid;}
+#data_table tr td {
+	padding-left: 3px !important;
+	padding-right: 3px !important;
+	border-top: 1px #ccc solid;
+	height:27px;
+	line-height:27px;
+	padding-top:1px;
+}
+
+#data_table .table_border {
+	border-bottom: 1px #ccc solid;
+}
+#data_table .table_border tobody{	border-right: 1px #ccc solid;}
+#data_table .conte_table #data_content_all tr:hover{background: #eaf8fe !important;cursor: pointer;}
+#data_table tr {
+	height: 26px;
+	line-height: 26px;
+}
+
+/*-- 客资状态渲染 --*/
+.clientsts {
+	
+}

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.model.dao.ApproveLogDao">
+
+	<resultMap id="ApproveLog" type="com.crm.model.ApproveLog">
+		<id column="LOGID" jdbcType="INTEGER" property="logId" />
+		<result column="KZID" jdbcType="VARCHAR" property="kzId" />
+		<result column="APPROVETYPE" jdbcType="VARCHAR" property="approveType" />
+		<result column="CODE" jdbcType="INTEGER" property="code" />
+		<result column="OPERAID" jdbcType="INTEGER" property="operaId" />
+		<result column="CREATETIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="CREATEIP" jdbcType="VARCHAR" property="createIp" />
+		<result column="COMPANYID" jdbcType="INTEGER" property="companyId" />
+		<result column="ISDEL" jdbcType="BOOLEAN" property="isDel" />
+	</resultMap>
+
+	<!-- 新建审批日志 -->
+	<insert id="createApproveLog" parameterType="com.crm.model.ApproveLog"
+		useGeneratedKeys="true" keyProperty="logId">
+		INSERT INTO
+			hm_crm_approve_log
+		( KZID, APPROVETYPE, CODE, OPERAID, CREATETIME, 
+		  CREATEIP, COMPANYID, ISDEL) 
+		VALUES
+		( #{kzId}, #{approveType}, #{code}, #{operaId}, #{createTime}, 
+		  #{createIp}, #{companyId}, #{isDel} )
+	</insert>
+	
+	<!-- 删除客资的审批日志  -->
+	<update id="removeApproveLog" parameterType="com.crm.model.ApproveLog">
+		UPDATE hm_crm_approve_log SET ISDEL = 1 WHERE KZID = #{kzId} AND APPROVETYPE = #{approveType};
+	</update>
+</mapper>

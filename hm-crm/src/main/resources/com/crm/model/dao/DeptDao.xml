@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.model.dao.DeptDao">
+	<resultMap id="Dept" type="com.crm.model.Dept">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="deptId" jdbcType="VARCHAR" property="deptId" />
+		<result column="deptName" jdbcType="VARCHAR" property="deptName" />
+		<result column="memo" jdbcType="VARCHAR" property="memo" />
+		<result column="parentId" jdbcType="VARCHAR" property="parentId" />
+		<result column="createTime" jdbcType="VARCHAR" property="createTime" />
+		<result column="createIp" jdbcType="VARCHAR" property="createIp" />
+		<result column="updateTime" jdbcType="VARCHAR" property="updateTime" />
+		<result column="updateIp" jdbcType="VARCHAR" property="updateIp" />
+		<result column="companyId" jdbcType="INTEGER" property="companyId" />
+		<result column="taskNum" jdbcType="INTEGER" property="taskNum" />
+		<result column="timeStart" jdbcType="VARCHAR" property="timeStart" />
+		<result column="timeEnd" jdbcType="VARCHAR" property="timeEnd" />
+		<result column="isShow" jdbcType="BOOLEAN" property="isShow" />
+		<result column="isDel" jdbcType="BOOLEAN" property="isDel" />
+	</resultMap>
+
+	<!-- 新增部门 -->
+	<insert id="createDept" parameterType="com.crm.model.Dept"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO
+			hm_crm_dept
+		( DEPTNAME, PARENTID, MEMO, TASKNUM, CREATETIME,
+			CREATEIP, UPDATETIME, UPDATEIP, COMPANYID, TIMESTART,
+			TIMEEND, ISSHOW, ISDEL)
+		VALUES
+			( #{deptName}, #{parentId}, #{memo}, #{taskNum}, #{createTime},
+			#{createIp}, #{updateTime}, #{updateIp}, #{companyId}, #{timeStart},
+			#{timeEnd}, #{isShow}, #{isDel})
+	</insert>
+
+	<!-- 编辑部门 -->
+	<update id="updateDept" parameterType="com.crm.model.Dept">
+		UPDATE `hm_crm_dept` SET
+		deptid = #{deptId},
+		`deptName` = #{deptName},
+		`memo` = #{memo},
+		`parentId` = #{parentId},
+		`createTime` = #{createTime},
+		`createIp` =
+		#{createIp},
+		`updateTime` = #{updateTime},
+		`updateIp` = #{updateIp},
+		`companyId` = #{companyId},
+		`timeStart` = #{timeStart},
+		`timeEnd` =
+		#{timeEnd},
+		`isShow` = #{isShow},
+		`isDel` = #{isDel}
+		WHERE `id` = #{id}
+	</update>
+
+	<select id="getByDeptId" parameterType="java.lang.String"
+		resultMap="Dept">
+		select * from `hm_crm_dept` where `deptId` = #{deptId} and
+		`ISDEL` != 1
+	</select>
+
+	<select id="getById" parameterType="java.lang.Integer"
+		resultMap="Dept">
+		select * from `hm_crm_dept` where `id` = #{id} and `ISDEL`
+		!= 1
+	</select>
+
+	<select id="getByParentId" parameterType="map" resultMap="Dept">
+		select
+		a.*,(select count(*) from `hm_pub_staff` f where
+		(INSTR(`deptId`,concat(a.deptId,"-"))>0 or `deptId` = a.deptId) and isshow = 1 and isdel = 0 and islock =0)
+		count from `hm_crm_dept` a where `parentId` = #{deptId} and `companyId` = #{companyId} 
+		and `ISDEL` = 0 and isshow=1 order by a.deptId
+	</select>
+
+	<select id="listDeptsByDeptId" parameterType="map"
+		resultMap="Dept">
+		select * from `hm_crm_dept` a where `companyId` = #{companyId}  and (INSTR(a.`deptId`,#{deptId})>0 or a.`deptId` = #{XdeptId})
+		and a.`deptId` != '0' and a.`deptId` is not null and a.`deptId` != ''
+		and `ISDEL` != 1 order by deptId
+	</select>
+
+	<select id="listOpeningDepts" parameterType="java.lang.Integer"
+		resultMap="Dept">
+		select a.*,b.deptName parentName from `hm_crm_dept` a left
+		join `hm_crm_dept` b on a.parentId = b.deptId where a.`companyId` =
+		#{companyId} and a.`isShow` = 1 and a.`ISDEL` != 1 order by a.deptId
+	</select>
+
+	<select id="listDeptsExceptDeptId" parameterType="map"
+		resultMap="Dept">
+		select a.*,b.deptName parentName from `hm_crm_dept` a left
+		join `hm_crm_dept` b on a.parentId = b.deptId where a.`companyId` = #{companyId}
+		<if test="null != deptId">
+			and instr(a.deptId,#{deptId}) = 0
+		</if>
+		 and a.`isShow` = 1 and a.`ISDEL` != 1 order by a.deptId
+	</select>
+	
+	<select id="listSubdeptsByDeptId" parameterType="map"
+		resultMap="Dept">
+		select * from `hm_crm_dept` where `companyId` = #{companyId}
+		and `isShow` = 1 and `ISDEL` != 1 and instr(`deptId`,#{deptId}) >0 and `deptId` != #{deptId}
+	</select>
+</mapper>

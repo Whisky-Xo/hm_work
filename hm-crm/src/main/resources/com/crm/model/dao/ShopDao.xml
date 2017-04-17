@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.model.dao.ShopDao">
+	<resultMap id="Shop" type="com.crm.model.Shop">
+		<id column="SHOPID" jdbcType="BIGINT" property="shopId" />
+		<result column="SHOPNAME" jdbcType="VARCHAR" property="shopName" />
+		<result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+		<result column="CREATETIME" jdbcType="VARCHAR" property="createTime" />
+		<result column="CREATEIP" jdbcType="VARCHAR" property="createIp" />
+		<result column="UPDATETIME" jdbcType="VARCHAR" property="updateTime" />
+		<result column="UPDATEIP" jdbcType="VARCHAR" property="updateIp" />
+		<result column="COMPANYID" jdbcType="INTEGER" property="companyId" />
+		<result column="ALIPAYSHOPID" jdbcType="VARCHAR" property="alipayShopId" />
+		<result column="MERCHANTPID" jdbcType="VARCHAR" property="merchantPid" />
+		<result column="MERCHANTSHOWNAME" jdbcType="VARCHAR" property="merchantShowName" />
+		<result column="MERCHANTSHOWPHONE" jdbcType="VARCHAR" property="merchantShowPhone" />
+		<result column="SMSPHONE" jdbcType="VARCHAR" property="smsPhone" />
+		<result column="ISSHOW" jdbcType="BIT" property="isShow" />
+		<result column="ISDEL" jdbcType="BIT" property="isDel" />	
+	</resultMap>
+
+	<resultMap id="Staff" type="com.crm.model.Staff">
+		<id column="ID" jdbcType="INTEGER" property="id" />
+		<result column="NAME" jdbcType="VARCHAR" property="name" />
+		<result column="PHONE" jdbcType="VARCHAR" property="phone" />
+		<result column="ROLE" jdbcType="INTEGER" property="role" />
+		<result column="USERNAME" jdbcType="VARCHAR" property="username" />
+		<result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+		<result column="CREATED" jdbcType="INTEGER" property="created" />
+		<result column="UPDATED" jdbcType="INTEGER" property="updated" />
+		<result column="CORPID" jdbcType="VARCHAR" property="corpId" />
+		<result column="COMPANYNAME" jdbcType="VARCHAR" property="companyName" />
+		<result column="DEPARTMENT" jdbcType="VARCHAR" property="department" />
+		<result column="MERCHANT_PID" jdbcType="VARCHAR" property="merchantPid" />
+		<result column="COMPANY_ID" jdbcType="INTEGER" property="companyId" />
+		<result column="DINGUSERID" jdbcType="VARCHAR" property="dingUserId" />
+		<result column="SHOPID" jdbcType="INTEGER" property="shopId" />
+		<result column="SHOPNAME" jdbcType="VARCHAR" property="shopName" />
+		<result column="DEPTID" jdbcType="VARCHAR" property="deptId" />
+		<result column="GROUPID" jdbcType="INTEGER" property="groupId" />
+		<result column="ISSHOW" jdbcType="BOOLEAN" property="isShow" />
+		<result column="ISLOCK" jdbcType="BOOLEAN" property="isLock" />
+		<result column="ISDEL" jdbcType="BOOLEAN" property="isDel" />
+		<result column="ISCHIEF" jdbcType="BOOLEAN" property="isChief" />
+	</resultMap>
+	
+	<insert id="createShop" parameterType="com.crm.model.Shop" useGeneratedKeys="true" keyProperty="SHOPID">
+		INSERT INTO `hm_crm_shop` (`SHOPNAME`,`ADDRESS`,`CREATETIME`,`CREATEIP`,`MERCHANTSHOWNAME`,`MERCHANTSHOWPHONE`,
+		`UPDATETIME`, `UPDATEIP`, `COMPANYID`,`ALIPAYSHOPID`,`MERCHANTPID`,`SMSPHONE`,`ISSHOW`,`ISDEL`)
+		VALUES
+		(#{shopName},#{address},#{createTime},#{createIp},#{merchantShowName},#{merchantShowPhone},
+		#{updateTime}, #{updateIp}, #{companyId},#{alipayShopId},#{merchantPid},#{smsPhone},#{isShow},#{isDel})
+	</insert>
+
+	<update id="updateShop" parameterType="com.crm.model.Shop">
+		update `hm_crm_shop` set
+		`SHOPNAME` = #{shopName},
+		`ADDRESS` = #{address},
+		`CREATETIME` = #{createTime},
+		`CREATEIP` = #{createIp},
+		`UPDATETIME` = #{updateTime},
+		`UPDATEIP` = #{updateIp},
+		`COMPANYID` = #{companyId},
+		`ALIPAYSHOPID` = #{alipayShopId},
+		`MERCHANTPID` = #{merchantPid},
+		`MERCHANTSHOWNAME` = #{merchantShowName},
+		`MERCHANTSHOWPHONE` = #{merchantShowPhone},
+		`SMSPHONE` = #{smsPhone},
+		`ISSHOW` = #{isShow},
+		`ISDEL` = #{isDel}
+		where `shopId` = #{shopId}
+	</update>
+
+	<select id="getByShopId" parameterType="java.lang.Integer" resultMap="Shop">
+		select * from `hm_crm_shop` where `SHOPID` = #{shopId} and `ISDEL` != 1
+	</select>
+	
+	<select id="getByAlipayShopId" parameterType="map" resultMap="Shop">
+		select * from `hm_crm_shop` where `ALIPAYSHOPID` = #{alipayShopId} and `ISDEL` != 1
+	</select>
+
+	<select id="listShops" parameterType="java.lang.Integer" resultMap="Shop">
+		select * from `hm_crm_shop` where `COMPANYID` = #{companyId} and `ISDEL` != 1
+	</select>
+	
+	<select id="listOpeningShops" parameterType="java.lang.Integer" resultMap="Shop">
+		select * from `hm_crm_shop` where `COMPANYID` = #{companyId} and `ISSHOW` = 1 and `ISDEL` != 1
+	</select>
+
+	<select id="listOpeningStoresForAlbum" parameterType="java.lang.Integer" resultMap="Shop">
+		select * from `hm_crm_shop` where `companyId` = #{companyId} and `isShow` = 1 and `ISDEL` != 1
+		and alipayShopId is not null and alipayShopId != ''
+	</select>
+
+	<!-- 获取本门店所有职工 -->
+	<select id="listStaffByShopId" resultMap="Staff">
+		SELECT * FROM hm_pub_staff sf WHERE sf.COMPANY_ID = #{companyId} AND sf.SHOPID = #{shopId} AND sf.ISDEL = 0
+	</select>
+</mapper>

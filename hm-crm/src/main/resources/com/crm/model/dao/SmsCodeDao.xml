@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.model.dao.SmsCodeDao">
+	<resultMap id="SmsCode" type="com.crm.model.SmsCode">
+		<id column="ID" jdbcType="INTEGER" property="id" />
+		<result column="SMSTYPE" jdbcType="VARCHAR" property="smsType" />
+		<result column="SIGN" jdbcType="VARCHAR" property="sign" />
+		<result column="TEMPLATEID" jdbcType="VARCHAR" property="templateId" />
+		<result column="MEMO" jdbcType="VARCHAR" property="memo" />
+		<result column="SPARE1" jdbcType="VARCHAR" property="spare1" />
+		<result column="SPARE2" jdbcType="VARCHAR" property="spare2" />
+		<result column="SPARE3" jdbcType="VARCHAR" property="spare3" />
+		<result column="COMPANYID" jdbcType="INTEGER" property="companyId" />
+		<result column="ISSHOW" jdbcType="BOOLEAN" property="isShow" />
+		<result column="ALIURL" jdbcType="VARCHAR" property="url" />
+		<result column="APPKEY" jdbcType="VARCHAR" property="appKey" />
+		<result column="SECRET" jdbcType="VARCHAR" property="secret" />
+	</resultMap>
+	
+	
+	<resultMap id="SmsLog" type="com.crm.model.SmsLog">
+		<id column="ID" jdbcType="INTEGER" property="id" />
+		<result column="SMSTYPE" jdbcType="VARCHAR" property="smsType" />
+		<result column="TARPHONE" jdbcType="VARCHAR" property="tarPhone" />
+		<result column="TEMPLATEID" jdbcType="VARCHAR" property="templateId" />
+		<result column="CONTENT" jdbcType="VARCHAR" property="content" />
+		<result column="OPERAID" jdbcType="INTEGER" property="operaId" />
+		<result column="CREATETIME" jdbcType="VARCHAR" property="createTime" />
+		<result column="COMPANYID" jdbcType="INTEGER" property="companyId" />
+	</resultMap>
+
+
+	<!-- 新建短信日志 -->
+	<insert id="createSmsLog" parameterType="com.crm.model.SmsLog"
+		useGeneratedKeys="true" keyProperty="logId">
+		INSERT INTO
+			hm_crm_sms_log
+		(SMSTYPE, TARPHONE, TEMPLATEID, CONTENT, OPERAID,CREATETIME,
+		  COMPANYID)
+		VALUES
+		(#{smsType}, #{tarPhone}, #{templateId}, #{content}, 
+		  #{operaId}, #{createTime}, #{companyId} )
+	</insert>
+
+
+	<!-- 获取短信日志记录 -->
+	<select id="listSmsLogByCondition" parameterType="HashMap"
+		resultMap="SmsLog">
+		SELECT * FROM hm_crm_sms_log 
+		WHERE COMPANYID = #{companyId};
+	</select>
+
+
+
+	<!-- 获取当前用户所有未读消息 -->
+	<select id="getSmsCodeByCondition" parameterType="HashMap"
+		resultMap="SmsCode">
+		SELECT
+		*
+		FROM
+		hm_crm_sms
+		WHERE
+		SMSTYPE = #{smsType}
+		AND COMPANYID = #{companyId}
+	</select>
+
+</mapper>

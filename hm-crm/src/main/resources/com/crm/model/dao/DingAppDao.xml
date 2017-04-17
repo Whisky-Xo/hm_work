@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.model.dao.DingAppDao">
+  <resultMap id="DingApp" type="com.crm.model.DingApp">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="img" jdbcType="VARCHAR" property="img" />
+    <result column="priority" jdbcType="INTEGER" property="priority" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="isshow" jdbcType="INTEGER" property="isshow" />
+    <result column="createTime" jdbcType="VARCHAR" property="createTime" />
+	<result column="createIp" jdbcType="VARCHAR" property="createIp" />
+	<result column="updateTime" jdbcType="VARCHAR" property="updateTime" />
+	<result column="updateIp" jdbcType="VARCHAR" property="updateIp" />
+  </resultMap>
+  
+  <resultMap id="CompanyDingApp" type="com.crm.model.Company_dingApp">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="company_id" jdbcType="INTEGER" property="companyId" />
+    <result column="dingapp_id" jdbcType="INTEGER" property="dingAppId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="isshow" jdbcType="INTEGER" property="isshow" />
+    <result column="createTime" jdbcType="VARCHAR" property="createTime" />
+	<result column="createIp" jdbcType="VARCHAR" property="createIp" />
+	<result column="updateTime" jdbcType="VARCHAR" property="updateTime" />
+	<result column="updateIp" jdbcType="VARCHAR" property="updateIp" />
+  </resultMap>
+  
+
+  
+  <insert id="createDingApp" parameterType="com.crm.model.DingApp" useGeneratedKeys="true" keyProperty="id" >
+  INSERT INTO `hm_pub_dingapp` ( `name`, `url`, `img`, `priority`, CREATETIME,
+			CREATEIP, UPDATETIME, UPDATEIP, )
+	VALUES
+	( #{name}, #{url}, #{img}, #{priority}, #{createTime},
+			#{createIp}, #{updateTime}, #{updateIp})
+  </insert>
+  
+  <select id="getDingAppById" parameterType="java.lang.Integer" resultMap="DingApp">
+  	select * from `hm_pub_dingapp` where id = #{id};
+  </select>
+  
+  
+  <update id="updateDingApp" parameterType="com.crm.model.DingApp">
+  	update
+  		`hm_pub_dingapp`
+  	<set>
+  		`name` = #{name},
+  		`url` = #{url},
+  		`img` = #{img},
+  		`priority` = #{priority},
+  		`corpid` = #{corpId},
+		`updateTime` = #{updateTime},
+		`updateIp` = #{updateIp},
+  	</set>
+  	where
+  		id = #{id}
+  </update>
+  
+
+  
+  <select id="listDingAppByCompanyId" parameterType="Map" resultMap="DingApp">
+  	select a.*,b.isshow from `hm_pub_dingapp` a join `hm_pub_company_dingapp` b on (a.id = b.DingApp_id)  where b.`company_id` = #{companyId}
+  	and b.isshow = 1 and a.isdel = 0 order by a.priority asc
+  </select>
+  
+  <select id="getDingApps" resultMap="DingApp">
+  	select a.* from `hm_pub_dingapp` a  order by a.priority asc
+  </select>
+  
+  <select id="getDingAppsByComaonyId" resultMap="DingApp">
+  	  select a.*,(select isshow from `hm_pub_company_dingapp` where `company_id` = #{companyId} and dingapp_id = a.id) isshow from `hm_pub_dingapp` a  order by a.priority asc
+  </select>
+  
+  <select id="getCompanyDingApp" resultMap="CompanyDingApp">
+  	  select * from `hm_pub_company_dingapp` where `company_id` = #{companyId} and dingapp_id = #{appId}
+  </select>
+  
+  <update id="updateCompanyDingApp" parameterType="com.crm.model.Company_dingApp">
+  	update
+  		`hm_pub_company_dingapp`
+  	<set>
+  		`company_id` = #{companyId},
+  		`DingApp_id` = #{DingAppId},
+  		`isshow` = #{isshow},
+  		`updateTime` = #{updateTime},
+		`updateIp` = #{updateIp},
+  	</set>
+  	where
+  		id = #{id}
+  </update>
+  
+  <insert id="createCompanyDingApp" parameterType="com.crm.model.Company_dingApp" useGeneratedKeys="true" keyProperty="id" >
+  INSERT INTO `hm_pub_company_dingapp` ( `company_id`, `DingApp_id`,  `isshow`,CREATETIME,
+			CREATEIP, UPDATETIME, UPDATEIP,)
+	VALUES
+	( #{companyId}, #{dingAppId}, #{isshow}, #{createTime},
+			#{createIp}, #{updateTime}, #{updateIp})
+  </insert>
+</mapper>

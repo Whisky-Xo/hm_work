@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.model.dao.StaffDao">
+	<resultMap id="Staff" type="com.crm.model.Staff">
+		<id column="ID" jdbcType="INTEGER" property="id" />
+		<result column="NAME" jdbcType="VARCHAR" property="name" />
+		<result column="PHONE" jdbcType="VARCHAR" property="phone" />
+		<result column="ROLE" jdbcType="INTEGER" property="role" />
+		<result column="USERNAME" jdbcType="VARCHAR" property="username" />
+		<result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+		<result column="CREATED" jdbcType="INTEGER" property="created" />
+		<result column="UPDATED" jdbcType="INTEGER" property="updated" />
+		<result column="COMPNAME" jdbcType="VARCHAR" property="companyName" />
+		<result column="DEPTNAME" jdbcType="VARCHAR" property="deptName" />
+		<result column="DEPARTMENT" jdbcType="VARCHAR" property="department" />
+		<result column="MERCHANT_PID" jdbcType="VARCHAR" property="merchantPid" />
+		<result column="COMPANY_ID" jdbcType="INTEGER" property="companyId" />
+		<result column="DINGUSERID" jdbcType="VARCHAR" property="dingUserId" />
+		<result column="SHOPID" jdbcType="INTEGER" property="shopId" />
+		<result column="SHOPNAME" jdbcType="VARCHAR" property="shopName" />
+		<result column="DEPTID" jdbcType="VARCHAR" property="deptId" />
+		<result column="GROUPID" jdbcType="INTEGER" property="groupId" />
+		<result column="ISSHOW" jdbcType="BOOLEAN" property="isShow" />
+		<result column="ISLOCK" jdbcType="BOOLEAN" property="isLock" />
+		<result column="ISDEL" jdbcType="BOOLEAN" property="isDel" />
+		<result column="ISCHIEF" jdbcType="BOOLEAN" property="isChief" />
+		<result column="CORPID" jdbcType="VARCHAR" property="compCorpId" />
+		<result column="CORPSECRET" jdbcType="VARCHAR" property="compCorpSecret" />
+		<result column="SSOSECRET" jdbcType="VARCHAR" property="compSsoSecret" />
+		<result column="CHANNELSECRET" jdbcType="VARCHAR" property="compChannelSecret" />
+		<result column="AGENTID" jdbcType="VARCHAR" property="agentId" />
+		<result column="LIMITNUMDAY" jdbcType="INTEGER" property="limitNumDay" />
+		<result column="TODAYNUM" jdbcType="INTEGER" property="todayNum" />
+		<result column="JDSORT" jdbcType="INTEGER" property="jdSort" />
+		<result column="JDNUM" jdbcType="INTEGER" property="jdNum" />
+	</resultMap>
+
+	<update id="editStaffById" parameterType="com.crm.model.Staff">
+		update
+		`hm_pub_staff`
+		<set>
+			`company_id` = #{companyId},
+			`name` = #{name},
+			`phone` = #{phone},
+			`role` = #{role},
+			`username` = #{username},
+			`password` = #{password},
+			`corpid` = #{corpId},
+			`deptId` = #{deptId},
+			`department` =
+			#{department},
+			`merchant_pid` = #{merchant_pid},
+			`created` =
+			#{created},
+			`updated` = #{updated},
+			`isshow` = #{isshow},
+			`ischief` =
+			#{isChief},
+			`islock` = #{islock},
+			`isdel` = #{isdel},
+			`isPc` = #{isPc}
+		</set>
+		where
+		id = #{id}
+	</update>
+
+	<!-- 根据ID获取指定员工信息 -->
+	<select id="getStaffInfoById" parameterType="java.lang.Integer"
+		resultMap="Staff">
+		SELECT 
+			sf.ID, sf.`NAME`, sf.PHONE, sf.ROLE, sf.USERNAME, 
+			sf.`PASSWORD`, sf.CREATED, sf.UPDATED, comp.COMPNAME, 
+			sf.MERCHANT_PID, sf.COMPANY_ID, sf.DINGUSERID, sf.SHOPID, shop.SHOPNAME, 
+			sf.DEPTID, sf.GROUPID, sf.ISSHOW, sf.ISLOCK, sf.ISDEL, 
+			sf.ISCHIEF, comp.CORPID, comp.CORPSECRET, comp.SSOSECRET, comp.CHANNELSECRET, comp.AGENTID, dept.DEPTNAME
+		FROM
+			hm_pub_staff sf
+		LEFT JOIN hm_pub_company comp ON sf.COMPANY_ID = comp.COMPID
+		LEFT JOIN hm_crm_shop shop ON sf.SHOPID = shop.SHOPID
+		LEFT JOIN hm_crm_dept dept ON sf.DEPTID = dept.DEPTID AND comp.COMPID = dept.COMPANYID 
+		WHERE sf.ID = #{id,jdbcType=INTEGER};
+	</select>
+
+
+	<!-- 根据登录账号获取指定员工信息 -->
+	<select id="getStaffInfoByAccount" parameterType="java.lang.String"
+		resultMap="Staff">
+		SELECT 
+			sf.ID, sf.`NAME`, sf.PHONE, sf.ROLE, sf.USERNAME, 
+			sf.`PASSWORD`, sf.CREATED, sf.UPDATED, comp.COMPNAME, 
+			sf.MERCHANT_PID, sf.COMPANY_ID, sf.DINGUSERID, sf.SHOPID,
+			sf.DEPTID, sf.GROUPID, sf.ISSHOW, sf.ISLOCK, sf.ISDEL, 
+			sf.ISCHIEF, comp.CORPID, comp.CORPSECRET, comp.SSOSECRET, comp.CHANNELSECRET, comp.AGENTID
+		FROM
+			hm_pub_staff sf
+		LEFT JOIN hm_pub_company comp ON sf.COMPANY_ID = comp.COMPID
+		WHERE sf.USERNAME = #{username}
+		AND sf.ISDEL = 0;
+	</select>
+
+	<!-- 钉钉免登获取员工 -->
+	<select id="getByMobileAndCorpid" parameterType="java.lang.String"
+		resultMap="Staff">
+		select * from hm_pub_staff where `phone` = #{0} and `corpid` = #{1} limit 1
+	</select>
+
+	<!-- 获取员工列表 -->
+	<select id="listStaffByCondition" parameterType="com.crm.model.Staff"
+		resultMap="Staff">
+		select ID,NAME,ROLE from hm_pub_staff where COMPANY_ID = #{companyId}
+		and ISDEL=0
+		<if test="deptId != null">
+			AND DEPTID = #{deptId,jdbcType=INTEGER}
+		</if>
+		<if test="groupId != null">
+			AND GROUPID = #{groupId,jdbcType=INTEGER}
+		</if>
+		<if test="shopId != null">
+			AND SHOPID = #{shopId,jdbcType=INTEGER}
+		</if>
+	</select>
+
+	<!-- 获取员工列表112 -->
+	<select id="listStaffByGroupId" parameterType="com.crm.model.Staff"
+		resultMap="Staff">
+		select * from hm_pub_staff where GROUPID = #{GROUPID} and
+		ISDEL=0;
+	</select>
+	
+	<select id="listStaffByCompanyId" parameterType="Map" resultMap="Staff">
+		select a.*,c.name roleName,c.id roleId from `hm_pub_staff` a left join
+		`hm_pub_staff_role` b on (a.id = b.staff_id) left join `hm_pub_role` c
+		on (b.role_id = c.id) where a.`company_id` = #{companyId}  and a.isdel=0
+		order by name
+		asc
+	</select>
+
+	<!-- 设置todaynumber为0 -->
+	<update id="resetTodayNumber" parameterType="com.crm.model.Staff">
+		update hm_pub_staff
+		set TODAYNUM = 0, JDNUM = 0 ;
+	</update>
+
+	<!-- 职员当日客资个数++ -->
+	<update id="doTodayKzNumAdd" parameterType="com.crm.model.Staff">
+		UPDATE
+		hm_pub_staff
+		SET
+		TODAYNUM = TODAYNUM + 1
+		WHERE ID = #{id}
+		AND COMPANY_ID =
+		#{companyId};
+	</update>
+
+	<!-- 根据职工的电话号码获取职工信息 -->
+	<select id="getStaffByPhone" parameterType="com.crm.model.Staff"
+		resultMap="Staff">
+		SELECT * FROM hm_pub_staff WHERE PHONE = #{phone} AND COMPANY_ID =
+		#{companyId} AND ISDEL = 0 LIMIT 1;
+	</select>
+
+	<select id="getByDeptId" parameterType="map" resultMap="Staff">
+		select a.*,c.name roleName from `hm_pub_staff` a left join
+		`hm_pub_staff_role` b on (a.id = b.staff_id) left join `hm_pub_role` c
+		on (b.role_id = c.id) where
+		(INSTR(a.`deptId`,#{deptId})>0 or a.`deptId` = #{XdeptId}) and a.company_id = #{companyId} and
+		a.`deptId` != '0' and a.`deptId` is not null and a.`deptId` != ''
+		and a.isdel = 0 order by a.name asc
+	</select>
+
+	<!-- 获取当前职员所在部门及其子部门下的所有员工信息（职工调配使用） -->
+	<select id="getStaffListByDeptId" parameterType="map" resultMap="Staff">
+		SELECT
+			staff.ID, staff.`NAME`, staff.PHONE, staff.ROLE,
+			staff.USERNAME,
+			staff.PASSWORD,staff.CREATED, staff.UPDATED,
+			staff.CORPID,
+			staff.DEPARTMENT, staff.MERCHANT_PID,
+			staff.COMPANY_ID,
+			staff.SHOPID, staff.DEPTID, dept.DEPTNAME, staff.GROUPID,
+			staff.DINGUSERID, staff.ISSHOW, staff.ISLOCK, staff.ISCHIEF,
+			staff.TODAYNUM, staff.LIMITNUMDAY, staff.JDSORT, staff.JDNUM
+		FROM
+		hm_pub_staff staff
+		LEFT JOIN hm_crm_dept dept ON staff.DEPTID =
+		dept.DEPTID
+		AND dept.COMPANYID = #{companyId}
+		WHERE
+		staff.DEPTID LIKE '${deptId}%'
+		AND staff.COMPANY_ID = #{companyId}
+		AND staff.ISDEL = 0
+		ORDER BY staff.ISSHOW DESC, staff.JDSORT ASC
+	</select>
+
+
+	<!-- 获取小组组长 -->
+	<select id="getBossStaff" parameterType="com.crm.model.Staff" resultMap="Staff">
+		SELECT
+			sf.ID, sf.`NAME`, sf.PHONE, sf.ROLE, sf.USERNAME, 
+			sf.`PASSWORD`, sf.CREATED, sf.UPDATED, comp.COMPNAME, 
+			sf.MERCHANT_PID, sf.COMPANY_ID, sf.DINGUSERID, sf.SHOPID,
+			sf.DEPTID, sf.GROUPID, sf.ISSHOW, sf.ISLOCK, sf.ISDEL, 
+			sf.ISCHIEF, comp.CORPID, comp.CORPSECRET, comp.SSOSECRET, comp.CHANNELSECRET, comp.AGENTID
+		FROM
+			hm_pub_staff sf
+		LEFT JOIN hm_pub_company comp ON sf.COMPANY_ID = comp.COMPID
+		WHERE
+			sf.COMPANY_ID = #{companyId}
+		AND sf.DEPTID = #{deptId}
+		AND sf.ISCHIEF = 1
+		AND sf.ISSHOW = 1
+		AND sf.ISLOCK = 0
+		AND sf.ISDEL = 0
+	</select>
+
+<!-- 获取职工集合今日推单最小数 -->
+	<select id="getTodayNumLine" parameterType="map" resultType="java.lang.Integer">
+		SELECT
+			stf.TODAYNUM
+		FROM
+			hm_crm_staff_source_rela rela
+		LEFT JOIN hm_pub_staff stf ON rela.STAFFID = stf.ID
+		LEFT JOIN hm_crm_dept dep ON stf.DEPTID = dep.DEPTID
+		AND rela.SOURCEID IN (
+			SELECT
+				r.SOURCEID
+			FROM
+				hm_crm_staff_source_rela r
+			WHERE
+				r.COMPANYID = #{companyId}
+			AND r.RELATYPE = 'yy'
+			AND r.STAFFID = #{id}
+		)
+		AND dep.COMPANYID = #{companyId}
+		WHERE rela.RELATYPE = 'yy'
+		AND rela.COMPANYID = #{companyId}
+		AND stf.COMPANY_ID = #{companyId}
+		AND stf.ISLOCK = 0
+		AND stf.ISSHOW = 1
+		AND stf.JDNUM &lt; stf.LIMITNUMDAY
+		AND dep.TIMESTART &lt; DATE_FORMAT(NOW(), '%H%i')
+		AND dep.TIMEEND &gt; DATE_FORMAT(NOW(), '%H%i')
+		ORDER BY
+		stf.TODAYNUM ASC,
+		stf.JDSORT ASC
+		LIMIT 1;
+	</select>
+
+	<!-- 修改制定员工的在线/离线状态 -->
+	<update id="changeStaffShowById" parameterType="map">
+		UPDATE
+		hm_pub_staff
+		SET ISSHOW = #{flag}
+		WHERE ID = #{id}
+	</update>
+
+	<!-- 追平职工今日退单额为同范围职工的最小数 -->
+	<update id="holdLineStaffTodayNum" parameterType="map">
+		UPDATE
+		hm_pub_staff
+		SET TODAYNUM = #{num}
+		WHERE ID = #{id}
+		AND COMPANY_ID = #{companyId}
+	</update>
+
+	<!-- 修改制定员工的日结单限额 -->
+	<update id="changeStaffLimitNumDay" parameterType="map">
+		UPDATE
+		hm_pub_staff
+		SET LIMITNUMDAY = #{num}
+		WHERE ID = #{id}
+	</update>
+
+	<!-- 修改制定员工的接单顺序 -->
+	<update id="changeStaffJdSort" parameterType="map">
+		UPDATE
+		hm_pub_staff
+		SET JDSORT = #{sort}
+		WHERE ID = #{id}
+	</update>
+	
+	<!-- 获取当前职员所在部门及其子部门下的所有员工信息,包括离职员工 -->
+	<select id="getStaffListByDeptIdIgnoDel" parameterType="map" resultMap="Staff">
+		SELECT
+			staff.ID, staff.`NAME`
+		FROM
+			hm_pub_staff staff
+		LEFT JOIN hm_crm_dept dept ON staff.DEPTID = dept.DEPTID AND dept.COMPANYID = #{companyId}
+		WHERE
+			staff.DEPTID LIKE '${deptId}%'
+		AND staff.COMPANY_ID = #{companyId}
+	</select>
+
+	<!-- 获取指定渠道，指定职工ID，且为该渠道邀约员的职工信息 -->
+	<select id="getStaffByIdAndYySrcId" parameterType="map" resultMap="Staff">
+		SELECT
+			sf.ID, sf.`NAME`, sf.PHONE, sf.ROLE, sf.USERNAME, 
+			sf.`PASSWORD`, sf.CREATED, sf.UPDATED, comp.COMPNAME, 
+			sf.MERCHANT_PID, sf.COMPANY_ID, sf.DINGUSERID, sf.SHOPID, 
+			sf.DEPTID, sf.GROUPID, sf.ISSHOW, sf.ISLOCK, sf.ISDEL, 
+			sf.ISCHIEF, comp.CORPID, comp.CORPSECRET, comp.SSOSECRET, comp.CHANNELSECRET, comp.AGENTID
+		FROM
+			hm_crm_staff_source_rela rela
+		LEFT JOIN hm_pub_staff sf ON rela.STAFFID = sf.ID
+		AND rela.COMPANYID = sf.COMPANY_ID
+		LEFT JOIN hm_pub_company comp ON sf.COMPANY_ID = comp.COMPID
+		WHERE
+			rela.RELATYPE = 'yy'
+		AND rela.SOURCEID = #{srcId}
+		AND rela.STAFFID = #{staffId}
+		AND rela.COMPANYID = #{companyId}
+		AND sf.ISLOCK = 0
+		AND sf.ISDEL = 0
+	</select>
+	
+	<!-- 获取指定关联类型和渠道类型的职工集合 -->
+	<select id="getSrcRelaStaffs" parameterType="map" resultMap="Staff">
+		SELECT
+			sf.*
+		FROM
+			hm_crm_staff_source_rela rela
+		LEFT JOIN hm_crm_source src ON rela.SOURCEID = src.SRCID AND rela.COMPANYID = src.COMPANYID
+		LEFT JOIN hm_crm_source_type st ON src.TYPEID = st.TYPEID AND rela.COMPANYID = st.COMPANYID
+		LEFT JOIN hm_pub_staff sf ON rela.STAFFID = sf.ID AND rela.COMPANYID = sf.COMPANY_ID
+		WHERE
+			rela.COMPANYID = #{companyId}
+		AND rela.RELATYPE = #{relaType}
+		AND INSTR( #{srcType}, st.TYPENAME) > 0
+		GROUP BY sf.ID
+		ORDER BY sf.DEPTID
+	</select>
+</mapper>

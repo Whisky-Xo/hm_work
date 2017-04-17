@@ -1,0 +1,172 @@
+body,ul,ol,dl,dd,h1,h2,h3,h4,h5,h6,p,input,select,textarea,form{margin: 0; padding: 0;}
+body{font:16px/1.5 "微软雅黑";}
+img{border:none;}
+ul,ol{list-style:none;}
+input,select,textarea{outline:none;border:none;background:none;}
+textarea{resize:none;}
+a{text-decoration:none;}
+*{box-sizing: border-box;}
+.fl{float: left;}
+.fr{float: right;}
+/*清浮动*/
+.clearfix:after{content:"";display:block;clear:both;}
+.clearfix{zoom:1;}
+  
+选择
+::selection {background-color:#669900; color:#ffffff; text-shadow:none;}
+::-moz-selection {background-color:#669900; color:#ffffff;text-shadow:none;}
+  
+去掉a的下划线
+a {blr:expression(this.onFocus=this.blur())} /*if IE*/
+a {outline:none;}/*if 火狐等现代浏览器浏览器*/ 
+
+/*以上为公用样式*/
+
+html,body{
+	height: 100%;
+}
+body{
+	background:url(../images/bj1.png) no-repeat;
+	background-size: cover;
+}
+.login_top {
+    height: 60px;
+    background-color: #ff5400;
+    color: #fff;
+    line-height: 60px;
+}
+.login_logo {
+    width: 170px;
+    height: 44px;
+    text-align: center;
+}
+.login_logo img{
+    height: 100%;
+    vertical-align: middle;
+}
+.login_title {
+    font-size: 18px;
+    font-weight: bold;
+}
+.main_login {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    top: 25%;
+}
+.info {
+    display: inline-block;
+    background-color: #fff;
+    width: 1136px;
+}
+.info_left,.info_right{
+	text-align: left;
+}
+.login_pic {
+    width: 636px;
+    height: 480px;
+    box-shadow: 2px 1px 5px rgba(0,0,0,0.4);
+}
+.info_right {
+    width: 500px;
+    min-height: 480px;
+}
+.info_right .prompt p {
+    width: 80%;
+    color: #FF5400;
+    font-size: 14px;
+    background-color: #FFEEBC;
+    line-height: 32px;
+    text-indent: 35px;
+    margin: 0 auto;
+    background-image: url(../images/pwd1.png);
+    background-position: 10px -132px;
+    background-repeat: no-repeat;
+}
+.info_right_title,.info_right_login{
+	width: 80%;
+	margin: 0 auto;
+}
+.info_right_title h3{
+	color: #ef6d33;
+	padding: 40px;
+}
+.info_right_login {
+    padding: 0 40px;
+}
+.form-group label{
+    width: 80px;
+    line-height: 38px;
+    float: left;
+    margin: 15px 0;
+    font-weight: bold;
+}
+.form-group label img{
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 5px 5px 0;
+}
+.form-group code{
+	
+}
+input.form-control {
+    border: 1px solid #ccc;
+    width: 240px;
+    height: 38px;
+    margin: 15px 0;
+    padding-left: 10px;
+    border-radius: 3px;
+}
+.form-group .login_btn{
+    display: inline-block;
+    background-color: #ff7615;
+    color: #fff;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.form-group .code {
+    width: 125px;
+    float: left;
+    margin-right: 20px;
+}
+.form-group .show_code{
+    margin: 12px;
+    float: left;
+}
+.register {
+    width: 100%;
+    height: 52px;
+    line-height: 45px;
+    border-bottom: 1px solid #ccc;
+    font-size: 12px;
+}
+.pwd {
+    color: #b8b8b8;
+}
+.reg {
+    color: #ff0000;
+}
+.serves {
+    text-align: center;
+    padding: 22px 0;
+    font-size: 12px;
+}
+.serves img{
+	vertical-align: middle;
+}
+.serves span {
+    color: #b8b8b8;
+}
+.comp_info {
+    font-size: 12px;
+    line-height: 25px;
+    color: #fff;
+    position: absolute;
+    bottom: 50px;
+    text-align: center;
+    left: 0;
+    right: 0;
+}

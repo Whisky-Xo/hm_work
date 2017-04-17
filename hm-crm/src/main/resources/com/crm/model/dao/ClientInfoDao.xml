@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.model.dao.ClientInfoDao">
+	<resultMap id="Staff" type="com.crm.model.Staff">
+		<id column="ID" jdbcType="INTEGER" property="id" />
+		<result column="NAME" jdbcType="VARCHAR" property="name" />
+		<result column="PHONE" jdbcType="VARCHAR" property="phone" />
+		<result column="ROLE" jdbcType="INTEGER" property="role" />
+		<result column="USERNAME" jdbcType="VARCHAR" property="username" />
+		<result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+		<result column="CREATED" jdbcType="INTEGER" property="created" />
+		<result column="UPDATED" jdbcType="INTEGER" property="updated" />
+		<result column="COMPNAME" jdbcType="VARCHAR" property="companyName" />
+		<result column="DEPARTMENT" jdbcType="VARCHAR" property="department" />
+		<result column="MERCHANT_PID" jdbcType="VARCHAR" property="merchantPid" />
+		<result column="COMPANY_ID" jdbcType="INTEGER" property="companyId" />
+		<result column="DINGUSERID" jdbcType="VARCHAR" property="dingUserId" />
+		<result column="SHOPID" jdbcType="INTEGER" property="shopId" />
+		<result column="DEPTID" jdbcType="VARCHAR" property="deptId" />
+		<result column="GROUPID" jdbcType="INTEGER" property="groupId" />
+		<result column="ISSHOW" jdbcType="BOOLEAN" property="isShow" />
+		<result column="ISLOCK" jdbcType="BOOLEAN" property="isLock" />
+		<result column="ISDEL" jdbcType="BOOLEAN" property="isDel" />
+		<result column="ISCHIEF" jdbcType="BOOLEAN" property="isChief" />
+		<result column="TODAYNUM" jdbcType="INTEGER" property="todayNum" />
+		<result column="CORPID" jdbcType="VARCHAR" property="compCorpId" />
+		<result column="CORPSECRET" jdbcType="VARCHAR" property="compCorpSecret" />
+		<result column="SSOSECRET" jdbcType="VARCHAR" property="compSsoSecret" />
+		<result column="CHANNELSECRET" jdbcType="VARCHAR" property="compChannelSecret" />
+		<result column="AGENTID" jdbcType="VARCHAR" property="agentId" />
+	</resultMap>
+
+	<resultMap id="ClientInfo" type="com.crm.model.ClientInfo">
+		<id column="KZID" jdbcType="VARCHAR" property="kzId" />
+		<result column="ID" jdbcType="VARCHAR" property="kzNum" />
+		<result column="KZNAME" jdbcType="VARCHAR" property="kzName" />
+		<result column="KZPHONE" jdbcType="VARCHAR" property="kzPhone" />
+		<result column="KZQQ" jdbcType="VARCHAR" property="kzQq" />
+		<result column="WECHAT" jdbcType="VARCHAR" property="kzWechat" />
+		<result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+		<result column="SEX" jdbcType="VARCHAR" property="sex" />
+		<result column="STATUSID" jdbcType="INTEGER" property="statusId" />
+		<result column="STATUSNAME" jdbcType="VARCHAR" property="status" />
+		<result column="SOURCEID" jdbcType="INTEGER" property="sourceId" />
+		<result column="SRCNAME" jdbcType="VARCHAR" property="source" />
+		<result column="SOURCESPARE" jdbcType="VARCHAR" property="sourceSpare" />
+		<result column="COLLECTORID" jdbcType="INTEGER" property="collectorId" />
+		<result column="COLLECTOR" jdbcType="VARCHAR" property="collector" />
+		<result column="COLLECTORNAME" jdbcType="VARCHAR" property="collectorName" />
+		<result column="COLLECTORPHONE" jdbcType="VARCHAR" property="collectorPhone" />
+		<result column="OLDKZNAME" jdbcType="VARCHAR" property="oldKzName" />
+		<result column="OLDKZPHONE" jdbcType="VARCHAR" property="oldKzPhone" />
+		<result column="APPOINTID" jdbcType="INTEGER" property="appointId" />
+		<result column="APPOINT" jdbcType="VARCHAR" property="appoint" />
+		<result column="APPOINTTIME" jdbcType="VARCHAR" property="appointTime" />
+		<result column="ACTUALTIME" jdbcType="VARCHAR" property="actualTime" />
+		<result column="YPTIME" jdbcType="VARCHAR" property="ypTime" />
+		<result column="MARRYTIME" jdbcType="VARCHAR" property="marryTime" />
+		<result column="MEMO" jdbcType="VARCHAR" property="memo" />
+		<result column="AMOUNT" jdbcType="VARCHAR" property="amount" />
+		<result column="MATENAME" jdbcType="VARCHAR" property="mateName" />
+		<result column="MERCHANTPID" jdbcType="VARCHAR" property="merchantPid" />
+		<result column="CREATETIME" jdbcType="VARCHAR" property="createTime" />
+		<result column="UPDATETIME" jdbcType="VARCHAR" property="updateTime" />
+		<result column="SHOPID" jdbcType="INTEGER" property="shopId" />
+		<result column="SHOPNAME" jdbcType="VARCHAR" property="shopName" />
+		<result column="COMPANYID" jdbcType="INTEGER" property="companyId" />
+	</resultMap>
+	
+	<!-- 根据客资信息获取应该推送的职员信息 -->
+	<select id="getStaffByClientInfo" parameterType="com.crm.model.ClientInfo"
+		resultMap="Staff">
+		SELECT
+			stf.ID, stf.`NAME`, stf.PHONE, stf.TODAYNUM, stf.DINGUSERID, 
+			stf.DEPTID, stf.COMPANY_ID, stf.ISCHIEF, comp.CORPID, comp.CORPSECRET,
+			comp.SSOSECRET, comp.CHANNELSECRET, comp.AGENTID
+		FROM
+			hm_crm_staff_source_rela rela
+		LEFT JOIN 
+			hm_pub_staff stf ON rela.STAFFID = stf.ID
+		LEFT JOIN 
+			hm_crm_dept dep ON stf.DEPTID = dep.DEPTID 
+			AND dep.COMPANYID = #{companyId}
+		LEFT JOIN hm_pub_company comp ON stf.COMPANY_ID = stf.COMPANY_ID AND comp.COMPID = #{companyId}	
+		WHERE
+			rela.RELATYPE = #{spare1}
+		AND rela.SOURCEID = #{sourceId}
+		AND rela.COMPANYID = #{companyId}
+		AND stf.COMPANY_ID = #{companyId}
+		AND stf.ISLOCK = 0
+		AND stf.ISSHOW = 1
+		AND stf.JDNUM &lt; stf.LIMITNUMDAY
+		AND dep.TIMESTART &lt; DATE_FORMAT(NOW(), '%H%i')
+		AND dep.TIMEEND &gt; DATE_FORMAT(NOW(), '%H%i') 
+		ORDER BY 
+			stf.TODAYNUM ASC, stf.JDSORT ASC
+		LIMIT 1 ;
+	</select>
+	
+	<!-- 转介绍：根据客资信息获取应该推送的转介绍职员信息 -->
+	<select id="getStaffByClientInfoZjs" parameterType="com.crm.model.ClientInfo"
+		resultMap="Staff">
+		SELECT
+			stf.ID, stf.`NAME`, stf.PHONE, stf.TODAYNUM, stf.DINGUSERID, 
+			stf.DEPTID, stf.COMPANY_ID, stf.ISCHIEF, stf.ISSHOW, comp.CORPID, 
+			comp.CORPSECRET, comp.SSOSECRET, comp.CHANNELSECRET, comp.AGENTID
+		FROM
+			hm_crm_staff_source_rela rela
+		LEFT JOIN 
+			hm_pub_staff stf ON rela.STAFFID = stf.ID
+		LEFT JOIN hm_pub_company comp ON stf.COMPANY_ID = stf.COMPANY_ID AND comp.COMPID = #{companyId}				
+		WHERE
+			rela.RELATYPE = #{spare1}
+		AND rela.SOURCEID = #{sourceId}
+		AND rela.COMPANYID = #{companyId}
+		AND stf.COMPANY_ID = #{companyId}
+		AND stf.ISLOCK = 0
+	</select>
+
+	<!-- 获取状态为等待邀约但未绑定邀约员的客资 -->
+	<select id="getClientByNoBlindAccept" parameterType="com.crm.model.ClientInfo"
+		resultMap="ClientInfo">
+		SELECT
+			info.KZID, info.KZNAME, info.KZPHONE, info.KZQQ, info.WECHAT,
+			info.ADDRESS, info.SOURCEID, info.COLLECTORID, info.MEMO, info.MATENAME,
+			info.CREATETIME, info.UPDATETIME, info.SHOPID, info.COMPANYID
+		FROM
+			${tabName} info
+		WHERE
+			info.APPOINTID IS NULL
+		AND info.ISDEL = 0
+		AND info.STATUSID = #{statusId} ;
+	</select>
+	
+	<!-- 根据客资ID获取客资详细信息 -->
+	<select id="getInfoById" parameterType="com.crm.model.ClientInfo"
+		resultMap="ClientInfo">
+		SELECT
+			info.KZID, info.KZNAME, info.KZPHONE, info.KZQQ, info.WECHAT,
+			info.ADDRESS, dic.DICNAME SEX, info.STATUSID, sts.STATUSNAME, info.SOURCEID,
+			src.SRCNAME, info.SOURCESPARE, info.COLLECTORID, col.`NAME` COLLECTOR, info.COLLECTORNAME,
+			info.COLLECTORPHONE, info.OLDKZNAME, info.OLDKZPHONE, info.APPOINTID,
+			apt.`NAME` APPOINT, info.APPOINTTIME, info.ACTUALTIME, info.YPTIME, info.MARRYTIME,
+			info.MEMO, info.MATENAME, info.MERCHANTPID, info.UPDATETIME, info.CREATETIME,
+			info.CREATEIP, info.SHOPID, info.COMPANYID, sp.SHOPNAME, info.ID,
+			info.AMOUNT
+		FROM
+			${tabName} info
+		LEFT JOIN hm_crm_source src ON info.SOURCEID = src.SRCID
+		AND src.COMPANYID = #{companyId}
+		LEFT JOIN hm_crm_client_status sts ON info.STATUSID = sts.STATUSID
+		AND sts.COMPANYID = #{companyId}
+		LEFT JOIN hm_pub_staff col ON info.COLLECTORID = col.ID
+		AND col.COMPANY_ID = #{companyId}
+		LEFT JOIN hm_pub_staff apt ON info.APPOINTID = apt.ID
+		AND apt.COMPANY_ID = #{companyId}
+		LEFT JOIN hm_crm_dictionary dic ON info.SEX = dic.DICCODE
+		AND dic.DICTYPE = 'sex'
+		AND dic.COMPANYID = #{companyId}
+		LEFT JOIN hm_crm_shop sp ON info.SHOPID = sp.SHOPID
+		AND sp.COMPANYID = #{companyId}
+		WHERE
+			info.KZID = #{kzId}
+		AND	info.COMPANYID = #{companyId}
+		AND info.ISDEL = 0;
+	</select>
+	
+	<!-- 客资模糊搜索：姓名/电话/QQ -->
+	<select id="getClientInfoLike" parameterType="com.crm.model.ClientInfo"
+		resultMap="ClientInfo">
+		SELECT
+			info.KZID, info.KZNAME, info.KZPHONE, info.KZQQ, info.WECHAT,
+			info.ADDRESS, dic.DICNAME SEX, info.STATUSID, sts.STATUSNAME, info.SOURCEID,
+			src.SRCNAME, info.SOURCESPARE, info.COLLECTORID, col.`NAME` COLLECTOR, info.COLLECTORNAME,
+			info.COLLECTORPHONE, info.OLDKZNAME, info.OLDKZPHONE, info.APPOINTID,
+			apt.`NAME` APPOINT, info.APPOINTTIME, info.ACTUALTIME, info.YPTIME, info.MARRYTIME,
+			info.MEMO, info.MATENAME, info.MERCHANTPID, info.UPDATETIME, info.CREATETIME,
+			info.CREATEIP, info.SHOPID, info.COMPANYID
+		FROM
+			${tabName} info
+		LEFT JOIN hm_crm_source src ON info.SOURCEID = src.SRCID
+		AND src.COMPANYID = #{companyId}
+		LEFT JOIN hm_crm_client_status sts ON info.STATUSID = sts.STATUSID
+		AND sts.COMPANYID = #{companyId}
+		LEFT JOIN hm_pub_staff col ON info.COLLECTORID = col.ID
+		AND col.COMPANY_ID = #{companyId}
+		LEFT JOIN hm_pub_staff apt ON info.APPOINTID = apt.ID
+		AND apt.COMPANY_ID = #{companyId}
+		LEFT JOIN hm_crm_dictionary dic ON info.SEX = dic.DICCODE
+		AND dic.DICTYPE = 'sex'
+		AND dic.COMPANYID = #{companyId}
+		WHERE
+			info.COMPANYID = #{companyId}
+		AND info.ISDEL = 0
+		AND ( 1 != 1
+		<if test="kzPhone != null">
+			OR info.KZPHONE = #{kzPhone}
+		</if>
+		<if test="kzQq != null">
+			OR info.KZQQ = #{kzQq}
+		</if>
+		<if test="kzWechat != null">
+			OR info.WECHAT = #{kzWechat}
+		</if>
+		)
+	</select>
+	
+	<!-- 获取指定ID和渠道的邀约员信息 -->
+	<select id="getYyStaffById" parameterType="com.crm.model.Staff"
+		resultMap="Staff">
+		SELECT
+			stf.ID, stf.`NAME`, stf.PHONE, stf.TODAYNUM, stf.DINGUSERID,
+			stf.DEPTID, stf.COMPANY_ID, stf.ISCHIEF, comp.CORPID, comp.CORPSECRET,
+			comp.SSOSECRET, comp.CHANNELSECRET, comp.AGENTID
+		FROM
+			hm_crm_staff_source_rela rela
+		LEFT JOIN hm_pub_staff stf ON rela.STAFFID = stf.ID
+		LEFT JOIN hm_pub_company comp ON stf.COMPANY_ID = stf.COMPANY_ID AND comp.COMPID = #{companyId}
+		WHERE
+			rela.RELATYPE = #{srcRelaType}
+		AND rela.SOURCEID = #{srcId}
+		AND rela.STAFFID = #{id}
+		AND stf.ISLOCK = 0
+		AND stf.COMPANY_ID = #{companyId}
+	</select>
+	
+	<!-- 获取门店当日预约短信个数 -->
+	<select id="getSmsCmtByShopId" parameterType="map" resultType="java.lang.Integer">
+		SELECT
+			COUNT(*) CNT
+		FROM
+			${tabName} info
+		WHERE
+			info.COMPANYID = #{companyId}
+		AND info.ISDEL = 0
+		AND info.APPOINTTIME &gt;= #{start}
+		AND info.APPOINTTIME &lt;= #{end}
+		AND info.SHOPID IS NOT NULL
+		AND info.HAVESMS = 1
+	</select>
+	
+	<!-- 更改微信添加状态 -->
+	<update id="changeWeChatFlag" parameterType="map">
+		UPDATE ${tabName} SET WEFLAG = #{flag} WHERE KZID = #{kzId};
+	</update>
+	
+	<!-- 更改QQ添加状态 -->
+	<update id="changeQqFlag" parameterType="map">
+		UPDATE ${tabName} SET QQFLAG = #{flag} WHERE KZID = #{kzId};
+	</update>
+	
+	<!-- 获取客资 -->
+	<select id="getClientInfoList" parameterType="com.crm.model.ClientInfo"
+		resultMap="ClientInfo">
+		SELECT
+			info.KZID, info.KZNAME, info.KZPHONE, info.KZQQ, info.WECHAT,
+			info.ADDRESS, info.SOURCEID, info.COLLECTORID, info.MEMO, info.MATENAME,
+			info.CREATETIME, info.UPDATETIME, info.SHOPID, info.COMPANYID
+		FROM
+			${tabName} info
+		WHERE
+			info.ISDEL = 0
+		AND info.STATUSID = #{statusId} 
+		AND info.UPDATETIME &lt;= #{updateTime}
+	</select>
+	
+	<!-- 一对多获取邀约员 -->
+	<select id="getStaffListOfOneToMore" parameterType="map" resultMap="Staff">
+		SELECT
+			stf.ID, stf.`NAME`, stf.PHONE, stf.TODAYNUM, stf.DINGUSERID,
+			stf.DEPTID, stf.COMPANY_ID, stf.ISCHIEF, comp.CORPID, comp.CORPSECRET,
+			comp.SSOSECRET, comp.CHANNELSECRET, comp.AGENTID
+		FROM
+			hm_crm_staff_source_rela rela
+		LEFT JOIN hm_pub_company comp ON comp.COMPID = rela.COMPANYID
+		LEFT JOIN hm_pub_staff stf ON stf.ID = rela.STAFFID AND stf.COMPANY_ID = comp.COMPID
+		LEFT JOIN hm_crm_dept dep ON dep.DEPTID = stf.DEPTID AND dep.COMPANYID = comp.COMPID
+		WHERE
+			rela.RELATYPE = 'yy'
+		AND rela.SOURCEID = #{srcId} 
+		AND rela.COMPANYID = #{companyId} 
+		AND ( stf.JDNUM &lt; stf.LIMITNUMDAY OR stf.LIMITNUMDAY IS NULL )
+		AND dep.TIMESTART &lt; DATE_FORMAT(NOW(), '%H%i')
+		AND dep.TIMEEND &gt; DATE_FORMAT(NOW(), '%H%i')
+		AND stf.ISLOCK = 0
+		AND stf.ISSHOW = 1
+		ORDER BY
+			stf.TODAYNUM ASC,
+			stf.JDSORT ASC
+	</select>
+	
+	<!-- 一对一获取邀约员 -->
+	<select id="getStaffListOfOneToOne" parameterType="map" resultMap="Staff">
+		SELECT
+			stf.ID, stf.`NAME`, stf.PHONE, stf.TODAYNUM, stf.DINGUSERID,
+			stf.DEPTID, stf.COMPANY_ID, stf.ISCHIEF, comp.CORPID, comp.CORPSECRET,
+			comp.SSOSECRET, comp.CHANNELSECRET, comp.AGENTID
+		FROM
+			hm_crm_staff_source_rela rela
+		LEFT JOIN hm_pub_company comp ON comp.COMPID = rela.COMPANYID
+		LEFT JOIN hm_pub_staff stf ON stf.ID = rela.STAFFID AND stf.COMPANY_ID = comp.COMPID
+		LEFT JOIN hm_crm_dept dep ON dep.DEPTID = stf.DEPTID AND dep.COMPANYID = comp.COMPID
+		WHERE
+			rela.RELATYPE = 'yy'
+		AND rela.SOURCEID = #{srcId} 
+		AND rela.COMPANYID = #{companyId} 
+		AND ( stf.JDNUM &lt; stf.LIMITNUMDAY OR stf.LIMITNUMDAY IS NULL )
+		AND dep.TIMESTART &lt; DATE_FORMAT(NOW(), '%H%i')
+		AND dep.TIMEEND &gt; DATE_FORMAT(NOW(), '%H%i')
+		AND stf.ISLOCK = 0
+		AND stf.ISSHOW = 1
+		ORDER BY
+			stf.TODAYNUM ASC,
+			stf.JDSORT ASC
+		LIMIT 1 ;
+	</select>
+</mapper>

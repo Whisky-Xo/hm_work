@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.model.dao.StatusDao">
+	<resultMap id="Status" type="com.crm.model.Status">
+		<id column="STATUSID" jdbcType="INTEGER" property="statusId" />
+		<result column="STATUSNAME" jdbcType="VARCHAR" property="statusName" />
+		<result column="STATUSTYPE" jdbcType="VARCHAR" property="statusType" />
+		<result column="CREATETIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="CREATEIP" jdbcType="VARCHAR" property="createIp" />
+		<result column="UPDATETIME" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="UPDATEIP" jdbcType="VARCHAR" property="updateIp" />
+		<result column="PRIORITY" jdbcType="INTEGER" property="priority" />
+		<result column="COMPANYID" jdbcType="INTEGER" property="companyId" />
+		<result column="ISSHOW" jdbcType="BOOLEAN" property="isShow" />
+		<result column="ISDEL" jdbcType="BOOLEAN" property="isDel" />
+	</resultMap>
+
+	<!-- 新建状态 -->
+	<insert id="createStatus" parameterType="com.crm.model.Status"
+		useGeneratedKeys="true" keyProperty="statusId">
+		INSERT INTO
+		hm_crm_client_status
+		(STATUSNAME, CREATETIME, CREATEIP, UPDATETIME, UPDATEIP, PRIORITY,
+		ISSHOW, ISDEL
+		) VALUES
+		(#{statusName}, #{createTime}, #{createIp},
+		#{updateTime}, #{updateIp},
+		#{priority}, #{isShow}, #{isDel})
+	</insert>
+
+	<!-- 根据ID删除指定状态信息 -->
+	<update id="removeStatusById" parameterType="com.crm.model.Status">
+		UPDATE
+		hm_crm_client_status sts
+		SET sts.ISDEL = 1, sts.UPDATETIME =
+		#{updateTime,jdbcType=TIMESTAMP}, sts.UPDATEIP =
+		#{updateIp,jdbcType=VARCHAR}
+		WHERE sts.STATUSID =
+		#{statusId,jdbcType=INTEGER} AND sts.ISDEL = 0
+	</update>
+
+	<!-- 根据ID编辑指定状态信息 -->
+	<update id="editStatusById" parameterType="com.crm.model.Status">
+		UPDATE hm_crm_client_status
+		<set>
+			<if test="statusName != null">
+				STATUSNAME = #{statusName,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				CREATETIME = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createIp != null">
+				CREATEIP = #{createIp,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				UPDATETIME = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateIp != null">
+				UPDATEIP = #{updateIp,jdbcType=VARCHAR},
+			</if>
+			<if test="priority != null">
+				PRIORITY = #{priority,jdbcType=INTEGER},
+			</if>
+			<if test="isShow != null">
+				ISSHOW = #{isShow,jdbcType=VARCHAR},
+			</if>
+		</set>
+		WHERE STATUSID = #{statusId,jdbcType=INTEGER} AND ISDEL = 0
+	</update>
+
+	<!-- 根据ID获取指定状态信息 -->
+	<select id="getStatusInfoById" parameterType="java.lang.Integer"
+		resultType="com.crm.model.Status">
+		SELECT
+		*
+		FROM
+		hm_crm_client_status sts WHERE sts.STATUSID =
+		#{statusId,jdbcType=INTEGER} AND sts.ISDEL = 0
+	</select>
+
+	<!-- 获取客资状态列表 -->
+	<select id="getStatusInfoList" parameterType="com.crm.model.Status"
+		resultType="com.crm.model.Status">
+		SELECT
+			*
+		FROM
+			hm_crm_client_status sts
+		WHERE 
+			sts.ISDEL = 0 
+		AND sts.ISSHOW = 1
+		AND sts.COMPANYID = #{companyId}
+	</select>
+	
+	<!-- 获取客资状态列表全部 -->
+	<select id="getStatusInfoAllList" parameterType="com.crm.model.Status"
+		resultType="com.crm.model.Status">
+		SELECT
+			sts.STATUSID, sts.STATUSNAME, sts.CREATETIME, sts.CREATEIP, sts.UPDATETIME,
+			sts.UPDATEIP, sts.PRIORITY, sts.COMPANYID
+		FROM
+			hm_crm_client_status sts
+		WHERE 
+			sts.ISDEL = 0
+		AND sts.COMPANYID = #{companyId}
+		AND INSTR(sts.STATUSTYPE, #{statusType}) != 0
+		ORDER BY sts.PRIORITY ASC
+	</select>
+</mapper>

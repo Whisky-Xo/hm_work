@@ -1,0 +1,35 @@
+.box_head,.box_edit{padding: 0px 15px;height:30px;line-height:30px;}
+.box_tab{width:50%;}
+.tab_active{background: #2DB7F5;color: #fff;}
+.tab_nav_l,.borTLrad6{border-top-left-radius: 6px;}
+.tab_nav_r,.borTRrad6{border-top-right-radius: 6px;}
+.box_obj_base{margin:auto;padding-top:15px;padding-bottom:15px;background: #FCFCFC;border-bottom:1px #F2F2F2 solid;}
+.box_obj_base_left{   
+	text-align: center;
+    width: 80px;
+    height: 80px;
+    border: 1px #ccc dashed;
+    border-radius: 6px;
+    margin:auto 15px;
+    }
+.box_obj_base_left img{margin-top: 15px;}
+.box_obj_base_right{width:calc(100% - 120px);s}
+.btn_active{ background: #D3A8FE; color: #fff;}
+.btn_sit_first div{float:left;text-align: center;}
+.icon_sex{ 
+	height: 14px;
+    border-radius: 50%;
+    color: #fff;
+    padding: 2px;
+    width: 14px;
+    }
+ .icon_sex_female{background: #FF7DB6;}   
+.icon_sex_male{background: #0096E0;}
+.icon_sex_no{background: #ccc;}
+.detail_info_htitle{float: left;font-size: 16px;}
+.detail_info_head_r{float:right;font-size: 16px;}
+.detail_info_head{background: #F4F4F4;height: 30px; line-height: 30px;border-top-left-radius: 10px;border-top-right-radius: 10px;}
+.box_head .box_tab ul li{height:30px;}
+.bgf3{background: #F3F3F3;}
+.border_to{border-top:1px #ccc solid;}
+.tbody_first{background:#F9F9F9;}

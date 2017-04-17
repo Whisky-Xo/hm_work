@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.model.dao.GroupDao">
+	<resultMap id="Group" type="com.crm.model.Group">
+		<id column="GROUPID" jdbcType="INTEGER" property="groupId" />
+		<result column="GROUPNAME" jdbcType="VARCHAR" property="groupName" />
+		<result column="MEMO" jdbcType="VARCHAR" property="memo" />
+		<result column="CREATETIME" jdbcType="VARCHAR" property="createTime" />
+		<result column="CREATEIP" jdbcType="VARCHAR" property="createIp" />
+		<result column="UPDATETIME" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="UPDATEIP" jdbcType="VARCHAR" property="updateIp" />
+		<result column="DEPTID" jdbcType="INTEGER" property="deptId" />
+		<result column="COMPANYID" jdbcType="INTEGER" property="companyId" />
+		<result column="SHOPID" jdbcType="INTEGER" property="shopId" />
+		<result column="ISDEL" jdbcType="BOOLEAN" property="isDel" />
+		<collection property="staffList" column="GROUPID" select="com.crm.model.dao.StaffDao.listStaffByGroupId"/>
+	</resultMap>
+
+	<!-- 新建小组 -->
+	<insert id="createGroup" parameterType="com.crm.model.Group" useGeneratedKeys="true" keyProperty="compId">
+		INSERT INTO
+		hm_crm_group
+		(GROUPNAME,MEMO, CREATETIME, CREATEIP, UPDATETIME, UPDATEIP, DEPTID,
+		COMPANYID,
+		SHOPID, ISDEL
+		) VALUES
+		(#{groupName},#{memo},#{createTime},
+		#{createIp},#{updateTime},#{updateIp}, #{deptId},
+		#{companyId},#{shopId},#{isDel})
+	</insert>
+
+	<!-- 根据ID删除指定小组信息 -->
+	<update id="removeGroupById" parameterType="com.crm.model.Group">
+		UPDATE
+		hm_crm_group
+		grp
+		SET grp.ISDEL = 1, grp.UPDATETIME =
+		#{updateTime,jdbcType=TIMESTAMP}, grp.UPDATEIP =
+		#{updateIp,jdbcType=VARCHAR}
+		WHERE grp.GROUPID =
+		#{groupId,jdbcType=INTEGER} AND grp.ISDEL = 0
+	</update>
+
+	<!-- 根据ID编辑指定小组信息 -->
+	<update id="editGroupById" parameterType="com.crm.model.Group">
+		UPDATE hm_crm_group
+		<set>
+			<if test="groupName != null">
+				GROUPNAME = #{groupName,jdbcType=VARCHAR},
+			</if>
+			<if test="memo != null">
+				MEMO = #{memo,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				CREATETIME = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createIp != null">
+				CREATEIP = #{createIp,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				UPDATETIME = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateIp != null">
+				UPDATEIP = #{updateIp,jdbcType=VARCHAR},
+			</if>
+			<if test="deptId != null">
+				DEPTID = #{deptId,jdbcType=INTEGER},
+			</if>
+			<if test="companyId != null">
+				COMPANYID = #{companyId,jdbcType=INTEGER},
+			</if>
+			<if test="shopId != null">
+				SHOPID = #{shopId,jdbcType=INTEGER},
+			</if>
+		</set>
+		WHERE GROUPID = #{groupId,jdbcType=INTEGER} AND ISDEL = 0
+	</update>
+
+	<!-- 根据ID获取指定小组信息 -->
+	<select id="getGroupInfoById" parameterType="java.lang.Integer" resultMap="Group">
+		SELECT
+		*
+		FROM
+		hm_crm_group grp WHERE grp.GROUPID =
+		#{groupId,jdbcType=INTEGER} AND grp.ISDEL = 0
+	</select>
+	
+	<!-- 根据名称获取指定小组 -->
+	<select id="getGroupInfoByName" parameterType="java.lang.String" resultMap="Group">
+		select * from hm_crm_group where GROUPNAME = #{groupName} and ISDEL = 0;
+	</select>
+	
+	
+	<!-- 根据部门ID获取小组列表 -->
+	<select id="listGroupInfoByDepId" parameterType="java.lang.Integer" resultMap="Group">
+		select * from hm_crm_group where DEPTID =#{depId,jdbcType=INTEGER} AND ISDEL = 0;
+	</select>
+	
+</mapper>

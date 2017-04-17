@@ -1,0 +1,54 @@
+#bonfire-pageloader{background-color: #aaa;}
+
+#bonfire-pageloader svg {fill:#fff;}
+
+#bonfire-pageloader {
+	position: fixed;
+    width: 80px;
+    height: 80px;
+    left: 50%;
+    right: 0;
+    top: 50%;
+    bottom: 0;
+    margin-left: -40px;
+    z-index: 15;
+    margin-top: -40px;
+}
+.bonfire-pageloader-fade {
+	opacity:0 !important;
+	-webkit-transition: all .75s ease;
+	-moz-transition: all .75s ease;
+	-o-transition: all .75s ease;
+	-ms-transition: all .75s ease;
+	transition: all .75s ease;
+}
+.bonfire-pageloader-hide {
+	display:none;
+}
+.bonfire-pageloader-icon {
+	width:60px;
+	height:60px;
+	position:absolute;
+	margin:100px 0 0 0;
+	opacity:1;
+	top:0;
+}
+.bonfire-pageloader-icon-hide {
+	opacity:0 !important;
+	
+	-webkit-transition: all .25s ease;
+	-moz-transition: all .25s ease;
+	-o-transition: all .25s ease;
+	-ms-transition: all .25s ease;
+	transition: all .25s ease;
+}
+#bonfire-pageloader svg {
+    -webkit-animation:spin 2s linear infinite;
+    -moz-animation:spin 2s linear infinite;
+    animation:spin 2s linear infinite;
+	width:60px;
+	height:60px;
+}
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(-360deg); } }
+@-moz-keyframes spin { 100% { -moz-transform: rotate(-360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(-360deg); transform:rotate(-360deg); } }

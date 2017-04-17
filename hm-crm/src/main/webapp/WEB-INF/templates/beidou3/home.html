@@ -1,0 +1,651 @@
+<#assign pageName ="home" /> 
+<#include "/beidou3/common/head.html" />
+<link rel="stylesheet" href="../static/beidou3/css/home.css" />
+<link rel="stylesheet" href="../static/beidou3/css/detail_box.css" />
+<link rel="stylesheet" href="../static/beidou3/css/bigdata.css" />
+<div class="info_main_box">
+		<section class="main_section">
+			<div class="clearfix" style="width:100%;margin:auto;padding:10px 5%;background-color: #fff;">
+				<div id="search_form" class="width-col-10 fl" style="padding:10px 0px;">
+					<div class="group_form fl" style="margin-bottom:10px;">
+						<div class="group_list fl" style="width:120px;">
+							<div class="kb-table-form clearfix">
+								<div class="kb-row" style="float:left;width:100%;margin-right:2%;">
+									<div class="kb-item-select custom-class-select" data-active="${timeTypeNum}">
+										<div class="kb-rel kb-flex-auto-100">
+											<div class="kb-select">录入时间</div>
+											<div class="kb-select-scroll">
+												<div class="kb-overflow-y">
+													<ul>
+														<li onclick="selectTimeTo('create')" data-title="录入时间">录入时间</li><!-- create -->
+														<li onclick="selectTimeTo('receive')" data-title="领单时间">领单时间</li><!-- receive -->
+														<li onclick="selectTimeTo('update');" data-title="跟进时间">跟进时间</li><!-- update -->
+														<li onclick="selectTimeTo('appoint');" data-title="预约时间">预约时间</li><!-- appoint -->
+														<li onclick="selectTimeTo('comeshop');" data-title="首次入店">首次入店</li><!-- comeshop -->
+														<li onclick="selectTimeTo('actual')" data-title="最后入店">最后入店</li><!-- actual -->
+														<li onclick="selectTimeTo('marry');" data-title="婚期时间">婚期时间</li><!-- marry -->
+														<li onclick="selectTimeTo('success');" data-title="成交时间">成交时间</li><!-- success -->
+														<li onclick="selectTimeTo('trace')" data-title="追踪时间">追踪时间</li><!-- trace -->
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="group_list fl borderA borArad6" style="width:120px;">
+							<input id="start_time" type="text" class="secDate" value="${now}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" style="width: calc(100% - 12px);"/><i class="fa fa-calendar"></i>
+						</div>
+						<span style="padding:0px 6px;line-height: 26px;font-size: 17px;" class="fl">-</span>
+						<div class="group_list fl mR10 borderA borArad6" style="width:120px;">
+							<input id="end_time" type="text" class="secDate" value="${now}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" style="width: calc(100% - 12px);"/><i class="fa fa-calendar"></i>
+						</div>
+						<div class="group_list fl" style="width:82px;" onmouseleave="leaveSearchSelect()">
+							<input style="width:calc(100% - 25px);" id="search_btn" onclick="doSearch();" type="text" class="borTLrad6 borBLrad6 cursorP searchbtn" value="搜索" readonly="readonly" /><span class="borTRrad6 borBRrad6 borderA search_r_select cursorP" onmouseover="showSearchSelect()">
+								<i class="fa fa-filter"></i>
+							</span>
+							<div class="select_head_select search_box_select hide" style="top: 95px;position: absolute;width: 72px;">
+									<div class="tooltipster-base gd-tooltip-light gd-tooltip-menu-over tooltipster-fade tooltipster-fade-show" style="pointer-events: auto; transition-duration: 10ms; animation-duration: 10ms;">
+										<div class="tooltipster-content">
+											<div class="top-settings-content">
+											  <ul class="links">
+										  	 	<li style="margin-top:0px;margin-bottom:0px;" onclick="getTimeData('4')">今日</li>
+											    <li class="separator" style="margin:0px;"></li>
+										     	<li onclick="getTimeData('5')">昨日</li>
+											    <li class="separator" style="margin:0px;"></li>
+											    <li onclick="getTimeData('0')">本周</li>
+											    <li class="separator" style="margin:0px;"></li>
+											    <li onclick="getTimeData('1')">上周</li>
+											    <li class="separator" style="margin:0px;"></li>
+											    <li onclick="getTimeData('2')">本月</li>
+											    <li class="separator" style="margin:0px;"></li>
+											    <li onclick="getTimeData('3')">上月</li>
+											  </ul>
+											</div>
+										</div>
+										<div class="tooltipster-arrow-bottom-right tooltipster-arrow" style="">
+											<span class="tooltipster-arrow-border" style="margin-top: -1px; border-color: rgb(195, 201, 208);;"></span>
+											<span style="border-color:rgb(255, 255, 255);"></span>
+										</div>
+									</div>
+								</div>
+						</div>
+					</div>
+					<div class="group_form group_form_add fl width-col-24 clearfix">
+						<div class="group_list fl" style="width:120px;">
+							<div class="kb-table-form clearfix">
+								<div class="kb-row" style="float:left;width:100%;margin-right:2%;">
+									<div class="kb-item-select addgroup-class-select" data-active="5">
+										<div class="kb-rel kb-flex-auto-100">
+											<div class="kb-select">更多选项</div>
+											<div class="kb-select-scroll">
+												<div class="kb-overflow-y">
+													<ul>
+														<li onclick="" data-title="更多选项">更多选项</li>
+														<li onclick="alert('更多选项')" data-title="更多选项">更多选项</li>
+														<li onclick="alert('更多选项')" data-title="更多选项">更多选项</li>
+														<li onclick="alert('更多选项')" data-title="更多选项">更多选项</li>
+														<li onclick="alert('更多选项')" data-title="更多选项">更多选项</li>
+														<li onclick="" data-title="更多选项">更多选项</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div> 
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="width-col-4 borderL borderR fl" style="padding:10px 0px;">
+					<div class="group_form width-col-20" style="margin:auto;">
+						<div class="group_list width-col-20" style="margin:auto;margin-bottom:10px;">
+							<div class="kb-table-form clearfix">
+								<div class="kb-row" style="float:left;width:100%;margin-right:2%;">
+									<div class="kb-item-select source-class-select">
+										<div class="kb-rel kb-flex-auto-100">
+											<div class="kb-select source_checkbox" onclick="showAllSource()">全部渠道</div>
+											<span class="kb-icon-arrow-down source_checkbox_icon" style="opacity: 1; visibility: visible; transform: rotate(0deg);line-height: 24px;"></span>
+											<div class="allsource">
+												<div class="kb-overflow-y">
+													<div class="more_select_box">
+														
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="group_list width-col-20" style="margin:auto;margin-bottom:10px;">
+							<div class="kb-table-form clearfix">
+								<div class="kb-row" style="float:left;width:100%;margin-right:2%;">
+									<div class="kb-item-select tgry-class-select" data-active="5">
+										<div class="kb-rel kb-flex-auto-100" style="z-index:10000;">
+											<div class="kb-select staff_checkbox" onclick="showAllStaff()" id="staff_show">全部人员</div>
+											<span class="kb-icon-arrow-down staff_checkbox_icon" style="opacity: 1; visibility: visible; transform: rotate(0deg);line-height: 24px;"></span>
+											<div class="allstaff">
+												<div class="kb-overflow-y">
+													<div class="more_select_box">
+														
+													</div>
+												</div>
+											</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+				</div>
+				<div class="width-col-10 fl" style="padding:10px 0px 10px 15px;">
+					<div class="operate_right clearfix">
+						<ul>
+							<li>
+								<div class="operate_box cursorP hover-23C0FA" onclick="addNewkz()">
+									<span><i class="fa fa-plus"></i><div>录入</div></span>
+								</div>
+							</li>
+							<li>
+								<div class="operate_box cursorP hover-23C0FA" <#if (pageMap["P53"]?if_exists)> onclick="deleteCheckBox()"<#else> onclick="layer.msg('权限不足')" style="color: #ccc;border-color:#ccc;" </#if>>
+									<span><i class="fa fa-times"></i><div>删除</div></span>
+								</div>
+							</li>
+							<li>
+								<div class="operate_box cursorP hover-23C0FA" <#if (pageMap["P76"]?if_exists)> onclick="showMixKz()"<#else> onclick="layer.msg('权限不足')" style="color: #ccc;border-color:#ccc;" </#if>>
+									<span><i class="fa fa-retweet"></i><div>转移</div></span>
+								</div>
+							</li>
+							<li>
+								<div class="operate_box cursorP hover-23C0FA" <#if (pageMap["P54"]?if_exists)> onclick="exportInfoList()"<#else> onclick="layer.msg('权限不足')" style="color: #ccc;border-color:#ccc;" </#if>>
+									<span><i class="fa fa-sign-out"></i><div>导出</div></span>
+								</div>
+							</li>
+							<li>
+								<div class="operate_box cursorP hover-23C0FA" onclick="importInfoList()" style="color: #ccc;border-color:#ccc;">
+									<span><i class="fa fa-sign-in"></i><div>导入</div></span>
+								</div>
+							</li>
+							<li>
+								<div class="operate_box cursorP hover-23C0FA" onclick="messCheckBox()" style="color: #ccc;border-color:#ccc;">
+									<span><i class="fa fa-comment"></i><div>短信</div></span>
+								</div>
+							</li>
+							<li>
+								<div class="operate_box cursorP hover-23C0FA" onclick="window.location.reload();">
+									<span><i class="fa fa-refresh"></i><div>刷新</div></span>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div id="cont_data" class="borderT" style="overflow: hidden;">
+				<div id="table_tab">
+					<ul class="table_tab_ul">
+						<li class="table_active" onclick="getClientInfo('all','0');">所有客资<span id="all_num"></span></li>
+						<li onclick="getClientInfo('new','1');">新客资<span id="new_num"></span></li>
+						<li onclick="getClientInfo('trace','2');">待跟踪<span id="trace_num"></span></li>
+						<li onclick="getClientInfo('order','3');">已预约<span id="order_num"></span></li>
+						<li onclick="getClientInfo('come','4');">已进店<span id="come_num"></span></li>
+						<li onclick="getClientInfo('success','5');">已订单<span id="success_num"></span></li>
+						<li onclick="getClientInfo('invalid','6');">无效<span id="invalid_num"></span></li>
+					</ul>
+				</div>
+				<div class="table_block borderT borderL borderR" id="data_table_head" onscroll="document.getElementById('data_table').scrollLeft = this.scrollLeft;" style="overflow: auto;z-index: 2;">
+                  	 <table class="conte_table_all conte_table" style="display:block;">
+                  	 	<thead id="data_head_all">
+							${title_all}
+						</thead>
+                  	 </table>
+                  	 <table class="conte_table conte_table_new hide" style="display:block;">
+                  	 	<thead id="data_head_new">
+							${title_new}
+						</thead>
+                  	 </table>
+                  	 <table class="conte_table  conte_table_trace hide" style="display:block;">
+                  	 	<thead id="data_head_trace">
+							${title_trace}
+						</thead>
+                  	 </table>
+                  	 <table class="conte_table  conte_table_order hide" style="display:block;">
+                  	 	<thead id="data_head_order">
+							${title_order}
+						</thead>
+                  	 </table>
+                  	 <table class="conte_table  conte_table_come hide" style="display:block;">
+                  	 	<thead id="data_head">
+							${title_come}
+						</thead>
+                  	 </table>
+                  	 <table class="conte_table  conte_table_success hide" style="display:block;">
+                  	 	<thead id="data_head_success">
+							${title_success}
+						</thead>
+                  	 </table>
+                  	 <table class="conte_table conte_table_invalid hide" style="display:block;">
+                  	 	<thead id="data_head_invalid">
+							${title_invalid}
+						</thead>
+                  	 </table>
+                </div>
+				<div id="data_table" class="borderB borderL borderR" style="overflow: auto;" onscroll="document.getElementById('data_table_head').scrollLeft = this.scrollLeft;">
+					<table class="table_border conte_table conte_table_all" id="sample1">
+						<!-- <thead id="data_head_all">
+							${title_all}
+						</thead> -->
+						<tbody id="data_content_all">
+						</tbody>
+					</table>
+					<table class="table_border conte_table  conte_table_new hide" id="sample2">
+						<!-- <thead id="data_head_new">
+							${title_new}
+						</thead> -->
+						<tbody id="data_content_new">
+						</tbody>
+					</table>
+					<table class="table_border conte_table  conte_table_trace hide" id="sample3">
+						<!-- <thead id="data_head_trace">
+							${title_trace}
+						</thead> -->
+						<tbody id="data_content_trace">
+						</tbody>
+					</table>
+					<table class="table_border conte_table  conte_table_order hide" id="sample4">
+						<!-- <thead id="data_head_order">
+							${title_order}
+						</thead> -->
+						<tbody id="data_content_order">
+						</tbody>
+					</table>
+					<table class="table_border conte_table  conte_table_come hide" id="sample5">
+						<!-- <thead id="data_head">
+							${title_come}
+						</thead> -->
+						<tbody id="data_content_come">
+						</tbody>
+					</table>
+					<table class="table_border conte_table  conte_table_success hide" id="sample6">
+						<!-- <thead id="data_head_success">
+							${title_success}
+						</thead> -->
+						<tbody id="data_content_success">
+						</tbody>
+					</table>
+					<table class="table_border conte_table conte_table_invalid hide" id="sample7">
+						<!-- <thead id="data_head_invalid">
+							${title_invalid}
+						</thead> -->
+						<tbody id="data_content_invalid">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</section>
+		<div>
+			<ul class="ant-pagination ant-table-pagination clearfix" unselectable="unselectable" style="margin-left:5%; display: inline-block;width:auto;padding-right:10px;">
+					<span class="ant-pagination-total-text">共<span class="totalpage">0</span>页<span class="totalcount">0</span>条，当前第
+					<span class="curentpage" id="current_page">1</span>页<span class="changepage">
+					<a class="cursorP" id="lastpage" onclick="toLastPage('0')">上一页</a>
+					<a class="cursorP" id="nextpage" onclick="toLastPage('1')">下一页</a>
+					</span>
+					</span>
+					<div class="ant-pagination-options">
+						<span class="ant-pagination-options-size-changer ant-select ant-select-enabled">
+							<span class="ant-select-selection ant-select-selection--single" role="combobox" aria-autocomplete="list" aria-haspopup="true" aria-expanded="false" tabindex="0">
+							 <select id="page_size" class="ant-select-selection__rendered" onchange="doSearch();">
+									<option value="25" selected="selected">25条/页</option>
+									<option value="50">50条/页</option>
+									<option value="100">100条/页</option>
+									<option value="150">150条/页</option>
+									<option value="200">200条/页</option>
+							</select>
+						</span>
+						</span>
+						<div class="ant-pagination-options-quick-jumper">
+						 	<span style="padding-left:10px;">跳至</span>
+							<input id="page_no_go" type="text" name="page_no_go" value="1" style="top: -2px;" onkeydown="pageNoKeyDown()"/>
+						  	<span>页</span>
+							<input id="go" type="button" value="GO" class="go_to_pages" onclick="toLastPage('2')" />
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				</ul>
+		</div>
+		<div class="bgfff_shadow hide"></div>
+		<div class="bgff_reload"></div>
+		<div id="add_news" class="addnew_box hide">
+			<div class="add_news_head clearfix pL10 pR10">
+				<span class="add_news_htitle">录入客资</span><span class="add_news_head_r"><span onclick="closeAddNew()">&times;</span></span>
+			</div>
+			<div class="box_main mT15">
+				<div class="box_head clearfix borderB">
+					<div class="box_tab fl width-col-12 clearfix">
+						<ul>
+							<li class="tab_active tab_nav_head tab_nav_l border_to borderL textC width-col-6 fl">推广客资</li>
+							<li class="tab_nav_head textC tab_nav_c border_to borderL width-col-6 fl">转介绍客资</li>
+							<li class="tab_nav_head textC tab_nav_c border_to borderL width-col-6 fl">门店客资</li>
+							<li class="tab_nav_head textC tab_nav_r border_to borderL borderR width-col-6 fl">批量导入</li>
+						</ul>
+					</div>
+				</div>
+				<div class="tgqd_yykf_zjstb_mdms_cwsy_box tgqd_box box_site_btn fontS13 tgqd_box" style="padding: 0px 15px;">
+					<div class="btn_sit_first mT10 height24 clearfix">
+						<div class="borderL border_to borderB borTLrad6 borBLrad6 width-col-5 pL10 fl" style="text-align:left;">
+							<input value="" id="add_name" type="text" style="width:calc(100% - 50px);" placeholder="姓名"/>
+							<span onclick="showSexSelect()" class="user_sex cursorP" style="position: absolute;padding:0px 4px;">
+								<span class="sex_icon_into">
+									<i class="user_sex_icon fa fa-question icon_sex icon_sex_no" style="text-align: center;"></i>
+								</span>
+								<i class="fa fa-sort-desc"></i>
+								<div class="sex_all_box hide" style="position: absolute;">
+									<div class="tooltipster-base gd-tooltip-light gd-tooltip-menu-over tooltipster-fade tooltipster-fade-show" style="pointer-events: auto; transition-duration: 10ms; animation-duration: 10ms;">
+										<div class="tooltipster-content">
+											  <div class="top-settings-content">
+											  <ul class="links">
+											     <li onclick="toSelectSex('0')">
+											    	<i class="fa fa-male icon_sex icon_sex_male" style="text-align: center;"></i>
+												</li>
+												<li class="separator"></li>
+											    <li style="margin-top:5px;margin-bottom:0px;" onclick="toSelectSex('1')">
+											    	<i class="fa fa-female icon_sex icon_sex_female" style="text-align: center;"></i>
+											    </li>
+											     <li class="separator"></li>
+											    <li onclick="toSelectSex('9')">
+											    	<i class="fa fa-question icon_sex icon_sex_no" style="text-align: center;"></i>
+											    </li>
+											  </ul>
+											</div>
+										</div>
+										<div class="tooltipster-arrow-bottom-right tooltipster-arrow" style="">
+											<span class="tooltipster-arrow-border" style="margin-top: -1px; border-color: rgb(195, 201, 208);;"></span>
+											<span style="border-color:rgb(255, 255, 255);"></span>
+										</div>
+									</div>
+								</div>
+							</span>
+						</div>
+						<div class="borderL border_to borderB width-col-6 fl">
+							<input value="" id="add_phone" type="text" style="width:calc(100% - 40px);" placeholder="电话" onblur="phoneChange();"/>
+							<i class="fa fa-phone icon_fa"></i>
+						</div>
+						<div class="borderL border_to borderB width-col-6 fl">
+							<input value="" id="add_wechat" type="text" style="width:calc(100% - 40px);" placeholder="微信"/>
+							<i class="fa fa-wechat" style="color: #00CC00;"></i>
+						</div>
+						<div class="borderL border_to borderB borderR borBRrad6 borTRrad6 width-col-6 fl">
+							<input value="" id="add_qq" type="text" style="width:calc(100% - 40px);" placeholder="QQ"/>
+							<i class="icon_fa fa fa-qq"></i>
+						</div>
+					</div>
+					<div class="btn_sit_first mT10 height24 clearfix">
+						<div class="borderL border_to borderB borTLrad6 borBLrad6 width-col-4 fl"><span class="pR10">信息来源</span></div>
+						<div class="borderL border_to borderB width-col-5 fl">
+							<select class="height22" id="add_source_id">
+								<#list sources_ds_my as srcds>
+	                            <option value="${srcds.srcId}">${srcds.srcName}</option>
+	                            </#list>
+							</select>
+						</div>
+						<div class="borderL border_to borderB width-col-4 fl">
+							<select class="height22" id="add_zx_style">
+								<option value="对话咨询">对话咨询</option>
+								<option value="报名咨询">报名咨询</option>
+							</select>
+						</div>
+						<div class="borderL border_to borderB width-col-4 fl">
+							<select class="height22" id="add_collector_id">
+								<option value="${staff.id}">${staff.name}</option>
+							</select>
+						</div>
+						<div class="borderL border_to borderB width-col-6 borderR borTRrad6 borBRrad6 fl">
+							<span style="color:#ccc;" id="now_time">&nbsp;</span>
+						</div>
+					</div>
+					<div class="btn_sit_first mT10 height24 clearfix">
+						<div class="borderL border_to borderB borTLrad6 borBLrad6 width-col-4 fl"><span class="pR10">广告着陆页</span></div>
+						<div class="borderL border_to borderB width-col-13 fl">
+							<i class="fa fa-paper-plane-o icon_fa" style="padding-right: 10px;"></i>
+							<input value="" id="add_ad_address" type="text" style="width:calc(100% - 60px);" placeholder=""/>
+						</div>
+						<div class="borderL border_to borderB width-col-6 borderR borTRrad6 borBRrad6 fl">
+							<input value="" id="add_ad_id" type="text" style="width:calc(100% - 20px);" placeholder="广告ID"/>
+						</div>
+					</div>
+					<div class="btn_sit_first mT10 height24 clearfix">
+						<div class="borderL border_to borderB borTLrad6 borBLrad6 width-col-4 fl">咨询
+							<select class="height22" id="add_type_id">
+								<option value="0"> 婚纱照</option>
+								<option value="1"> 写真</option>
+								<option value="2"> 全家福</option>
+								<option value="3"> 儿童</option>
+							</select>
+						</div>
+						<div class="borderL border_to borderB width-col-4 fl">意向：
+							<select class="height22" id="add_yx_lavel">
+								<option value="A+"> A+</option>
+								<option value="A-"> A-</option>
+								<option value="A"> A</option>
+								<option value="B+">B+</option>
+								<option value="B-"> B-</option>
+								<option value="B">B</option>
+							</select>
+						</div>
+						<div class="borderL border_to borderB width-col-5 fl">预算：
+							<select class="height22" id="add_ys_range">
+								<option value=""></option>
+								<option value="3~5K"> 3~5K</option>
+								<option value="5~6K"> 5~6K</option>
+								<option value="6~8K"> 6~8K</option>
+								<option value="8~10K"> 8~10K</option>
+								<option value="10K+"> 10K+</option>
+							</select>
+						</div>
+						<div class="borderL border_to borderB width-col-5 fl">婚期：
+							<input value="" id="add_marry_memo" type="text" style="width:calc(100% - 60px);" placeholder=""/>
+						</div>
+						<div class="borderL border_to borderB width-col-5 borderR borTRrad6 borBRrad6 fl">预拍：
+							<input value="" id="add_yp_memo" type="text" style="width:calc(100% - 60px);" placeholder=""/>
+						</div>
+					</div>
+					<div id="add_new_select_address" class="btn_sit_first mT10 height24 clearfix">
+						<div class="borderL border_to borderB borTLrad6 borBLrad6 width-col-5 fl">
+							<span style="padding-left:2%;">地址：</span>
+							<select class="prov" style="width: calc(100% - 50px);" id="info_address_prov"></select> 
+						</div>
+						<div class="borderL border_to borderB width-col-5 fl">
+							<select class="city height22" disabled="disabled" style="width: 100%;" id="info_address_city"></select>
+						</div>
+						<div class="borderL border_to borderB width-col-5 height26 fl" style="height:26px;">
+							<select class="dist height22" disabled="disabled" style="width: 100%;" id="info_address_dist"></select>
+						</div>
+						<div class="borderL border_to borderB width-col-8 borderR borTRrad6 borBRrad6 fl">
+							<span style="padding-left:6%;">详细地址：</span>
+							<input value="" type="text" style="width:calc(100% - 100px);" id="info_address_detail"/>
+						</div>
+					</div>
+					<div class="decri clearfix mT10 borderA">
+						<div class="de_left fl borderR textC" style="width:66px;background:#F9F9F9;height:225px;padding-top:20px;">
+							推广备注
+						</div>
+						<div class="de_right width-col-20 fl" style="width:calc(100% - 107px);padding:20px;">
+							<textarea style="height:180px;width:100%;" id="add_remark"></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="floor_btn" style="margin-top:66px;">
+				<div class="group_form textC">
+					<div class="group_list width-col-3" style="display:inline-block;">
+						<input id="add_sex" type="hidden" />
+						<input id="search_btn" type="button" class="cursorP" style="padding:0px;width:70px;border-radius: 6px;" value="保存" onclick="doAddInfo('ds');">
+					</div>
+					<div class="group_list width-col-3" style="display:inline-block;">
+						<input id="search_btn" type="button" class="cursorP" style="padding:0px;width:70px;border-radius: 6px;" value="录了下一个">
+					</div>
+					<div class="group_list width-col-3" style="display:inline-block;">
+						<input id="close_wind" class="textC cursorP" onclick="closeAddNew()" type="button" style="border:1px #ccc solid;border-radius: 6px;padding:0px;width:70px;" value="关闭">
+					</div>
+				</div>
+			</div>
+			</div>
+			
+			<div id="remove_kz" class="remove_box hide">
+				<div class="add_news_head clearfix pL10 pR10">
+					<span class="add_news_htitle">转移客资</span><span class="add_news_head_r"><span onclick="closeMixKz()">&times;</span></span>
+				</div>
+				<div class="box_main mT15">
+					<div class="tgqd_yykf_zjstb_mdms_cwsy_box tgqd_box box_site_btn fontS13 tgqd_box" style="padding: 0px 15px;">
+						<div class="btn_sit_first mT10 height24 clearfix">
+							<label style="float:left;">转移至：</label>
+							<div class="borderL borderA fl" style="border-radius: 6px;width:calc(100% - 60px);">
+								<select class="height22 width-col-18" id="remove_to_id">
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="group_form textC mT30">
+					<div class="group_list width-col-6" style="display:inline-block;">
+						<input id="add_sex" type="hidden" />
+						<input id="search_btn" type="button" class="cursorP" style="padding:0px;width:70px;border-radius: 6px;" value="确定" onclick="mixClients();">
+					</div>
+					<div class="group_list width-col-6" style="display:inline-block;">
+						<input id="close_wind" class="textC cursorP" onclick="closeMixKz()" type="button" style="border:1px #ccc solid;border-radius: 6px;padding:0px;width:70px;" value="取消">
+					</div>
+				</div>
+			</div>
+</div>
+<div class="bigdata hide"><!-- 大数据 -->
+	<section class="head_main" id="head_main">
+    	<div class="smhead">
+	            	<div class="row table_pro">
+	                    <div id="bigdata_head_nav" class="main_nav clearfix" style="position: relative;left: 200px;top: 10px;">
+	                    	<div class="ant-tabs-ink-bar ant-tabs-ink-bar-transition-backward"></div>
+	                        <div class="fl" style="width: 160px;">
+	                            <a href="javascript:void(0);"><h3 class="nav_on nav_dstg nav_first_tab" onclick="showNewsTab('nav_dstg','nav_dsqd')" style="text-align:center;">电商推广大数据</h3></a>
+	                        </div>
+	                        <div class="fl" style="width: 160px;">
+	                            <a href="javascript:void(0);"><h3 class="nav_dsqd nav_third_tab" onclick="showNewsTab('nav_dsqd','nav_dstg')" style="text-align:center;">无效客资分析</h3></a>
+	                        </div>
+	                        <div class="fl hide zjsyy_nav_box" style="width: 160px;">
+	                            <a href="javascript:void(0);"><h3 class="nav_zjsyy nav_sec_tab" onclick="showNewsTab('nav_zjsyy','nav_dsqd','reloadZjsYyBigData')" style="text-align:center;">转介绍邀约大数据</h3></a>
+	                        </div>
+	                        
+	                    </div>
+	                    <div class="update_time">本次数据更新于：02-16 11:28:01</div>
+	                </div>
+	            </div>
+	            <div class="search" style="width:auto;">
+                    	<div onclick="showSourceCheck()" class="check_source hide" style="position: fixed;"></div>
+                        <form class="clearfix" style="background: #fff;">
+						   <div class="form-group time_input" style="width: 380px;">
+                                <div class="fl" style="line-height: 24px;"> 时间：</div>
+                                <div class="group_list fl borderA borArad6 cursorP" style='padding-right: 8px;'>
+									<input id="bigdata_start_time" type="text" class="secDate" value="${now}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" style="width:90px;"/><i class="fa fa-calendar"></i>
+								</div>
+									<span style="padding:0px 6px;line-height: 26px;font-size: 17px;" class="fl">-</span>
+								<div class="group_list fl mR10 borderA borArad6 cursorP" style='padding-right: 8px;'>
+									<input id="bigdata_end_time" type="text" class="secDate" value="${now}" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" style="width:90px;"/><i class="fa fa-calendar"></i>
+								</div>
+                            </div>
+                            <!-- <div class="form-group time_input source_bigdata_box" style="width: 190px;">
+	                            	<input type="hidden" value="" class="source_hide"/>
+	                                <div class="fl" style="line-height: 24px;"> 渠道：</div>
+	                                <div class="group_list fl" style="width: 70%;">
+	                                	<div id="sourceckeck" onclick="showSourceCheck()">
+	                                	<span class="allsource" title="0">全部渠道</span></div>
+	                                	<div class="source_block hide" style=";margin-top:0px;">
+	                                		<div class="source_check_bigdata">
+		                                		<#list sources_ds as source>
+		                                			<div class="source_check clearfix">
+			                                			<input class="sourcebox${source.srcId} checkboxone" onclick="checkSource('${source.srcId}')" style="width: 16px;top:3px;position: relative;" type="checkbox" value="2" checked title="${source.srcName}"/>
+			                                			<span class="source_name">${source.srcName}</span>
+		                                			</div>
+		                                		</#list>
+	                                		</div>
+	                                	</div>
+	                                </div>
+	                            </div> -->
+                            <div class="group_list" style="width:120px;float:left;">
+								<div class="kb-table-form clearfix">
+									<div class="kb-row" style="float:left;width:100%;margin-right:2%;">
+										<div class="kb-item-select data-source-class-select">
+											<div class="kb-rel kb-flex-auto-100">
+												<div class="kb-select data_source_checkbox" onclick="showDataAllSource()">全部渠道</div>
+												<span class="kb-icon-arrow-down data_source_checkbox_icon" style="display: inline-block;position: absolute;right: 6px;top: 3px;opacity: 1; visibility: visible; transform: rotate(0deg); line-height: 24px;"></span>
+												<div class="data_allsource" style="visibility: hidden; opacity: 0;">
+													<div class="kb-overflow-y">
+														<div class="data_more_select_box"></div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+                            <div style="float: left;padding:0px;margin-left:20px;">
+	                             <div class="form-group btn" style="padding:0px;">
+	                                    <div class="disinlblo" style="margin-right: 20px">
+	                                        <input type="button" class="search_cer form-control" onclick="reloadDsTgBigData('ds','0')" value="搜索" />
+	                                    </div>
+	                                    <!-- <div class="disinlblo" style="padding-right:0px;">
+	                                        <input type="button" class="form-control search_clear " value="清空" onclick="clear_search_keys();"/>
+	                                    </div> -->
+	                             </div>
+                             </div>
+                            <div class="form-group time_input" style="float:left;">
+                                <div class="disinlblo btn">
+                                    <input type="button" class="search_cer form-control last_m" onclick="reloadDsTgBigData('ds','1')" value="上月" />
+                                </div>
+                                <div class="disinlblo btn" style="padding-top:0px;">
+                                    <input type="button" class="search_cer form-control last_w" onclick="reloadDsTgBigData('ds','2')" value="上周" />
+                                </div>
+                                <div class="disinlblo btn" style="padding-top:0px;">
+                                    <input type="button" class="search_cer form-control yestoday" onclick="reloadDsTgBigData('ds','3')" value="昨日" />
+                                </div>
+                                <div class="disinlblo btn" style="padding-top:0px;">
+                                    <input type="button" class="search_cer form-control today" onclick="reloadDsTgBigData('ds','4')" value="今日" />
+                                </div>
+                                <div class="disinlblo btn" style="padding-top:0px;">
+                                    <input type="button" class="search_cer form-control this_w" onclick="reloadDsTgBigData('ds','5')" value="本周" />
+                                </div>
+                                <div class="disinlblo btn" style="padding-top:0px;">
+                                    <input type="button" class="search_cer form-control this_m" onclick="reloadDsTgBigData('ds','6')" value="本月" />
+                                </div>
+                            </div>
+                        </form>
+                        <div class="table_block" id="table_head" onscroll="document.getElementById('table_body').scrollLeft = this.scrollLeft;">
+                       		<table class="right_table table-kz table-kz-thead"></table>
+                       </div>
+                    </div>
+    	</section>
+         <section class="info_mian" id="table_body" onscroll="document.getElementById('table_head').scrollLeft = this.scrollLeft;">
+            <div class="container">
+                <div class="table_block">
+                    <table class="right_table table-kz table-kz-tbody table_main" border="0" cellspacing="0" cellpadding="0"></table>
+                </div>
+            </div>
+        </section>
+        <div class="clearfix"></div>
+        <script type="text/javascript" src="../static/beidou3/js/common/showStatusCheck.js"></script>
+        <script type="text/javascript" src="../static/beidou3/js/common/changedatetime.js"></script>
+</div>
+		<script type="text/javascript" src="../static/beidou3/js/home/home.js"></script>
+		<script type="text/javascript" src="../static/beidou3/js/home/bigdata.js"></script>
+		<script type="text/javascript" src="../static/beidou3/js/home/clientInfo.js"></script>
+		<script type="text/javascript" src="../static/beidou3/js/plugin/jQueryAddress/jquery.cityselect.js"></script>
+		<script type="text/javascript">
+		$("#add_new_select_address").citySelect({
+			nodata:"none",
+			required:false
+	    });
+		</script>
+		<input type="hidden" value="create" id="time_select" />
+		<input type="hidden" value="all" id="class_type" />
+		<input type="hidden" value="" id="staffids" />
+		<div class="data_bgfff_shadow hide"></div>
+	</body>
+</html>

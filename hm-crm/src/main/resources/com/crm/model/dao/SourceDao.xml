@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.model.dao.SourceDao">
+	<resultMap id="Source" type="com.crm.model.Source">
+		<id column="SRCID" jdbcType="INTEGER" property="srcId" />
+		<result column="SRCNAME" jdbcType="VARCHAR" property="srcName" />
+		<result column="TYPEID" jdbcType="INTEGER" property="typeId" />
+		<result column="TYPENAME" jdbcType="VARCHAR" property="typeName" />
+		<result column="CREATETIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="CREATEIP" jdbcType="VARCHAR" property="createIp" />
+		<result column="CREATORID" jdbcType="INTEGER" property="creatorId" />
+		<result column="CREATERNAME" jdbcType="VARCHAR" property="createrName" />
+		<result column="COMPANYID" jdbcType="INTEGER" property="companyId" />
+		<result column="COMPANYNAME" jdbcType="VARCHAR" property="companyName" />
+		<result column="ISSHOW" jdbcType="BOOLEAN" property="isShow" />
+		<result column="PRIORITY" jdbcType="INTEGER" property="priority" />
+		<result column="PUSHSORT" jdbcType="INTEGER" property="pushSort" />
+	</resultMap>
+	
+	<resultMap id="Staff" type="com.crm.model.Staff">
+	    <id column="id" jdbcType="BIGINT" property="id" />
+	    <result column="company_id" jdbcType="VARCHAR" property="companyId" />
+	    <result column="name" jdbcType="VARCHAR" property="name" />
+	    <result column="phone" jdbcType="VARCHAR" property="phone" />
+	    <result column="role" jdbcType="INTEGER" property="role" />
+	    <result column="username" jdbcType="VARCHAR" property="username" />
+	    <result column="password" jdbcType="VARCHAR" property="password" />
+	    <result column="corpid" jdbcType="VARCHAR" property="corpId" />
+	    <result column="created" jdbcType="INTEGER" property="created" />
+	    <result column="updated" jdbcType="INTEGER" property="updated" />
+	    <result column="deptId" jdbcType="VARCHAR" property="deptId" />
+	    <result column="department" jdbcType="VARCHAR" property="department" />
+	    <result column="merchant_pid" jdbcType="VARCHAR" property="merchant_pid" />
+	    <result column="isshow" jdbcType="INTEGER" property="isshow" />
+	    <result column="islock" jdbcType="INTEGER" property="islock" />
+	    <result column="isdel" jdbcType="INTEGER" property="isdel" />
+	</resultMap>
+	
+	
+	<!-- 新建渠道 -->
+	<insert id="createSource" parameterType="com.crm.model.Source"
+		useGeneratedKeys="true" keyProperty="srcId">
+		INSERT INTO hm_crm_source
+		(
+		SRCNAME, TYPEID, CREATETIME, CREATEIP, CREATORID, COMPANYID, ISSHOW)
+		VALUES
+		(#{srcName}, #{typeId}, #{createTime}, #{createIp},#{creatorId},
+		#{companyId}, #{isShow} )
+	</insert>
+
+	<!-- 根据ID更新渠道信息 -->
+	<update id="updateSource" parameterType="com.crm.model.Source">
+		UPDATE hm_crm_source
+		<set>
+			<if test="srcName != null">
+				SRCNAME = #{srcName},
+			</if>
+			<if test="typeId != null">
+				TYPEID = #{typeId},
+			</if>
+			<if test="creatorId != null">
+				CREATORID = #{creatorId},
+			</if>
+			<if test="isShow != null">
+				ISSHOW = #{isShow},
+			</if>
+		</set>
+		WHERE SRCID = #{srcId} AND COMPANYID = #{companyId};
+	</update>
+	
+	
+
+	<!-- 职员获取其关联的渠道集合 -->
+	<select id="getSourceListByStaff" parameterType="com.crm.model.Staff"
+		resultMap="Source">
+		SELECT 
+			src.SRCID, src.SRCNAME, src.TYPEID, tp.TYPENAME
+		FROM
+			hm_crm_staff_source_rela rela
+		LEFT JOIN 
+			hm_crm_source src ON rela.SOURCEID = src.SRCID
+		LEFT JOIN 
+			hm_crm_source_type tp ON src.TYPEID = tp.TYPEID
+		WHERE
+			rela.RELATYPE = #{srcRelaType}
+		AND 
+			rela.STAFFID = #{id}
+		AND rela.COMPANYID = #{companyId}
+		AND src.COMPANYID = #{companyId}
+		AND tp.COMPANYID = #{companyId}
+		AND src.ISSHOW = 1
+		AND tp.ISSHOW = 1
+		ORDER BY src.PRIORITY ASC ;
+	</select>
+	
+	<!-- 采集员获取期拥有的指定渠道类型的渠道集合 -->
+	<select id="getSrcListBySrcTypeStaffCj" parameterType="com.crm.model.Staff"
+		resultMap="Source">
+		SELECT 
+			src.SRCID, src.SRCNAME, src.TYPEID, tp.TYPENAME
+		FROM
+			hm_crm_staff_source_rela rela
+		LEFT JOIN 
+			hm_crm_source src ON rela.SOURCEID = src.SRCID
+		LEFT JOIN 
+			hm_crm_source_type tp ON src.TYPEID = tp.TYPEID
+		WHERE
+			rela.RELATYPE = #{srcRelaType}
+		AND 
+			rela.STAFFID = #{id}
+		AND rela.COMPANYID = #{companyId}
+		AND src.COMPANYID = #{companyId}
+		AND tp.COMPANYID = #{companyId}
+		AND tp.TYPENAME = #{srcType}
+		AND src.ISSHOW = 1
+		AND tp.ISSHOW = 1
+		ORDER BY src.PRIORITY ASC ;
+	</select>
+	
+	<!-- 获取企业下所有渠道 -->
+	<select id="getSrcListOfComp" parameterType="com.crm.model.Staff"
+		resultMap="Source">
+		SELECT
+			src.SRCID,
+			src.SRCNAME,
+			src.TYPEID,
+			src.COMPANYID
+		FROM
+			hm_crm_source src
+		WHERE
+			src.COMPANYID = #{companyId}
+		AND src.ISSHOW = 1
+		ORDER BY src.PRIORITY ASC ;
+	</select>
+	
+	
+	<!-- 根据类型ID获取指定类型下的渠道集合 -->
+	<select id="getSourceListByTypeId" parameterType="com.crm.model.Source" resultMap="Source">
+		SELECT 
+			src.SRCID, src.SRCNAME, src.TYPEID, srctype.TYPENAME, src.CREATETIME,
+			src.CREATEIP, src.CREATORID, stf.`NAME` CREATORNAME, src.COMPANYID,
+			src.ISSHOW
+		FROM
+			hm_crm_source src
+		LEFT JOIN
+			hm_crm_source_type srctype ON src.TYPEID = srctype.TYPEID
+			AND srctype.COMPANYID = #{companyId} 
+		LEFT JOIN hm_pub_staff stf ON src.CREATORID = stf.ID
+			AND stf.COMPANY_ID = #{companyId}
+		WHERE
+			src.TYPEID = #{typeId}
+		AND src.COMPANYID = #{companyId} AND src.ISSHOW=1 
+		ORDER BY src.PRIORITY ASC ;
+	</select>
+	
+	
+	
+	<!-- 获取指定渠道类型的所有渠道 -->
+	<select id="getSrcListByType" parameterType="com.crm.model.Source"
+		resultMap="Source">
+		SELECT
+			src.SRCID,
+			src.SRCNAME,
+			src.TYPEID,
+			src.COMPANYID
+		FROM
+			hm_crm_source src
+		LEFT JOIN hm_crm_source_type tp ON src.TYPEID = tp.TYPEID
+		AND tp.COMPANYID = #{companyId}
+		WHERE
+			src.COMPANYID = #{companyId}
+		AND src.ISSHOW = 1
+		AND INSTR(#{typeName}, tp.TYPENAME) > 0 
+		ORDER BY src.PRIORITY ASC ;
+	</select>
+	
+	<!-- 根据渠道名称获取渠道信息 -->
+	<select id="getSrcByName" parameterType="com.crm.model.Source" resultMap="Source">
+		SELECT * FROM hm_crm_source src WHERE src.SRCNAME = #{srcName} AND src.COMPANYID = #{companyId}
+	</select>
+	
+	
+	<!-- 批量新增渠道与采集员/邀约员关联 -->
+	<insert id="addSrcStaffCjYyRela"  parameterType="com.crm.model.SourceStaffRela"> 
+		INSERT INTO hm_crm_staff_source_rela 
+			(RELATYPE, STAFFID, SOURCEID, COMPANYID) 
+		VALUES 
+		<foreach collection="list" item="item" index="index" separator="," > 
+			(#{item.relaType},#{item.staffId},#{item.srcId},#{item.companyId}) 
+		</foreach> 
+	</insert>
+	
+	<!-- 删除渠道与采集员/邀约员关联 -->
+	<delete id="deleteSrcStaffCjYyRela" parameterType="com.crm.model.SourceStaffRela">
+		DELETE FROM 
+			hm_crm_staff_source_rela 
+		WHERE 
+			RELATYPE = #{relaType} 
+		AND STAFFID = #{staffId}
+		AND SOURCEID = #{srcId}
+		AND COMPANYID = #{companyId}
+	</delete>
+	
+	<!-- 获取指定渠道关联的职工集合 -->
+	<select id="getSrcRelaStaffs" parameterType="com.crm.model.SourceStaffRela" 
+		resultMap="Staff">
+		SELECT
+			stf.ID,
+			stf.`NAME`,
+			stf.PHONE,
+			stf.COMPANY_ID
+		FROM
+			hm_crm_staff_source_rela rela
+		LEFT JOIN hm_pub_staff stf ON rela.STAFFID = stf.ID
+		WHERE
+			rela.RELATYPE = #{relaType}
+		AND rela.SOURCEID = #{srcId}
+		AND rela.COMPANYID = #{companyId}
+		AND stf.COMPANY_ID = #{companyId}
+	</select>
+	
+	<!-- 根据渠道ID获取渠道信息 -->
+	<select id="getSourceById" parameterType="com.crm.model.Source" resultMap="Source">
+		SELECT * FROM hm_crm_source src WHERE src.SRCID = #{srcId} AND src.COMPANYID = #{companyId}
+	</select>
+</mapper>

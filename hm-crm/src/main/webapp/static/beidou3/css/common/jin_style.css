@@ -1,0 +1,85 @@
+.gd-tooltip-light, .gd-tooltip-orange {
+    border-radius: 2px;
+    background: #fff;
+    color: #222222;
+    border: 1px solid #C3C9D0;
+    -webkit-box-shadow: 0 3px 5px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 3px 5px 0 rgba(0,0,0,0.2);
+}
+.tooltipster-fade-show {
+    opacity: 1;
+}
+.tooltipster-fade {
+    opacity: 0;
+    -webkit-transition-property: opacity;
+    -moz-transition-property: opacity;
+    -o-transition-property: opacity;
+    -ms-transition-property: opacity;
+    transition-property: opacity;
+}
+.tooltipster-base {
+    padding: 0;
+    font-size: 0;
+    line-height: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 9999999;
+    pointer-events: none;
+    width: auto;
+    overflow: visible;
+}
+.gd-tooltip-light.gd-tooltip-menu-over .tooltipster-content, .gd-tooltip-menu-over.gd-tooltip-orange .tooltipster-content {
+    padding: 8px 0;
+}
+.gd-tooltip-light.gd-tooltip-list-over .tooltipster-content, .gd-tooltip-light.gd-tooltip-menu-over .tooltipster-content, .gd-tooltip-menu-over.gd-tooltip-orange .tooltipster-content, .gd-tooltip-list-over.gd-tooltip-orange .tooltipster-content {
+    padding: 0;
+}
+.gd-tooltip-light .tooltipster-content, .gd-tooltip-orange .tooltipster-content {
+    font-size: 12px;
+    line-height: 17px;
+    padding: 8px 10px;
+}
+.tooltipster-base .tooltipster-content {
+    overflow: hidden;
+}
+.gd-tooltip-light.gd-tooltip-menu-over .tooltipster-content ul li.email-with-plan, .gd-tooltip-menu-over.gd-tooltip-orange .tooltipster-content ul li.email-with-plan {
+    cursor: auto;
+    color: #848484;
+}
+.gd-tooltip-light.gd-tooltip-menu-over .tooltipster-content ul li, .gd-tooltip-menu-over.gd-tooltip-orange .tooltipster-content ul li {
+    padding: 0 10px;
+    line-height: 200%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    margin: 1px 0;
+}
+.gd-tooltip-light.gd-tooltip-menu-over .tooltipster-content ul li.separator, .gd-tooltip-menu-over.gd-tooltip-orange .tooltipster-content ul li.separator {
+    padding: 0;
+    margin: 5px 0;
+    border-top: 1px solid #D9D9D9;
+}
+.tooltipster-arrow {
+    display: block;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+.tooltipster-arrow-bottom span, .tooltipster-arrow-bottom-right span, .tooltipster-arrow-bottom-left span {
+    border-left: 8px solid transparent !important;
+    border-right: 8px solid transparent !important;
+    border-bottom: 8px solid;
+    top: -7px;
+}
+.tooltipster-arrow span, .tooltipster-arrow-border {
+    display: block;
+    width: 0;
+    height: 0;
+    position: absolute;
+}

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="
+              http://www.springframework.org/schema/beans
+              http://www.springframework.org/schema/beans/spring-beans.xsd
+              http://www.springframework.org/schema/tx
+              http://www.springframework.org/schema/tx/spring-tx.xsd
+              http://www.springframework.org/schema/aop
+              http://www.springframework.org/schema/aop/spring-aop.xsd
+              http://www.springframework.org/schema/context
+              http://www.springframework.org/schema/context/spring-context.xsd
+              http://www.springframework.org/schema/task
+        	  http://www.springframework.org/schema/task/spring-task-4.0.xsd
+              "
+       default-lazy-init="false">
+
+    <context:property-placeholder location="classpath:conf/jdbc.properties" ignore-resource-not-found="true" ignore-unresolvable="true"/>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage"
+                  value="com.crm.model.dao"/>
+    </bean>
+
+    <bean id="abstractDataSource" abstract="true" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+		<property name="driverClassName" value="${db.driverClass}" />
+		<property name="maxActive" value="${db.maxActive}" />
+		<property name="initialSize" value="${db.initialSize}" />
+		<property name="maxWait" value="${db.maxWait}" />
+		<property name="maxIdle" value="${db.maxIdle}" />
+		<property name="minIdle" value="${db.minIdle}" />
+		<property name="removeAbandoned" value="true" /> <!-- 打开removeAbandoned功能 -->
+		<property name="removeAbandonedTimeout" value="1800" /> <!-- 1800秒，也就是30分钟 -->
+		<property name="testOnBorrow" value="true" />
+		<property name="validationQuery" value="select 1" />
+	</bean>
+
+	<!-- 数据源 -->
+	<bean id="dataSourceOne" parent="abstractDataSource">
+		<property name="url" value="${jdbc.url1}" />
+		<property name="username" value="${jdbc.username1}" />
+		<property name="password" value="${jdbc.password1}" />
+	</bean>
+	
+	<bean id="dataSourceTwo" parent="abstractDataSource">
+		<property name="url" value="${jdbc.url2}" />
+		<property name="username" value="${jdbc.username2}" />
+		<property name="password" value="${jdbc.password2}" />
+	</bean>
+	
+	
+	<bean id="dynamicDataSource" class="com.crm.core.DynamicDataSource">  
+        <property name="targetDataSources">  
+            <map key-type="java.lang.String">  
+                <entry value-ref="dataSourceOne" key="dataSourceOne"></entry>  
+                <entry value-ref="dataSourceTwo" key="dataSourceTwo"></entry>  
+            </map>  
+        </property>  
+        <property name="defaultTargetDataSource" ref="dataSourceOne">  
+        </property>  
+    </bean> 
+	
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 指定使用的数据源 -->
+        <property name="dataSource" ref="dynamicDataSource"/>
+        <!-- 指定MyBatis配置文件路径 -->
+        <property name="mapperLocations" value="classpath:com/crm/model/dao/*.xml"/>
+    </bean>
+
+    <!-- similarly, don't forget the PlatformTransactionManager -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dynamicDataSource"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager" mode="proxy"
+                          proxy-target-class="true"/>
+
+    <!-- 组件自动扫描 -->
+    <context:component-scan base-package="com.crm.model.dao"
+                            use-default-filters="false">
+        <context:include-filter type="annotation"
+                                expression="org.springframework.stereotype.Repository"/>
+    </context:component-scan>
+    
+    
+    
+     <!--   定时任务 开始 -->
+ 	<task:annotation-driven /> 
+    	 <!-- <bean id="TaskXml" class="com.crm.task.TaskXml"></bean>
+    <task:scheduled-tasks>  
+        <task:scheduled ref="TaskXml" method="show" cron="3 * * * * ?" />  
+        <task:scheduled ref="TaskXml" method="print" cron="3 * * * * ?"/>  
+    </task:scheduled-tasks>  -->
+      
+          <!--  自动扫描的包名     -->
+    <context:component-scan base-package="com.crm.task" />
+
+    <bean id="dataSourceInterceptor" class="com.crm.core.DataSourceInterceptor" />
+    <aop:config>
+		<aop:aspect id="dataSourceAspect" ref="dataSourceInterceptor">
+			<aop:pointcut id="dsOne" expression="execution(* com.crm.controller.*.*(..))" />
+			<aop:pointcut id="dsTwo" expression="execution(* com.crm.controller.controller2.*.*(..))" />
+			<aop:before method="setdataSourceOne" pointcut-ref="dsOne"/>
+			<aop:before method="setdataSourceTwo" pointcut-ref="dsTwo"/>
+		</aop:aspect>
+	</aop:config>
+    
+
+</beans>

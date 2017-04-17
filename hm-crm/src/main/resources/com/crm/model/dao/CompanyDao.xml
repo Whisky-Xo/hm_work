@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.model.dao.CompanyDao">
+	<resultMap id="Company" type="com.crm.model.Company">
+		<id column="COMPID" jdbcType="INTEGER" property="compId" />
+		<result column="COMPNAME" jdbcType="VARCHAR" property="compName" />
+		<result column="COMPDISTRICT" jdbcType="VARCHAR" property="compDistrict" />
+		<result column="COMPTYPEID" jdbcType="INTEGER" property="compTypeId" />
+		<result column="WEBSITE" jdbcType="VARCHAR" property="webSite" />
+		<result column="BANNER" jdbcType="VARCHAR" property="banner" />
+		<result column="LOGO" jdbcType="VARCHAR" property="logo" />
+		<result column="MEMO" jdbcType="VARCHAR" property="memo" />
+		<result column="COLOR" jdbcType="VARCHAR" property="color" />
+		<result column="CORPID" jdbcType="VARCHAR" property="corpId" />
+		<result column="MERCHANTPID" jdbcType="VARCHAR" property="merchantPid" />
+		<result column="MERCHANTSHOWNAME" jdbcType="VARCHAR" property="merchantShowName" />
+		<result column="MERCHANTSHOWPHONE" jdbcType="VARCHAR" property="merchantShowPhone" />
+		<result column="CREATETIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="CREATEIP" jdbcType="VARCHAR" property="createIp" />
+		<result column="UPDATETIME" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="UPDATEIP" jdbcType="VARCHAR" property="updateIp" />
+		<result column="SMSPHONE" jdbcType="VARCHAR" property="smsPhone" />
+		<result column="ISTIP" jdbcType="BOOLEAN" property="isTip" />
+		<result column="ISDEL" jdbcType="BOOLEAN" property="isDel" />
+		<result column="SMSPHONE" jdbcType="VARCHAR" property="smsPhone" />
+		<result column="templatenum" jdbcType="INTEGER" property="templatenum" />
+		<result column="corpSecret" jdbcType="VARCHAR" property="corpSecret" />
+    	<result column="ssoSecret" jdbcType="VARCHAR" property="ssoSecret" />
+    	<result column="channelSecret" jdbcType="VARCHAR" property="channelSecret" />
+    	<result column="AGENTID" jdbcType="VARCHAR" property="agentId" />
+	</resultMap>
+
+	<!-- 新建企业 -->
+	<insert id="createCompany" parameterType="com.crm.model.Company"
+		useGeneratedKeys="true" keyProperty="compId">
+		INSERT INTO
+		hm_pub_company
+		(COMPNAME,COMPDISTRICT, COMPTYPEID, WEBSITE, BANNER, LOGO, MEMO,COLOR
+		CORPID,
+		MERCHANTPID, MERCHANTSHOWNAME, MERCHANTSHOWPHONE, CREATETIME,
+		CREATEIP,
+		UPDATETIME, UPDATEIP, ISTIP, ISDEL,SMSPHONE
+		) VALUES
+		(#{compName},#{compDistrict},#{compTypeId},
+		#{webSite},#{banner},#{logo}, #{memo},#{color},
+		#{corpId},#{merchantPid},#{merchantShowName}, #{merchantShowPhone},
+		#{createTime},#{createIp},#{updateTime}, #{updateIp},
+		#{isTip},#{isDel},#{smsPhone})
+	</insert>
+
+	<!-- 根据ID删除指定企业信息 -->
+	<update id="removeCompanyById" parameterType="com.crm.model.Company">
+		UPDATE
+		hm_pub_company comp
+		SET comp.ISDEL = 1, comp.UPDATETIME =
+		#{updateTime,jdbcType=TIMESTAMP}, comp.UPDATEIP =
+		#{updateIp,jdbcType=VARCHAR}
+		WHERE comp.COMPID =
+		#{compId,jdbcType=INTEGER} AND comp.ISDEL = 0
+	</update>
+
+	<!-- 根据ID编辑指定企业信息 -->
+	<update id="editCompanyById" parameterType="com.crm.model.Company">
+		UPDATE hm_pub_company
+		<set>
+			<if test="compName != null">
+				COMPNAME = #{compName,jdbcType=VARCHAR},
+			</if>
+			<if test="compDistrict != null">
+				COMPDISTRICT = #{compDistrict,jdbcType=VARCHAR},
+			</if>
+			<if test="compTypeId != null">
+				COMPTYPEID = #{compTypeId,jdbcType=INTEGER},
+			</if>
+			<if test="webSite != null">
+				WEBSITE = #{webSite,jdbcType=VARCHAR},
+			</if>
+			<if test="banner != null">
+				BANNER = #{banner,jdbcType=VARCHAR},
+			</if>
+			<if test="logo != null">
+				LOGO = #{logo,jdbcType=VARCHAR},
+			</if>
+			<if test="memo != null">
+				MEMO = #{memo,jdbcType=VARCHAR},
+			</if>
+			<if test="color != null">
+				COLOR = #{color,jdbcType=VARCHAR},
+			</if>
+			<if test="corpId != null">
+				CORPID = #{corpId,jdbcType=VARCHAR},
+			</if>
+			<if test="merchantPid != null">
+				MERCHANTPID = #{merchantPid,jdbcType=VARCHAR},
+			</if>
+			<if test="merchantShowName != null">
+				MERCHANTSHOWNAME = #{merchantShowName,jdbcType=VARCHAR},
+			</if>
+			<if test="merchantShowPhone != null">
+				MERCHANTSHOWPHONE =
+				#{merchantShowPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="SMSPhone != null">
+				SMSPHONE = #{smsPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="isTip != null">
+				ISTIP = #{isTip,jdbcType=BOOLEAN},
+			</if>
+		</set>
+		WHERE COMPID = #{compId,jdbcType=INTEGER} AND ISDEL = 0
+	</update>
+
+	<!-- 根据ID获取指定企业信息 -->
+	<select id="getCompanyInfoById" parameterType="java.lang.Integer"
+		resultType="com.crm.model.Company">
+		SELECT
+		*
+		FROM
+		hm_pub_company comp WHERE comp.COMPID =
+		#{compId,jdbcType=INTEGER} AND comp.ISDEL = 0
+	</select>
+
+	<!-- 根据merchantPid获取指定企业信息 -->
+	<select id="getCompanyInfoByMerchantPid" parameterType="java.lang.String"
+		resultType="com.crm.model.Company">
+		SELECT
+		*
+		FROM
+		hm_pub_company comp WHERE comp.MERCHANTPID =
+		#{merchantPid,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 根据企业名称获取企业信息 -->
+	<select id="getCompanyInfoByCompName" parameterType="java.lang.String"
+		resultType="com.crm.model.Company">
+		SELECT
+		*
+		FROM
+		hm_pub_company comp WHERE comp.COMPNAME =
+		#{compName,jdbcType=VARCHAR} AND comp.ISDEL = 0
+	</select>
+</mapper>

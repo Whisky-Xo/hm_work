@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.model.dao.DepartmentDao">
+	<resultMap id="Department" type="com.crm.model.Department">
+		<id column="DEPTID" jdbcType="INTEGER" property="deptId" />
+		<result column="DEPTNAME" jdbcType="VARCHAR" property="deptName" />
+		<result column="MEMO" jdbcType="VARCHAR" property="memo" />
+		<result column="TASKNUM" jdbcType="INTEGER" property="taskNum" />
+		<result column="CREATETIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="CREATEIP" jdbcType="VARCHAR" property="createIp" />
+		<result column="UPDATETIME" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="UPDATEIP" jdbcType="VARCHAR" property="updateIp" />
+		<result column="COMPANYID" jdbcType="INTEGER" property="companyId" />
+		<result column="SHOPID" jdbcType="INTEGER" property="shopId" />
+		<result column="ISDEL" jdbcType="BOOLEAN" property="isDel" />
+	</resultMap>
+
+	<!-- 新建部门 -->
+	<insert id="createDepartment" parameterType="com.crm.model.Department"
+		useGeneratedKeys="true" keyProperty="deptId">
+		INSERT INTO
+		hm_crm_dept
+		(DEPTNAME,MEMO, TASKNUM, CREATETIME, CREATEIP, UPDATETIME, UPDATEIP,
+		COMPANYID,SHOPID, ISDEL
+		) VALUES
+		(#{deptName},#{memo},#{taskNum},
+		#{createTime},#{createIp},#{updateTime}, #{updateIp},
+		#{companyId},#{shopId},#{isDel})
+	</insert>
+
+	<!-- 根据ID删除指定企业信息 -->
+	<update id="removeDepartmentById" parameterType="com.crm.model.Department">
+		UPDATE
+		hm_crm_dept dept
+		SET dept.ISDEL = 1, dept.UPDATETIME =
+		#{updateTime,jdbcType=TIMESTAMP}, dept.UPDATEIP =
+		#{updateIp,jdbcType=VARCHAR}
+		WHERE dept.DEPTID =
+		#{deptId,jdbcType=INTEGER} AND dept.ISDEL = 0
+	</update>
+
+	<!-- 根据ID编辑指定企业信息 -->
+	<update id="editDepartmentById" parameterType="com.crm.model.Department">
+		UPDATE hm_crm_dept
+		<set>
+			<if test="deptName != null">
+				DEPTNAME = #{deptName,jdbcType=VARCHAR},
+			</if>
+			<if test="memo != null">
+				MEMO = #{memo,jdbcType=VARCHAR},
+			</if>
+			<if test="taskNum != null">
+				TASKNUM = #{taskNum,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				CREATETIME = #{createTime,jdbcType=VARCHAR},
+			</if>
+			<if test="createIp != null">
+				CREATEIP = #{createIp,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				UPDATETIME = #{updateTime,jdbcType=VARCHAR},
+			</if>
+			<if test="updateIp != null">
+				UPDATEIP = #{updateIp,jdbcType=VARCHAR},
+			</if>
+			<if test="companyId != null">
+				COMPANYID = #{companyId,jdbcType=INTEGER},
+			</if>
+			<if test="shopId != null">
+				SHOPID = #{shopId,jdbcType=INTEGER},
+			</if>
+		</set>
+		WHERE DEPTID = #{deptId,jdbcType=INTEGER} AND ISDEL = 0
+	</update>
+
+	<!-- 根据ID获取指定企业信息 -->
+	<select id="getDepartmentInfoById" parameterType="java.lang.Integer" resultMap="Department">
+		SELECT * FROM hm_crm_dept dept WHERE dept.DEPTID =
+			#{deptId,jdbcType=INTEGER} AND dept.ISDEL = 0
+	</select>
+	
+	
+	
+	<!-- 根据公司ID获取下面的所有部门 -->
+	<select id="listDepartmentByCompanyId" parameterType="java.lang.Integer" resultMap="Department">
+		select * from hm_crm_dept  where COMPANYID =
+			#{companyId,jdbcType=INTEGER} and ISDEL = 0;
+	</select>
+	
+
+</mapper>

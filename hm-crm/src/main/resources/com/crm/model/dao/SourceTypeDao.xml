@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.model.dao.SourceTypeDao">
+	<resultMap id="SourceType" type="com.crm.model.SourceType">
+		<id column="TYPEID" jdbcType="INTEGER" property="typeId" />
+		<result column="TYPENAME" jdbcType="VARCHAR" property="typeName" />
+		<result column="MEMO" jdbcType="VARCHAR" property="memo" />
+		<result column="CREATETIME" jdbcType="VARCHAR" property="createTime" />
+		<result column="CREATEIP" jdbcType="VARCHAR" property="createIp" />
+		<result column="UPDATETIME" jdbcType="VARCHAR" property="updateTime" />
+		<result column="UPDATEIP" jdbcType="VARCHAR" property="updateIp" />
+		<result column="CREATERID" jdbcType="INTEGER" property="creatorId" />
+		<result column="CREATORNAME" jdbcType="VARCHAR" property="creatorName" />
+		<result column="COMPANYID" jdbcType="INTEGER" property="companyId" />
+		<result column="COMPANYNAME" jdbcType="VARCHAR" property="companyName" />
+		<result column="ISSHOW" jdbcType="BOOLEAN" property="isShow" />
+	</resultMap>
+
+	<!-- 新增渠道类型 -->
+	<insert id="createSourceType" parameterType="com.crm.model.SourceType"
+		useGeneratedKeys="true" keyProperty="typeId">
+		INSERT INTO hm_crm_source_type
+		(
+		TYPENAME, MEMO, CREATETIME, CREATEIP, UPDATETIME, UPDATEIP, CREATERID,
+		COMPANYID, ISSHOW)
+		VALUES
+		(#{typeName}, #{memo}, #{createTime},
+		#{createIp},#{updateTime}, #{updateIp},#{creatorId},
+		#{companyId},
+		#{isShow} )
+	</insert>
+
+	<!-- 根据ID更新渠道类型信息 -->
+	<update id="updateSourceType" parameterType="com.crm.model.SourceType">
+		UPDATE hm_crm_source_type
+		<set>
+			<if test="typeName != null">
+				TYPENAME = #{typeName},
+			</if>
+			<if test="memo != null">
+				MEMO = #{memo},
+			</if>
+			<if test="updateTime != null">
+				UPDATETIME = #{updateTime},
+			</if>
+			<if test="updateIp != null">
+				UPDATEIP = #{updateIp},
+			</if>
+			<if test="creatorId != null">
+				CREATERID = #{creatorId},
+			</if>
+			<if test="isShow != null">
+				ISSHOW = #{isShow},
+			</if>
+		</set>
+		WHERE TYPEID = #{typeId} AND COMPANYID = #{companyId};
+	</update>
+
+	<!-- 根据ID获取渠道类型详细信息 -->
+	<select id="getSourceTypeById" parameterType="com.crm.model.SourceType"
+		resultMap="SourceType">
+		SELECT
+			tp.TYPEID, tp.TYPENAME, tp.MEMO, tp.CREATETIME, tp.CREATERID,
+			tp.UPDATETIME, tp.UPDATEIP, tp.CREATERID, stf.`NAME` CREATORNAME, tp.COMPANYID,
+			tp.ISSHOW
+		FROM
+			hm_crm_source_type tp
+		LEFT JOIN hm_pub_staff stf ON tp.CREATERID = stf.ID
+			AND stf.COMPANY_ID = #{companyId}
+		WHERE
+			tp.TYPEID = #{typeId} AND tp.COMPANYID = #{companyId};
+	</select>
+	
+	<!-- 根据渠道名称和企业ID获取渠道信息-->
+	<select id="getSourceTypeByName" parameterType="com.crm.model.SourceType"
+		resultMap="SourceType">
+		SELECT
+			tp.TYPEID, tp.TYPENAME, tp.MEMO, tp.CREATETIME, tp.CREATERID,
+			tp.UPDATETIME, tp.UPDATEIP, tp.CREATERID, stf.`NAME` CREATORNAME, tp.COMPANYID,
+			tp.ISSHOW
+		FROM
+			hm_crm_source_type tp
+		LEFT JOIN hm_pub_staff stf ON tp.CREATERID = stf.ID
+			AND stf.COMPANY_ID = #{companyId}
+		WHERE
+			tp.TYPEID = #{typeId} AND tp.COMPANYID = #{companyId};
+	</select>
+
+	<!-- 根据类型ID获取指定类型下的渠道集合 -->
+	<select id="getSrcListDetailByCompId" parameterType="java.lang.Integer"
+		resultMap="SourceType">
+		SELECT
+			tp.TYPEID, tp.TYPENAME, tp.MEMO, tp.CREATETIME, tp.CREATERID,
+			tp.UPDATETIME, tp.UPDATEIP, tp.CREATERID, stf.`NAME` CREATORNAME, tp.COMPANYID,
+			tp.ISSHOW
+		FROM
+			hm_crm_source_type tp
+		LEFT JOIN hm_pub_staff stf ON tp.CREATERID = stf.ID
+			AND stf.COMPANY_ID = #{compId}
+		WHERE tp.COMPANYID = #{compId} AND tp.ISSHOW=1;
+	</select>
+</mapper>

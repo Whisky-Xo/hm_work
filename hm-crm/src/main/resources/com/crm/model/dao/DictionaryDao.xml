@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.model.dao.DictionaryDao">
+	<resultMap id="Dictionary" type="com.crm.model.Dictionary">
+		<id column="DICID" jdbcType="INTEGER" property="dicId" />
+		<result column="DICTYPE" jdbcType="VARCHAR" property="dicType" />
+		<result column="DICCODE" jdbcType="INTEGER" property="dicCode" />
+		<result column="DICNAME" jdbcType="VARCHAR" property="dicName" />
+		<result column="MEMO" jdbcType="VARCHAR" property="memo" />
+		<result column="SPARE" jdbcType="VARCHAR" property="spare" />
+		<result column="COMPANYID" jdbcType="INTEGER" property="companyId" />
+		<result column="ISDEL" jdbcType="BOOLEAN" property="isDel" />
+	</resultMap>
+
+	<!-- 获取指定类型的字典数据集合 -->
+	<select id="getDictionaryListByType" parameterType="com.crm.model.Dictionary"
+		resultMap="Dictionary">
+		SELECT * FROM hm_crm_dictionary dic 
+		WHERE dic.DICTYPE = #{dicType,jdbcType=VARCHAR} 
+		AND dic.COMPANYID = #{companyId,jdbcType=INTEGER} 
+		AND dic.ISDEL = 0 
+		ORDER BY dic.PRIORITY ASC
+	</select>
+</mapper>

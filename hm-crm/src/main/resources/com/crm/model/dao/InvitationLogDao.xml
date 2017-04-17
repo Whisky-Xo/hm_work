@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.model.dao.InvitationLogDao">
+	<resultMap id="InvitationLog" type="com.crm.model.InvitationLog">
+		<id column="YYLOGID" jdbcType="VARCHAR" property="yyLogId" />
+		<result column="KZID" jdbcType="VARCHAR" property="kzId" />
+		<result column="RSTCODE" jdbcType="INTEGER" property="rstCode" />
+		<result column="YYMEMO" jdbcType="VARCHAR" property="yyMemo" />
+		<result column="COMETIME" jdbcType="VARCHAR" property="comeTime" />
+		<result column="SHOPID" jdbcType="INTEGER" property="shopId" />
+		<result column="RECEPTORID" jdbcType="INTEGER" property="receptorId" />
+		<result column="WARNTIME" jdbcType="VARCHAR" property="warnTime" />
+		<result column="STAFFID" jdbcType="INTEGER" property="staffId" />
+		<result column="FILE1" jdbcType="VARCHAR" property="file1" />
+		<result column="FILE2" jdbcType="VARCHAR" property="file2" />
+		<result column="FILE3" jdbcType="VARCHAR" property="file3" />
+		<result column="FILE4" jdbcType="VARCHAR" property="file4" />
+		<result column="FILE5" jdbcType="VARCHAR" property="file5" />
+		<result column="FILE6" jdbcType="VARCHAR" property="file6" />
+		<result column="FILE7" jdbcType="VARCHAR" property="file7" />
+		<result column="FILE8" jdbcType="VARCHAR" property="file8" />
+		<result column="FILE9" jdbcType="VARCHAR" property="file9" />
+		<result column="FILE10" jdbcType="VARCHAR" property="file10" />
+		<result column="CREATETIME" jdbcType="VARCHAR" property="createTime" />
+		<result column="CREATEIP" jdbcType="VARCHAR" property="createIp" />
+		<result column="COMPANYID" jdbcType="INTEGER" property="companyId" />
+		<result column="ISDEL" jdbcType="BIT" property="isDel" />	
+
+	</resultMap>
+
+	<select id="listInvitationLog" parameterType="map" resultMap="InvitationLog">
+		select * from `hm_crm_invitation_log` where `COMPANYID` = #{companyId} and `RECEPTORID` = #{receptorId} and `ISDEL` = 0
+	</select>
+	
+	<!-- 获取指定ID的邀约记录信息 -->
+	<select id="getLogById" parameterType="map" resultMap="InvitationLog">
+		SELECT * FROM hm_crm_invitation_log WHERE YYLOGID = #{logId}
+	</select>
+
+</mapper>

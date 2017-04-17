@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.model.dao.PermissionDao">
+  <resultMap id="Permission" type="com.crm.model.Permission">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="permission_id" jdbcType="INTEGER" property="permissionId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="value" jdbcType="VARCHAR" property="value" />
+    <result column="method" jdbcType="VARCHAR" property="method" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="application_id" jdbcType="INTEGER" property="applicationId" />
+    <result column="created" jdbcType="INTEGER" property="created" />
+    <result column="updated" jdbcType="INTEGER" property="updated" />
+  </resultMap>
+  
+  <delete id="deleteById" parameterType="java.lang.Integer">
+  	delete from hm_pub_permission where `id` = #{id}
+  </delete>
+  
+  <insert id="createPermission" parameterType="com.crm.model.Permission" useGeneratedKeys="true" keyProperty="id" >
+  INSERT INTO `hm_pub_permission` ( `name`, `permission_id`,`value`,`method`,`created`, `updated`)
+	VALUES
+	( #{name}, #{permissionId}, #{value},#{method}, #{created}, #{updated})
+  </insert>
+  
+  <select id="getByRole" parameterType="map" resultMap="Permission">
+  	select a.permission_id,a.name,a.description,b.value from hm_pub_permission a join hm_pub_role_permission b on (a.id = b.permission_id) where a.value = 'true' and b.role_id in 
+	<foreach collection="roleIds" open="(" close=")" separator="," item="roleId">
+  	#{roleId}
+  	</foreach> 
+  </select>
+  
+  <select id="getById" parameterType="java.lang.Integer" resultMap="Permission">
+  	select * from hm_pub_permission where id = #{id}
+  </select>
+  
+  <update id="updatePermission" parameterType="com.crm.model.Permission">
+  	update `hm_pub_permission` 
+  	set 
+  		`permission_id` = #{permissionId},
+  		`value` = #{value},
+  		`name` = #{name},
+  		`method` = #{method},
+  		`updated` = #{updated}
+  	where
+  		id = #{id}
+  </update>
+  
+  <select id="getByMethod" parameterType="map"  resultMap="Permission">
+  	select b.value,a.id,a.name,a.permission_id,a.method from hm_pub_permission a join hm_pub_role_permission b on (a.permission_id = b.permission_id) join hm_pub_staff_role c on(c.role_id = b.role_id)  where c.staff_id = #{staffId} and a.method = #{method} 
+  </select>
+  
+  <select id = "getByPermissionIds" parameterType="map" resultMap="Permission">
+  	select a.permission_id,a.name,a.description,b.value from hm_pub_permission a join hm_pub_role_permission b on (a.id = b.permission_id) join hm_pub_staff_role c on (b.role_id = c.role_id) where a.value = 'true' and c.staff_id = #{staffId} and a.permission_id in 
+	<foreach collection="permissionIds" open="(" close=")" separator="," item="permissionId">
+  	#{permissionId}
+  	</foreach> 
+  </select>
+  
+  <select id="getByCompany" parameterType="map"  resultMap="Permission">
+  	select a.permission_id,a.name,a.description,b.value from hm_pub_permission a join hm_pub_role_permission b on (a.permission_id = b.permission_id) join hm_pub_staff_role c on(c.role_id = b.role_id)  where f.company_id = #{companyId}
+  </select>
+  
+  <select id="getPermissions" parameterType="java.lang.Integer" resultMap="Permission">
+  	select 
+  	<if test="roleId == 0">
+  		* from permission
+  	</if>
+  	<if test="roleId != 0">
+		a.permission_id,a.name,a.description,b.value,n.name applicationName from hm_pub_permission a left join hm_pub_role_permission b on (a.permission_id = b.permission_id) join hm_pub_application n on (a.application_id = n.id) where b.role_id = #{roleId} order by n.id
+	</if>
+  </select>
+  
+  <select id="getByPermissionId" parameterType="map"  resultMap="Permission">
+  	select a.permission_id,a.name,a.description,b.value from hm_pub_permission a join hm_pub_role_permission b on (a.permission_id = b.permission_id) join hm_pub_staff_role c on(c.role_id = b.role_id)  where c.staff_id = #{staffId} and b.permission_id = #{permissionId}
+  </select>
+  
+  <select id="getByPermissionByStaffId" parameterType="java.lang.Integer"  resultMap="Permission">
+  	select a.permission_id,a.name,a.description,b.value from hm_pub_permission a join hm_pub_role_permission b on (a.permission_id = b.permission_id) join hm_pub_staff_role c on(c.role_id = b.role_id)  where c.staff_id = #{staffId}
+  </select>
+  
+  <select id="getPermissionByAppId" parameterType="map" resultMap="Permission">
+  select
+  <if test="roleId == 0">
+  	 a.permission_id,a.name,a.description,n.name applicationName from hm_pub_permission a join hm_pub_application n on (a.application_id = n.id) where  n.id = #{applicationId} order by n.id
+  	</if>
+  	<if test="roleId != 0">
+  		 a.permission_id,a.name,a.description,(select value from hm_pub_role_permission b where b.permission_id = a.permission_id  and b.role_id = #{roleId}) value,n.name applicationName from hm_pub_permission a join hm_pub_application n on (a.application_id = n.id) where n.id = #{applicationId} order by n.id
+  	</if>
+  </select>
+</mapper>

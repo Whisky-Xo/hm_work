@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.model.dao.RoleDao">
+	<resultMap id="Role" type="com.crm.model.Role">
+		<id column="ROLEID" jdbcType="INTEGER" property="roleId" />
+		<result column="ROLENAME" jdbcType="VARCHAR" property="roleName" />
+		<result column="MEMO" jdbcType="VARCHAR" property="memo" />
+		<result column="CREATETIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="CREATEIP" jdbcType="VARCHAR" property="createIp" />
+		<result column="UPDATETIME" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="COMPANYID" jdbcType="INTEGER" property="companyId" />
+		<result column="ISSHOW" jdbcType="BOOLEAN" property="isShow" />
+		<result column="ISDEL" jdbcType="BOOLEAN" property="isDel" />
+	</resultMap>
+
+	<!-- 新建角色 -->
+	<insert id="createRole" parameterType="com.crm.model.Role" useGeneratedKeys="true" keyProperty="roleId">
+		INSERT INTO hm_crm_role (ROLENAME, MEMO, CREATETIME, CREATEIP,  UPDATETIME,
+			COMPANYID) VALUES
+		(#{roleName},#{memo},#{createTime},#{createIp},#{createrId},#{updateTime},
+		#{companyId});
+	</insert>
+	
+	<!-- 插入角色权限关联 -->
+	<insert id="createRolePermissionRelation" parameterType="HashMap">
+		insert into hm_crm_role_pms_rela
+		(ROLEID,PMSID,CREATETIME, CREATEIP,COMPANYID) VALUES
+		(#{roleId},#{pmsId},#{createTime},#{createIp},#{companyId})
+	</insert>
+	
+
+	<!-- 根据ID删除指定角色信息 -->
+	<update id="removeRoleById" parameterType="com.crm.model.Role">
+		UPDATE
+		hm_crm_role 
+		SET ISDEL = 1, UPDATETIME =
+		#{updateTime,jdbcType=TIMESTAMP}
+		WHERE ROLEID =
+		#{roleId,jdbcType=INTEGER} AND ISDEL = 0;
+	</update>
+	
+	
+	<!-- 删除角色权限关联 -->
+	<update id="deleteRolePermissionRelation" parameterType="Integer">
+		delete from hm_crm_role_pms_rela
+		 	where ROLEID=#{roleId};
+	</update>
+	
+
+	<!-- 根据ID编辑指定角色信息 -->
+	<update id="editRoleById" parameterType="com.crm.model.Role">
+		UPDATE hm_crm_client_role
+		<set>
+			<if test="srcName != null">
+				SRCNAME = #{srcName,jdbcType=VARCHAR},
+			</if>
+			<if test="typeId != null">
+				TYPEID = #{typeId,jdbcType=INTEGER},
+			</if>
+			<if test="memo != null">
+				MEMO = #{memo,jdbcType=VARCHAR},
+			</if>
+			<if test="companyId != null">
+				COMPANYID = #{companyId,jdbcType=INTEGER},
+			</if>
+			
+			<if test="updateTime != null">
+				UPDATETIME = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateId != null">
+				UPDATEIP = #{updateIp,jdbcType=VARCHAR},
+			</if>
+		</set>
+		WHERE SRCID = #{srcId,jdbcType=INTEGER} AND ISDEL = 0;
+	</update>
+
+	<!-- 根据ID获取指定角色信息 -->
+	<select id="getRoleInfoById" parameterType="java.lang.Integer" resultType="com.crm.model.Role">
+		SELECT * FROM hm_crm_client_role role WHERE role.SRCID =#{srcId,jdbcType=INTEGER} AND role.ISDEL = 0;
+	</select>
+	
+	
+	<!-- 获取角色列表 -->
+	<select id="getRoleList" parameterType="com.crm.model.Role" resultType="com.crm.model.Role">
+		select * from hm_crm_role  where 
+			ROLEID in (select ROLEID from hm_crm_staff_role_rela where STAFFID=#{staffId})
+			and ISDEL = 0;
+	</select>
+	
+
+</mapper>

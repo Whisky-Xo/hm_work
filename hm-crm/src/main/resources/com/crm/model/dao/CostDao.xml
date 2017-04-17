@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.model.dao.CostDao">
+
+	<resultMap id="Cost" type="com.crm.model.Cost">
+		<id column="ID" jdbcType="VARCHAR" property="id" />
+		<result column="COST" jdbcType="DECIMAL" property="cost" />
+		<result column="SRCID" jdbcType="INTEGER" property="srcId" />
+		<result column="COSTTIME" jdbcType="DATE" property="costTime" />
+		<result column="COMPANYID" jdbcType="INTEGER" property="companyId" />
+		<result column="CREATETIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="UPDATETIME" jdbcType="TIMESTAMP" property="updateTime" />
+	</resultMap>
+
+	<resultMap id="CostLog" type="com.crm.model.CostLog">
+		<id column="ID" jdbcType="INTEGER" property="id" />
+		<id column="COSTID" jdbcType="VARCHAR" property="costId" />
+		<result column="OPERAID" jdbcType="INTEGER" property="operaId" />
+		<result column="OPERANAME" jdbcType="VARCHAR" property="operaName" />
+		<result column="MEMO" jdbcType="VARCHAR" property="memo" />
+		<result column="OPERATIME" jdbcType="TIMESTAMP" property="operaTime" />
+		<result column="OPERAIP" jdbcType="VARCHAR" property="operaIp" />
+		<result column="COMPANYID" jdbcType="INTEGER" property="companyId" />
+		<result column="COMPANYNAME" jdbcType="VARCHAR" property="companyName" />
+		<result column="ISDEL" jdbcType="BOOLEAN" property="isdel" />
+	</resultMap>
+	
+	
+	
+	<!-- 新建花费 -->
+	<insert id="createCost" parameterType="com.crm.model.Cost" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO
+		hm_crm_cost
+		(ID,COST,SRCID, COSTTIME, COMPANYID, CREATETIME, UPDATETIME) VALUES
+		(#{id},#{cost},#{srcId},#{costTime},#{companyId},now(),now())
+	</insert>
+	
+	
+	<!-- 新建花费 -->
+	<insert id="createCostLog" parameterType="com.crm.model.CostLog" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO
+		hm_crm_cost_log
+		(COSTID,OPERAID, OPERANAME, MEMO, OPERATIME, OPERAIP,COMPANYID,COMPANYNAME) VALUES
+		(#{costId},#{operaId},#{operaName},#{memo},now(),#{operaIp},#{companyId},#{companyName})
+	</insert>
+
+	<!-- 根据ID编辑指定花费信息 -->
+	<update id="updateCost" parameterType="com.crm.model.Cost">
+		UPDATE hm_crm_cost
+		<set>
+			<if test="cost != null">
+				COST = #{cost},
+			</if>
+			<if test="updateTime != null">
+				UPDATETIME = now(),
+			</if>
+		</set>
+		WHERE ID = #{id,jdbcType=INTEGER};
+	</update>
+
+
+	<!-- 根据ID获取指定花费信息 -->
+	<select id="getCostById" parameterType="java.lang.String" resultMap="Cost">
+		SELECT
+		*
+		FROM
+		hm_crm_cost WHERE ID =#{id};
+	</select>
+	
+
+ 
+	<select id="getCostByCondition" parameterType="com.crm.model.Cost" resultMap="Cost">
+		SELECT
+		*
+		FROM
+		hm_crm_cost WHERE SRCID=#{srcId} and COSTTIME=#{costTime} and COMPANYID=#{companyId};
+	</select>
+	
+	
+	<!-- 通过渠道获取花费列表 -->
+	<select id="listCostsBySource" parameterType="HashMap" resultMap="Cost">
+		SELECT * FROM hm_crm_cost where COMPANYID=#{companyId} and SRCID=#{srcId}
+		    and COSTTIME between #{start} and #{end};
+	</select>
+	
+	<!-- 通过时间获取花费列表 -->
+	<select id="listCostsByCostTime" parameterType="com.crm.model.Cost" resultMap="Cost">
+		SELECT * FROM hm_crm_cost where COMPANYID=#{companyId} 
+			and COSTTIME = #{costTime};
+	</select>
+	
+	
+</mapper>

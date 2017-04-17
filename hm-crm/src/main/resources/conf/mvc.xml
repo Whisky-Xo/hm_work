@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop 
+				http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+                http://www.springframework.org/schema/mvc 
+                http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+                http://www.springframework.org/schema/beans 
+                http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                http://www.springframework.org/schema/util 
+                http://www.springframework.org/schema/util/spring-util-3.1.xsd
+                http://www.springframework.org/schema/context 
+                http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+
+
+	<!-- 扫描文件（包含了annotation-config的作用） -->
+	<context:component-scan base-package="com.crm.controller" />
+	<context:component-scan base-package="com.crm.common.util" />
+	<context:component-scan base-package="com.crm.api" />
+	
+	<!-- 最重要:::如果放在spring-context.xml中，这里的aop设置将不会生效 -->
+  	<aop:aspectj-autoproxy proxy-target-class="true" />
+
+ 	<!-- 扫描所有的controller 但是不扫描service-->
+    <context:component-scan base-package="com.crm.annotation">
+  		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" />
+	</context:component-scan>
+	
+	
+	<context:property-placeholder location="classpath:conf/application.properties"
+		ignore-resource-not-found="true" ignore-unresolvable="true" />
+	
+	<!-- 解析json请求数据，将json转换为java对象 -->
+	<bean id="mappingJackson2HttpMessageConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+		
+	<!--可以增加其他数据类型,请参考spring的API -->
+
+	<!-- 开启注解功能 -->
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="mappingJackson2HttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="dateUtil" class="com.crm.common.util.DateUtil" />
+	<bean id="stringUtil" class="com.crm.common.util.StringUtil" />
+
+	<!-- 设置 ViewResolver -->
+	<bean id="freemarkerConfiguration"
+		class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
+		<property name="templateLoaderPath" value="/WEB-INF/templates" />
+		<property name="freemarkerVariables">
+			<map>
+				<entry key="dateUtil" value-ref="dateUtil" />
+				<entry key="stringUtil" value-ref="stringUtil" />
+			</map>
+		</property>
+		<property name="freemarkerSettings">
+			<props>
+				<prop key="default_encoding">UTF-8</prop>
+				<prop key="number_format">#</prop>
+				<prop key="template_update_delay">0</prop>
+				<prop key="classic_compatible">true</prop>
+				<prop key="auto_import">/macro/macros.html as spring</prop>
+				<prop key="url_escaping_charset">UTF-8</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="freeMarkerConfigurer"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="configuration" ref="freemarkerConfiguration" />
+	</bean>
+
+	<bean id="freeMakerViewResolver"
+		class="com.crm.common.freemarker.MyFreeMarkerViewResolver">
+		<property name="cache" value="true" />
+		<property name="prefix" value="" />
+		<property name="suffix" value=".html" />
+		<property name="contentType" value="text/html; charset=UTF-8" />
+		<property name="requestContextAttribute" value="request" />
+	</bean>
+	
+	
+	
+	
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/**/code" />
+			<mvc:exclude-mapping path="/**/mobile/**" />
+			<mvc:exclude-mapping path="/**/alipay/**" />
+			<mvc:exclude-mapping path="/**/ding/**" />
+			<mvc:exclude-mapping path="/" />
+			<mvc:exclude-mapping path="/doLogin" />
+			<mvc:exclude-mapping path="/outer/**" />
+			<bean class="com.crm.interceptor.AuthorityInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+</beans>

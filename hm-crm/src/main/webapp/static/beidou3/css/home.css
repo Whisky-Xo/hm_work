@@ -1,0 +1,201 @@
+body {
+	min-width: 960px;
+	background-color: #F1F1F1;
+}
+/******-- 顶部导航CSS样式 --******/
+/*-- 企业LOGO --*/
+.logo {
+	height: 35px;
+	vertical-align: middle;
+	margin-left: 26px;
+	margin-right: 23px;
+}
+/*-- 纵向分隔线 --*/
+.v-line {
+	display: inline-block;
+	background-color: #ccc;
+	width: 1px;
+	height: 30px;
+	vertical-align: middle;
+	margin-left: 4px;
+}
+/*-- 功能导航项  --*/
+.nav {
+	width: 80px;
+	height: 40px;
+	background-color: #fff;
+}
+/*-- 主控制台按钮 --*/
+.home_console {
+	vertical-align: middle;
+}
+/*-- 搜索框 --*/
+.search_key {
+	width: 180px;
+	height: 30px;
+	background-color: #eee;
+}
+/*-- 头像 --*/
+/* #user_header_img {
+	position: relative;
+	top: -2px;
+	width: 30px;
+	border-radius: 50%;
+	margin-right: 8px;
+} */
+.icon_src {
+	width: 24px;
+	float: left;
+}
+
+.icon_sex {
+	position: relative;
+	top: 3px;
+	width: 15px;
+	left: -1px;
+}
+
+.icon_word {
+	background: #23C0FA;
+	width: 23px;
+	height: 23px;
+	color: #fff;
+	text-align: center;
+	border-radius: 100%;
+}
+
+.operate_right ul li {
+	display: inline-block;
+	float: left;
+	text-align: center;
+	font-size: 16px;
+	padding: 0px 5px;
+}
+
+.operate_box {
+	padding: 6px;
+	border: 1px #ccc solid;
+	border-radius: 6px;
+}
+
+.operate_right ul li .fa {
+	font-size: 24px;
+}
+
+.search_r_select {
+	border-left: none;
+	height: 26px;
+	display: inline-block;
+	vertical-align: middle;
+	background: #F1F1F1;
+	line-height: 26px;
+	text-align: center;
+	width: 20px;
+}
+
+#add_news {
+	height: 700px;
+	width: 700px;
+	margin: auto;
+	border: 1px #ccc solid;
+	margin-top: -350px;
+	position: absolute;
+	top: -100%;
+	margin-left: -350px;
+	left: 50%;
+	background: #fff;
+	border-radius: 10px;
+	z-index:99999;
+}
+#remove_kz{
+	height: 140px;
+    width: 300px;
+    margin: auto;
+    border: 1px #ccc solid;
+    margin-top: -100px;
+    position: absolute;
+    top: 50%;
+    margin-left: -150px;
+    left: 50%;
+    background: #fff;
+    border-radius: 10px;
+    z-index: 100000;
+}
+.add_news_htitle{float: left;font-size: 16px;}
+.add_news_head_r{float:right;font-size: 16px;}
+.add_news_head{background: #F4F4F4;height: 30px; line-height: 30px;border-top-left-radius: 10px;border-top-right-radius: 10px;}
+.box_head .box_tab ul li{height:30px;}
+.bgf3{background: #F3F3F3;}
+/* 多选框 */
+.more_select_li,.data_more_select_li {
+	text-align: left;
+	padding-left: 18%;
+}
+
+.more_select_li input ,.data_more_select_li input {
+	position: relative;
+	left: -8px;
+	width: 14px;
+}
+
+.allsource, .allstaff,.data_allsource {
+	background-color: #fff;
+	border: 1px solid #d9d9d9;
+	box-shadow: 0 1px 6px rgba(99, 99, 99, 0.2);
+	border-radius: 6px;
+	box-sizing: border-box;
+	position: absolute;
+	z-index: 999998;
+	left: 0;
+	right: 0;
+	/* margin-top: 4px; */
+	outline: none;
+	overflow: hidden;
+	font-size: 12px;
+	opacity: 0;
+	visibility: hidden;
+	-moz-transition-property: opacity;
+	-webkit-transition-property: opacity;
+	transition-property: opacity;
+	-moz-transition-duration: .3s;
+	-webkit-transition-duration: .3s;
+	transition-duration: .3s;
+	-moz-transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
+	-webkit-transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
+	transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
+	max-height: 400px;
+	overflow: auto;
+}
+
+.source_checkbox_icon, .staff_checkbox_icon , .data_source_checkbox_icon{
+	position: absolute;
+	right: 10px;
+	top: 3px;
+	cursor: pointer;
+	-moz-transition-property: all;
+	-webkit-transition-property: all;
+	transition-property: all;
+	-moz-transition-duration: .3s;
+	-webkit-transition-duration: .3s;
+	transition-duration: .3s;
+	-moz-transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
+	-webkit-transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
+	transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.source_checkbox, .staff_checkbox,.data_source_checkbox {
+	overflow: hidden;
+}
+#table_head table thead td{min-width:90px;}
+.search_box_select{z-index:999999;}
+table{white-space: nowrap;border-spacing: 0;}
+.main_section table td{padding-left:3px;white-space:nowrap; 
+text-overflow:ellipsis; 
+-o-text-overflow:ellipsis; 
+overflow: hidden;display: inline-block;
+}
+.main_section table td span{display: inline-block;}
+.conte_table thead tr{height:26px;line-height:26px;}
+
+.border_to{border-top: 1px #ccc solid;}
+#data_table{height:690px;}

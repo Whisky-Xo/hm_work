@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta content="text/html" ; charset="utf-8">
+	<title>${info.kzName}-${info.kzPhone}</title>
+	<link rel="shortcut icon" href="http://oss.aliyuncs.com/hmcrm/crm/pc_home/favicon.ico" type="image/x-icon">
+	<!-- <link rel="stylesheet" href="../static/css/common/jin_style.css" /> -->
+	<link rel="stylesheet" href="../static/beidou3/css/common/common.css" />
+	<link rel="stylesheet" href="../static/beidou3/css/detail_box.css" />
+	<link rel="stylesheet" href="../static/beidou3/css/font-awesome.min.css" />
+	<script type="text/javascript" src="../static/beidou3/js/plugin/jquery.min.js"></script>
+	<script type="text/javascript" src="../static/beidou3/js/common/jquery-1.3.1.min.js"></script>
+	<script type="text/javascript" src="../static/beidou3/js/common/layer.js"></script>
+	<script type="text/JavaScript" src="../static/beidou3/js/plugin/My97DatePicker/WdatePicker.js"></script>
+	<style>.borderT {
+	border-top: 1px #ccc solid;
+}</style>
+</head>
+<body>
+	<input id="role_type" type="hidden" value="${role}"/>
+	<div class="box_main mT15">
+		<div class="box_head clearfix borderB">
+			<div class="box_tab fl width-col-12 clearfix">
+				<ul>
+					<li onclick="changeNavTableHead('jbxx')" class="cursorP jbxx_xxxx_xgrz jbxx tab_active tab_nav_head tab_nav_l borderT borderL textC width-col-6 fl">基本信息</li>
+					<li onclick="changeNavTableHead('xxxx')" class="cursorP jbxx_xxxx_xgrz xxxx tab_nav_head textC tab_nav_c borderT borderL width-col-6 fl">详细信息</li>
+					<li onclick="changeNavTableHead('xgrz')" class="jbxx_xxxx_xgrz xgrz tab_nav_head textC tab_nav_r borderT borderL borderR width-col-6 fl cursorP">修改日志</li>
+				</ul>
+			</div>
+			<!-- <div class="box_head_right fr textR width-col-12 clearfix">
+				<ul class="clearfix" style="display:inline-block;">
+					<li class="pL10 pR10 fl"><i class="fa fa-barcode"></i></li>
+					<li class="pL10 pR10 fl"><i class="fa fa-wechat"></i></li>
+					<li class="pL10 pR10 fl"><i class="fa fa-photo"></i></li>
+					<li class="pL10 pR10 fl"><i class="fa fa-print"></i></li>
+					<li class="pL10 pR10 fl"><i class="fa fa-share"></i></li>
+				</ul>
+			</div> -->
+		</div>
+		<div class="base_info jbxx_xxxx_xgrz_box jbxx_box">
+			<div class="box_obj">
+				<div class="box_obj_base width-col-24 clearfix">
+					<div class="box_obj_base_left fl">
+						<img class="obj_img" src="http://oss.aliyuncs.com/hmcrm/beidou/home_img/default_user.png" />
+					</div>
+					<div class="box_obj_base_right fl">
+						<div class="box_obj_base_right_title borderB height36">
+							<ul class="clearfix">
+								<li class="wex_icon pL5 pR5 henght25 fl">
+									<#if info.sourceImg==''>
+										<#assign source = info.source?substring(0,1) />
+										<span style="display:inline-block; background: #23C0FA;width: 23px;height: 23px;color: #fff; text-align: center;border-radius: 100%;">${source}</span>
+									<#else>
+										<img style="width:25px;" src="${info.sourceImg}" />
+									</#if>
+								</li>
+								<li class="obj_name pL5 pR5 henght25 fl">${info.kzName}</li>
+								<li class="obj_sex pL5 pR5 henght25 fl">
+									<#if (info.sex == '1')>
+									<i class="fa fa-female icon_sex" style="text-align: center;"></i>
+									<#elseif (info.sex == '0')>
+									<i class="fa fa-male icon_sex" style="text-align: center;"></i>
+									</#if>
+								</li>
+								<li class="obj_pohone pL5 pR5 henght25 fl">${info.kzPhone}</li>
+								
+								<li class="fontS12 fontC54 pL5 pR5 henght25 fr">录入时间：<span class="pL2">${info.createTime}</span></li>
+								<li class="fontS12 fontC54 pL5 pR5 henght25 fr">编号<span class="pL2">${info.kzNum}</span></li>
+							</ul>
+						</div>
+						<div class="box_site_btn fontS13">
+							<div class="btn_sit_first mT10 height24 clearfix">
+								<div class="borderL borderT borderB height24 borTLrad6 borBLrad6 width-col-4 btn_active fl" style="background: ${info.statusColor};">${info.className}</div>
+								<div class="borderL borderT borderB height24 width-col-4 fl">${info.status}</div>
+								<div class="borderL borderT borderB height24 width-col-7 fl" style='text-align:left;padding-left:2%;'>订单时间：${info.successTime}</div>
+								<div class="borderL borderT borderB height24 width-col-4 fl"><i class="fa fa-user icon_fa"></i><span class="pL10">${info.collector}</span></div>
+								<div class="borderL borderT borderB borderR borBRrad6 borTRrad6 height24 width-col-4 fl"><i class="fa fa-suitcase icon_fa"></i><span class="pL10">${info.appoint}</span></div>
+							</div>
+							<div class="btn_sit_first mT10 height24 clearfix">
+								<div class="borderL borderT borderB borTLrad6 borBLrad6 width-col-5 fl">咨询
+									<select id="info_typeid">
+										<option value="0" <#if info.typeId == '0'>selected="selected"</#if>> 婚纱照</option>
+										<option value="1" <#if info.typeId == '1'>selected="selected"</#if>> 写真</option>
+										<option value="2" <#if info.typeId == '2'>selected="selected"</#if>> 全家福</option>
+										<option value="3" <#if info.typeId == '3'>selected="selected"</#if>> 儿童</option>
+									</select>
+								</div>
+								<div class="borderL borderT borderB height24 width-col-3 fl">意向
+									<select id="info_yx_lavel">
+										<option value="A+" <#if info.yxLavel == 'A+'>selected="selected"</#if>> A+</option>
+										<option value="A-" <#if info.yxLavel == 'A-'>selected="selected"</#if>> A-</option>
+										<option value="A" <#if info.yxLavel == 'A'>selected="selected"</#if>> A</option>
+										<option value="B+" <#if info.yxLavel == 'B+'>selected="selected"</#if>>B+</option>
+										<option value="B-" <#if info.yxLavel == 'B-'>selected="selected"</#if>> B-</option>
+										<option value="B" <#if info.yxLavel == 'B'>selected="selected"</#if>>B</option>
+									</select>
+								</div>
+								<div class="borderL borderT borderB height24 width-col-4 fl">预算：
+									<!-- <span class="pR10">预算${info.ysRange}</span><i class="fa fa-angle-down"></i> -->
+									<select id="info_ys_range">
+										<option value=""></option>
+										<option value="3~5K" <#if info.ysRange == '3~5K'>selected="selected"</#if>> 3~5K</option>
+										<option value="5~6K" <#if info.ysRange == '5~6K'>selected="selected"</#if>> 5~6K</option>
+										<option value="6~8K" <#if info.ysRange == '6~8K'>selected="selected"</#if>> 6~8K</option>
+										<option value="8~10K" <#if info.ysRange == '8~10K'>selected="selected"</#if>> 8~10K</option>
+										<option value="10K+" <#if info.ysRange == '10K+'>selected="selected"</#if>> 10K+</option>
+									</select>
+								</div>
+								<div class="borderL borderT borderB height24 width-col-5 fl" style="padding-left: 2%;">
+									<span class="pR5">婚期:</span>
+									<input value="${info.marryMemo}" id="info_marry_memo" type="text" style="width:calc(100% - 40px);"/>
+								</div>
+								<div class="borderL borderT borderB borderR borBRrad6 borTRrad6 height24 width-col-5 fl" style="padding-left: 2%;">
+									<span class="pR5">预拍：</span>
+									<input value="${info.ypMemo}" id="info_yp_memo" type="text" style="width:calc(100% - 50px);"/>
+								</div>
+							</div>
+							<div class="btn_sit_first mT10 height24 clearfix">
+								<div class="borderL borderT borderB borTLrad6 borBLrad6 width-col-5 fl" style="text-align:left;">
+									<!-- <span class="pR10">${info.kzName}</span> -->
+									<input value="${info.kzName}" id="info_name" type="text" style="width:calc(100% - 64px);padding-left:6%;"/>
+									<span onclick="showSexSelect()" class="user_sex cursorP" style="position: absolute;padding:0px 4px;">
+										<span class="sex_icon_into">
+										<#if info.sex == '0'>
+											<i attr-value class="user_sex_icon fa fa-female icon_sex icon_sex_female" style="text-align: center;"></i>
+										<#elseif info.sex == '1'>
+											<i class="user_sex_icon fa fa-female icon_sex icon_sex_male" style="text-align: center;"></i>
+										<#else>
+											<i class="fa fa-question icon_sex icon_sex_no" style="text-align: center;"></i>
+										</#if> </span>
+										<i class="fa fa-sort-desc"></i>
+										<div class="sex_all_box hide" style="position: absolute;">
+											<div class="tooltipster-base gd-tooltip-light gd-tooltip-menu-over tooltipster-fade tooltipster-fade-show" style="pointer-events: auto; transition-duration: 10ms; animation-duration: 10ms;">
+												<div class="tooltipster-content">
+													  <div class="top-settings-content">
+													  <ul class="links">
+													    <li style="margin-top:5px;margin-bottom:0px;" onclick="toSelectSex('1')">
+													    	<i class="fa fa-female icon_sex icon_sex_female" style="text-align: center;"></i>
+													    </li>
+													    <li class="separator"></li>
+													    <li onclick="toSelectSex('0')">
+													    	<i class="fa fa-male icon_sex icon_sex_male" style="text-align: center;"></i>
+														</li>
+													    <li class="separator"></li>
+													    <li onclick="toSelectSex('9')">
+													    	<i class="fa fa-question icon_sex icon_sex_no" style="text-align: center;"></i>
+													    </li>
+													  </ul>
+													</div>
+												</div>
+												<div class="tooltipster-arrow-bottom-right tooltipster-arrow" style="">
+													<span class="tooltipster-arrow-border" style="margin-top: -1px; border-color: rgb(195, 201, 208);;"></span>
+													<span style="border-color:rgb(255, 255, 255);"></span>
+												</div>
+											</div>
+										</div>
+									</span>
+								</div>
+								<div class="borderL borderT borderB height24 width-col-6 fl">
+									<input value="${info.kzPhone}" id="info_phone" type="text" style="width:calc(100% - 40px);"/>
+									<i class="fa fa-phone icon_fa"></i>
+								</div>
+								<div class="borderL borderT borderB height24 width-col-6 fl">
+									<input value="${info.kzWechat}" id="info_wechat" type="text" style="width:calc(100% - 40px);"/>
+									<i class="fa fa-wechat" style="color: #00CC00;"></i>
+								</div>
+								<div class="borderL borderT borderB borderR borBRrad6 borTRrad6 height24 width-col-6 fl">
+									<input value="${info.kzQq}" id="info_qq" type="text" style="width:calc(100% - 40px);"/>
+									<i class="icon_fa fa fa-qq"></i>
+								</div>
+							</div>
+							<div id="select_address" class="btn_sit_first mT10 height24 clearfix">
+								<div class="borderL borderT borderB borTLrad6 borBLrad6 width-col-5 fl" style="text-align:left;">
+									<span style="padding-left:6%;">地址：</span>
+									<select class="prov" style="width: calc(100% - 66px);" id="info_address_prov"></select> 
+								</div>
+								<div class="borderL borderT borderB height24 width-col-4 fl">
+									<select class="city" disabled="disabled" style="width: 80%;" id="info_address_city"></select>
+								</div>
+								<div class="borderL borderT borderB height24 width-col-4 fl" style="height:24px;">
+									<select class="dist" disabled="disabled" style="width: 80%;" id="info_address_dist"></select>
+								</div>
+								<div class="borderL borderT borderB borderR borBRrad6 borTRrad6 height24 width-col-10 fl" style="text-align:left;">
+									<span style="padding-left:6%;">详细地址：</span>
+									<input value="" type="text" style="width:calc(100% - 100px);" id="info_address_detail"/>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="box_obj_info mT15">
+				<div class="box_edit clearfix borderB">
+					<div class="fl width-col-20 clearfix">
+						<ul>
+							<li class="tgqd_yykf_zjstb_mdms_cwsy tgqd tab_active tab_nav_head tab_nav_l borderT borderL textC fl pL15 pR15 cursorP" onclick="changeContentNavTab('tgqd')">推广渠道</li>
+							<li class="tgqd_yykf_zjstb_mdms_cwsy yykf tab_nav_head textC tab_nav_c borderT borderL fl pL15 pR15 cursorP" onclick="changeContentNavTab('yykf')">邀约客服</li>
+							<li class="tgqd_yykf_zjstb_mdms_cwsy zjstb tab_nav_head textC tab_nav_c borderT borderL fl pL15 pR15 cursorP" onclick="changeContentNavTab('zjstb')">转介绍提报</li>
+							<li class="tgqd_yykf_zjstb_mdms_cwsy mdms tab_nav_head textC tab_nav_c borderT borderL fl pL15 pR15 cursorP" onclick="changeContentNavTab('mdms')">门店门市</li>
+							<li class="tgqd_yykf_zjstb_mdms_cwsy cwsy tab_nav_head textC tab_nav_r borderT borderL borderR fl pL15 pR15 cursorP" onclick="changeContentNavTab('cwsy')">财务收银</li>
+						</ul>
+					</div>
+				</div>
+				<div class="tgqd_yykf_zjstb_mdms_cwsy_box tgqd_box box_site_btn fontS13" style="padding: 0px 15px;">
+					<div class="btn_sit_first mT10 height24 clearfix">
+						<div class="borderL borderT borderB borTLrad6 borBLrad6 width-col-4 fl"><span class="pR10">来源信息</span></div>
+						<div class="borderL borderT borderB height24 width-col-4 fl">
+							<!-- <span class="pR10">${info.source}</span><i class="fa fa-angle-down"></i> -->
+							<select class="height22" id="info_source_id">
+							 	<#list sources_ds as srcds>
+	                            <option value="${srcds.srcId}"<#if info.sourceId == srcds.srcId>selected="selected"</#if>>${srcds.srcName}</option>
+	                            </#list>
+							</select>
+						</div>
+						<div class="borderL borderT borderB height24 width-col-4 fl">
+							<select class="height22" id="info_zx_style">
+								<option value="对话咨询" <#if info.zxStyle == '对话咨询'>selected="selected"</#if>>对话咨询</option>
+								<option value="报名咨询" <#if info.zxStyle == '报名咨询'>selected="selected"</#if>>报名咨询</option>
+							</select>
+						</div>
+						<div class="borderL borderT borderB height24 width-col-4 fl">
+							<select class="height22" id="info_collector_id">
+	                            <option value="${info.collectorId}">${info.collector}</option>
+							</select>
+						</div>
+						<div class="borderL borderT borderB borderR borBRrad6 borTRrad6 height24 width-col-7 fl">
+							<span class="pR10" style="color:#ccc;">录入时间：<span>${info.createTime}</span></span>
+						</div>
+					</div>
+					<div class="btn_sit_first mT10 height24 clearfix">
+						<div class="borderL borderT borderB borTLrad6 borBLrad6 width-col-4 fl"><span class="pR10">广告着陆页</span></div>
+						<div class="borderL borderT borderB height24 width-col-12 fl">
+							<i class="fa fa-paper-plane-o icon_fa" style="padding-right: 10px;"></i>
+							<input id="info_ad_address" value="${info.adAddress}" type="text" style="width:calc(100% - 60px);"/>
+						</div>
+						<div class="borderL borderT borderB height24 width-col-7 borderR borTRrad6 borBRrad6 fl">
+							<span class="pR10">广告ID：</span>
+							<input id="info_ad_id" value="${info.adId}" type="text" style="width:calc(100% - 100px);"/>
+						</div>
+					</div>
+					<div class="decri clearfix mT10 borderA">
+						<div class="de_left fl borderR textC" style="width:66px;background:#F9F9F9;height:200px;padding-top:20px;">
+							推广备注
+						</div>
+						<div class="de_right width-col-20 fl" style="width:calc(100% - 107px);padding:20px;">
+							<textarea id="info_remark" style="height:180px;width:100%;">${info.remark}</textarea>
+						</div>
+					</div>
+				</div>
+				<div class="tgqd_yykf_zjstb_mdms_cwsy_box yykf_box box_site_btn fontS13 hide" style="padding: 0px 15px;">
+					<div class="btn_sit_first mT10 height24 clearfix">
+						<div class="borderL borderT borderB borTLrad6 borBLrad6 width-col-5 fl">
+							<input id="check_inv" type="radio" name="yy_rst" value="5"/><span class="pR10 width70 displayLB">无效</span>
+						</div>
+						<div class="borderL borderT borderB height24 width-col-5 fl">
+							<select id="yy_invalid_reason">
+								<#list invalidreasons as invalid>
+	                            <option value="${invalid.dicCode}">${invalid.dicName}</option>
+	                            </#list>
+							</select>
+						</div>
+						<div class="borderL borderT borderB borderR borBRrad6 borTRrad6 height24 width-col-13 fl">
+							<input type="text" id="yy_invalid_memo" placeholder="无效备注"/>
+						</div>
+					</div>
+					<div class="btn_sit_first mT10 height24 clearfix">
+						<div class="borderL borderT borderB borTLrad6 borBLrad6 width-col-5 fl">
+							<input type="radio" name="yy_rst" value="6" /><span class="pR10 width70 displayLB">下次跟踪</span>
+						</div>
+						<div class="borderL borderT borderB height24 width-col-5 fl">
+							<span class="pR10 width70 displayLB">跟踪时间</span>
+						</div>
+						<div class="borderL borderT borderB height24 width-col-6 fl">
+							<input value="" id="invite_trace_time" type="text" onClick="WdatePicker({dateFmt:'yyyy/MM/dd HH:mm',minDate:'%y-%M-%d'})" style="width:calc(100% - 20px);" placeholder="追踪时间" />
+						</div>
+						<div class="borderL borderT borderB borderR borBRrad6 borTRrad6 height24 width-col-7 fl">
+						</div>
+					</div>
+					<div class="btn_sit_first mT10 height24 clearfix">
+						<div class="borderL borderT borderB borTLrad6 borBLrad6 width-col-5 fl">
+							<input type="radio" name="yy_rst" value="3" /><span class="pR10 width70 displayLB">预约到店</span>
+						</div>
+						<div class="borderL borderT borderB height24 width-col-5 fl">
+							<select id="invite_shop_id">
+								<#list shops as shop>
+	                            <option value="${shop.shopId}">${shop.shopName}</option>
+	                            </#list>
+							</select>
+						</div>
+						<div class="borderL borderT borderB height24 width-col-6 fl">
+							<input value="" id="invite_yy_time" type="text" onClick="WdatePicker({dateFmt:'yyyy/MM/dd HH:mm',minDate:'%y-%M-%d'})" style="width:calc(100% - 20px);" placeholder="预约时间" />
+						</div>
+						<div class="borderL borderT borderB borderR borBRrad6 borTRrad6 height24 width-col-7 fl" onclick="getSmsPreview();" style="background-color: #2db7f5;color: #fff;">
+							<span class="pR10">发送预约短信</span>
+						</div>
+					</div>
+					<div class="btn_sit_first mT10 height24 clearfix">
+						<div class="borderL borderT borderB borTLrad6 borBLrad6 width-col-5 fl">
+							<input type="radio" name="yy_rst" value="-1"/><span class="pR10 width70 displayLB">其他状态</span>
+						</div>
+						<div class="borderL borderT borderB height24 width-col-5 fl">
+							<select id="yy_rst_other">
+								<#list tracestatus as status>
+	                            <option value="${status.dicCode}">${status.dicName}</option>
+	                            </#list>
+							</select>
+						</div>
+						<div class="borderL borderT borderB borderR borBRrad6 borTRrad6 height24 width-col-13 fl">
+						</div>
+					</div>
+					<div class="decri clearfix mT10 borderA">
+						<div class="fl" style="padding:20px;">
+							<textarea style="height:180px;width:100%;" placeholder="输入客户跟踪信息" id="yy_memo"></textarea>
+							<div>
+								<#list yylogs as log>
+	                            <div><span>--</span><span>（${log.staffName}@${log.createTime}）--${log.rst}---${log.yyMemo}</span></div>
+	                            </#list>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="tgqd_yykf_zjstb_mdms_cwsy_box zjstb_box box_site_btn fontS13 hide" style="padding: 0px 15px;"></div>
+				<div class="tgqd_yykf_zjstb_mdms_cwsy_box mdms_box box_site_btn fontS13 hide" style="padding: 0px 15px;">
+					<div class="btn_sit_first mT10 height24 clearfix">
+						<div class="borderL borderT borderB borTLrad6 borBLrad6 width-col-5 fl" style="line-height: 49px;height:49px;">
+							<input id="check_inv" type="radio" name="jd_rst" value="10"><span class="pR10 width70 displayLB">已到店</span>
+						</div>
+						<div class="borderL borderT height24 width-col-5 fl">
+							<select id="mdjd_come_shop_id">
+	                           	<#list shops as shop>
+	                            <option value="${shop.shopId}">${shop.shopName}</option>
+                            	</#list>
+							</select>
+						</div>
+						<div class="borderL borderT height24 width-col-5 fl">
+							<select id="mdjd_come_receptor_id">
+	                            <option value="1">门市接待</option>
+	                            <option value="14">门市接待1</option>
+	                            <option value="2">门市接待2</option>
+							</select>
+						</div>
+						<div class="borderL borderT borderR borTRrad6 height24 width-col-8 fl">
+							<span class="pR10 width70 displayLB">到店时间：</span>
+							<input type="text" id="jd_come_shop_time" onClick="WdatePicker({dateFmt:'yyyy/MM/dd HH:mm',maxDate:'%y-%M-%d'})" placeholder="请选择到店时间"/>
+						</div>
+					</div>
+					<div class="btn_sit_first height24 clearfix">
+						<div class="borderL borderT borderB width-col-5 fl">
+							<select id="jd_runoff_reason">
+	                            <#list runoffreasons as runoff>
+	                            <option value="${runoff.dicCode}">${runoff.dicName}</option>
+	                            </#list>
+							</select>
+						</div>
+						<div class="borderL borderT borderB height24 width-col-8 fl" style="text-align:left;">
+							<span class="pR10 width92 displayLB" style="padding-left:10px;">下次预约时间：</span>
+							<input id="jd_appoint_time" type="text" onclick="WdatePicker({dateFmt:'yyyy/MM/dd HH:mm',minDate:'%y-%M-%d'})" placeholder="">
+						</div>
+						<div class="borderL borderT borderB borderR borBRrad6 height24 width-col-5 fl">
+							<i class=""></i><span class="pR10">添加多次到店</span>
+						</div>
+					</div>
+					
+					
+					<div class="btn_sit_first mT10 height24 clearfix">
+						<div class="borderL borderT borderB borTLrad6 borBLrad6 width-col-5 fl" style="line-height: 49px;height:49px;">
+							<input id="check_inv" type="radio" name="jd_rst" value="9"><span class="pR10 width70 displayLB">已订单</span>
+						</div>
+						<div class="borderL borderT height24 width-col-5 fl">
+							<i class=""></i>
+							<select id="mdjd_success_shop_id">
+	                           	<#list shops as shop>
+	                            <option value="${shop.shopId}">${shop.shopName}</option>
+                            	</#list>
+							</select>
+						</div>
+						<div class="borderL borderT height24 width-col-5 fl">
+							<select id="mdjd_success_receptor_id">
+	                            <option value="1">门市接待</option>
+	                            <option value="14">门市接待1</option>
+	                            <option value="2">门市接待2</option>
+							</select>
+						</div>
+						<div class="borderL borderT borderR borTRrad6 height24 width-col-8 fl" style="padding-left:2px;">
+							<span class="pR10 width70 displayLB">订单时间：</span>
+							<input type="text" id="jd_success_time" value="" onClick="WdatePicker({dateFmt:'yyyy/MM/dd HH:mm',maxDate:'%y-%M-%d'})" placeholder=""/>
+						</div>
+					</div>
+					<div class="btn_sit_first height24 clearfix">
+						<div class="borderL borderT borderB width-col-5 fl">
+							<select id="pay_style">
+	                            <option value="0">付款方式</option>
+	                            <option value="现金">现金</option>
+	                            <option value="支付宝">支付宝</option>
+	                            <option value="信用卡">信用卡</option>
+							</select>
+						</div>
+						<div class="borderL borderT borderB height24 width-col-3 fl" style="text-align:left;">
+							<input value="" id="ht_num" type="text" style="padding-left:6px;" placeholder="合同编号">
+						</div>
+						<div class="borderL borderT borderB height24 width-col-3 fl" style="text-align:left;">
+							<input value="" id="amount" type="text" style="padding-left:6px;" placeholder="套餐金额">
+						</div>
+						<div class="borderL borderT borderB height24 width-col-3 fl" style="text-align:left;">
+							<input value="" id="ys_salary" type="text" style="padding-left:6px;" placeholder="已收金额">
+						</div>
+						<div class="borderL borderT borderB borderR borBRrad6 height24 width-col-4 fl">
+							<i class=""></i><span class="pR10">添加收款信息</span>
+						</div>
+					</div>
+					
+					<div class="decri clearfix mT10 borderA">
+						<div style="padding:20px;">
+							<textarea style="height:180px;width:100%;" placeholder="输入客户跟踪信息" id="jd_memo"></textarea>
+							
+						</div>
+					</div>
+					<div style="width:100%;">
+                          <table class="borderL borderR " cellspacing="0" style="width:100%;">
+						<tbody>
+							<#list qtlog as log>
+							<tr class="borderL borderR" style="height:26px;">
+								<td class="tbody_first borderR textC borderB">---${log.operaName}</td>
+								<td class="pL10 borderB"><span>（${log.recepterName} @ ${log.createTime}）--${log.rstLabel}---${log.qtMemo}</span></td>
+							</tr>
+                            </#list>
+						</tbody>
+					</table>
+				</div>
+				</div>
+			</div>
+			<div class="floor_btn mT20">
+				<div class="group_form textC">
+					<div class="group_list width-col-3" style="display:inline-block;">
+						<input id="search_btn" type="text" class="cursorP save_btn_detail" style="padding:0px;width:70px;border-radius: 6px;" value="保存" onclick="doSaveEditInfo();" />
+						<input id="info_kzid" type="hidden" value="${info.kzId}"/>
+						<input id="info_sex" type="hidden" value="${info.sex}"/>
+					</div>
+					<div class="group_list width-col-3" style="display:inline-block;">
+						<input id="close_wind" class="textC cursorP" onclick="closeSonWindow()" type="text" style="border:1px #ccc solid;border-radius: 6px;padding:0px;width:70px;" value="关闭">
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div id="detail_info" class="detail_info jbxx_xxxx_xgrz_box xxxx_box hide">
+			<div class="box_main mT15">
+				<div class="box_obj" style="height:770px;">
+					<div class="box_obj_base width-col-24 clearfix" style="height:calc(100% - 120px);padding-top:20px;">
+						<div class="box_obj_base_left fl">
+							<img class="obj_img" src="http://oss.aliyuncs.com/hmcrm/beidou/home_img/default_user.png" />
+						</div>
+						<div class="box_obj_base_right fl">
+							<div class="box_site_btn fontS13">
+								<div class="btn_sit_first height24 clearfix">
+									<div class="borderL borderT borderB borTLrad6 width-col-5 fl" style="text-align: left;">
+										<input value="${info.kzName}" id="det_kz_name" type="text" style="width:calc(100% - 64px);padding-left:6%;" placeholder="客户姓名"/>
+										<span onclick="showSexSelect()" class="user_sex cursorP" style="position: absolute;padding:0px 4px;">
+											<span class="sex_icon_into">
+												<i attr-value class="user_sex_icon fa fa-female icon_sex icon_sex_female" style="text-align: center;"></i>
+												<!-- <i class="user_sex_icon fa fa-female icon_sex" style="text-align: center;"></i>
+												<i class="fa fa-question icon_sex" style="text-align: center;"></i> -->
+											</span>
+											<i class="fa fa-sort-desc "></i>
+											<div class="sex_all_box hide" style="position: absolute;">
+												<div class="tooltipster-base gd-tooltip-light gd-tooltip-menu-over tooltipster-fade tooltipster-fade-show" style="pointer-events: auto; transition-duration: 10ms; animation-duration: 10ms;">
+													<div class="tooltipster-content">
+														  <div class="top-settings-content">
+														  <ul class="links">
+														    <li style="margin-top:5px;margin-bottom:0px;" onclick="toSelectSex('1')">
+														    	<i class="fa fa-female icon_sex icon_sex_female" style="text-align: center;"></i>
+														    </li>
+														    <li class="separator"></li>
+														    <li onclick="toSelectSex('0')">
+														    	<i class="fa fa-male icon_sex icon_sex_male" style="text-align: center;"></i>
+															</li>
+														    <li class="separator"></li>
+														    <li onclick="toSelectSex('9')">
+														    	<i class="fa fa-question icon_sex icon_sex_no" style="text-align: center;"></i>
+														    </li>
+														  </ul>
+														</div>
+													</div>
+													<div class="tooltipster-arrow-bottom-right tooltipster-arrow" style="">
+														<span class="tooltipster-arrow-border" style="margin-top: -1px; border-color: rgb(195, 201, 208);;"></span>
+														<span style="border-color:rgb(255, 255, 255);"></span>
+													</div>
+												</div>
+											</div>
+										</span>
+									</div>
+									<div class="borderL borderT borderB width-col-5 fl">
+										<input value="${info.kzPhone}" id="det_kz_phone" type="text" style="width:calc(100% - 40px);" placeholder="客户电话"/>
+										<i class="fa fa-phone icon_fa"></i>
+									</div>
+									<div class="borderL borderT borderB width-col-8 fl" style='text-align:left;padding-left:2%;'>
+										<input value="${info.kzWechat}" id="det_kz_wechat" type="text" style="width:calc(100% - 40px);" placeholder="微信号"/>
+										<i class="fa fa-wechat" style="color: #00CC00;"></i>
+									</div>
+									<div class="borderL borderT borderB borderR borTRrad6 width-col-5 fl">
+										<input value="${info.kzQq}" id="det_kz_qq" type="text" style="width:calc(100% - 40px);" placeholder="QQ"/>
+										<i class="icon_fa fa fa-qq"></i>
+									</div>
+								</div>
+								<div class="btn_sit_first height24 clearfix">
+									<div class="borderL borderB borBLrad6 width-col-5 fl">
+										<input id=det_mate_name type="text" value="${info.mateName}" style="padding-left:8px;width: 100%;" placeholder="配偶姓名"/>
+									</div>
+									<div class="borderL borderB width-col-5 fl">
+										<input id="det_mate_phone" type="text" value="${info.matePhone}" style="width:calc(100% - 40px);" placeholder="配偶电话"/>
+										<i class="fa fa-phone icon_fa"></i>
+									</div>
+									<div class="borderL borderB width-col-8 fl" style='text-align:left;padding-left:2%;'>
+										<input id="det_mate_wechat" type="text" value="${info.mateWeChat}" style="width:calc(100% - 40px);" placeholder="微信号"/>
+										<i class="fa fa-wechat" style="color: #00CC00;"></i>
+									</div>
+									<div class="borderL borderB borderR borBRrad6 width-col-5 fl">
+										<input id="det_mate_qq" type="text" value="${info.mateQq}" style="width:calc(100% - 40px);" placeholder="QQ"/>
+										<i class="icon_fa fa fa-qq"></i>
+									</div>
+								</div>
+								<div class="btn_sit_first mT20 height24 clearfix">
+									<div class="borderL borderT borderB borTLrad6 width-col-5 bgf3 fl">
+										<span>生日</span>
+									</div>
+									<div class="borderL borderT borderB width-col-8 fl">
+										<input value="${info.birthTime}" id="det_birthtime" type="text" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" style="width:calc(100% - 20px);"/>
+									</div>
+									<div class="borderL borderT borderB width-col-5 fl" style='text-align:center;'>
+										<span>农历生日</span>
+									</div>
+									<div class="borderL borderT borderB borderR borTRrad6 width-col-5 fl">
+										<input value="${info.ageNum}" id="det_age_num" type="text" style="width:calc(100% - 40px);"/>
+										<span>岁</span>
+									</div>
+								</div>
+								<div class="btn_sit_first height24 clearfix">
+									<div class="bgf3 borderL borderB borBLrad6 width-col-5 fl" style="border-right:1px #ccc solid;">
+										<span>证件号码</span>
+									</div>
+									<div class="borderL borderB borderR borBRrad6 width-col-18 fl" style="padding-left:1px;">
+										<input value="${info.idNum}" id="det_id_num" type="text" style="width:calc(100% - 5px);"/>
+									</div>
+								</div>
+								<div class="btn_sit_first mT20 height24 clearfix">
+									<div class="borderL borderT borderB borTLrad6 width-col-5 bgf3 fl">
+										<span>从事行业</span>
+									</div>
+									<div class="borderL borderT borderB width-col-7 fl">
+										<select class="height22" id="det_job">
+											<option value="">请选择</option>
+											<option value="政府机构职员"<#if info.job == '政府机构职员'>selected="selected"</#if>>政府机构职员</option>
+											<option value="企业员工"<#if info.job == '企业员工'>selected="selected"</#if>>企业员工</option>
+											<option value="个体"<#if info.job == '个体'>selected="selected"</#if>>个体</option>
+											<option value="销售"<#if info.job == '销售'>selected="selected"</#if>>销售</option>
+											<option value="信息产业IT技术"<#if info.job == '信息产业IT技术'>selected="selected"</#if>>信息产业IT技术</option>
+											<option value="自由职业"<#if info.job == '自由职业'>selected="selected"</#if>>自由职业</option>
+											<option value="其他"<#if info.job == '其他'>selected="selected"</#if>>其他</option>
+										</select>
+									</div>
+									<div class="bgf3 borderL borderT borderB width-col-5 fl" style='text-align:center;'>
+										<span>教育程度</span>
+									</div>
+									<div class="borderL borderT borderB borderR borTRrad6 width-col-6 fl pL10">
+										<select class="height22" id="det_edu">
+											<option value="">请选择</option>
+											<option value="大专"<#if info.edu == '大专'>selected="selected"</#if>>大专</option>
+											<option value="本科"<#if info.edu == '本科'>selected="selected"</#if>>本科</option>
+											<option value="硕士"<#if info.edu == '硕士'>selected="selected"</#if>>硕士</option>
+											<option value="博士"<#if info.edu == '博士'>selected="selected"</#if>>博士</option>
+											<option value="MBA"<#if info.edu == 'MBA'>selected="selected"</#if>>MBA</option>
+											<option value="EMBA"<#if info.edu == 'EMBA'>selected="selected"</#if>>EMBA</option>
+											<option value="中专"<#if info.edu == '中专'>selected="selected"</#if>>中专</option>
+											<option value="中技"<#if info.edu == '中技'>selected="selected"</#if>>中技</option>
+											<option value="高中"<#if info.edu == '高中'>selected="selected"</#if>>高中</option>
+											<option value="初中"<#if info.edu == '初中'>selected="selected"</#if>>初中</option>
+											<option value="其他"<#if info.edu == '其他'>selected="selected"</#if>>其他</option>
+										</select>
+									</div>
+								</div>
+								<div class="btn_sit_first height24 clearfix">
+									<div class="bgf3 borderL borderB borBLrad6 width-col-5 fl">
+										<span>收入状况</span>
+									</div>
+									<div class="borderL borderB width-col-7 fl">
+										<select class="height22" id="det_earn">
+											<option value="">请选择</option>
+											<option value="1000元/月以下"<#if info.earn == '1000元/月以下'>selected="selected"</#if>>1000元/月以下</option>
+											<option value="1000-4000元/月"<#if info.earn == '1000-4000元/月'>selected="selected"</#if>>1000-4000元/月</option>
+											<option value="4001-8000元/月"<#if info.earn == '4001-8000元/月'>selected="selected"</#if>>4001-8000元/月</option>
+											<option value="8001-10000元/月"<#if info.earn == '8001-10000元/月'>selected="selected"</#if>>8001-10000元/月</option>
+											<option value="10001-15000元/月"<#if info.earn == '10001-15000元/月'>selected="selected"</#if>>10001-15000元/月</option>
+											<option value="15001-20000元/月"<#if info.earn == '15001-20000元/月'>selected="selected"</#if>>15001-20000元/月</option>
+											<option value="20001-50000元/月"<#if info.earn == '20001-50000元/月'>selected="selected"</#if>>20001-50000元/月</option>
+											<option value="50001-100000元/月"<#if info.earn == '50001-100000元/月'>selected="selected"</#if>>50001-100000元/月</option>
+											<option value="100000元/月以上"<#if info.earn == '100000元/月以上'>selected="selected"</#if>>100000元/月以上</option>
+										</select>
+									</div>
+									<div class="bgf3 borderL borderB width-col-5 fl" style='text-align:center;'>
+										<span>车房情况</span>
+									</div>
+									<div class="borderL borderB borderR borBRrad6 width-col-6 fl pL10">
+										<select class="height22" id="det_car_house">
+											<option value="">请选择</option>
+											<option value="无房无车"<#if info.carHouse == '无房无车'>selected="selected"</#if>>无房无车</option>
+											<option value="有房无车"<#if info.carHouse == '有房无车'>selected="selected"</#if>>有房无车</option>
+											<option value="无房有车"<#if info.carHouse == '有车'>selected="selected"</#if>>无房有车</option>
+											<option value="有房有车"<#if info.carHouse == '有房有车'>selected="selected"</#if>>有房有车</option>
+										</select>
+									</div>
+								</div>
+								<div id="detail_selectaddress" class="btn_sit_first mT20 height24 clearfix">
+									<div class="borderL borderT borderB borTLrad6 width-col-5 bgf3 fl">
+										<span>所属地</span>
+									</div>
+									<div class="borderL borderT borderB width-col-7 fl">
+										<select class="prov" style="width: calc(100% - 66px);" id="det_address_prov"></select> 
+									</div>
+									<div class="borderL borderT borderB width-col-5 fl" style='text-align:left;'>
+										<select class="city" disabled="disabled" style="width: 80%;" id="det_address_city"></select>
+									</div>
+									<div class="borderL borderT borderB borderR height24 borTRrad6 width-col-6 fl">
+										<select class="dist" disabled="disabled" style="width: 80%;" id="det_address_dist"></select>
+									</div>
+								</div>
+								<div class="btn_sit_first height24 clearfix">
+									<div class="bgf3 borderL borderB borBLrad6 width-col-5 fl">
+										<span>详细地址</span>
+									</div>
+									<div class="borderL borderB borderR borBRrad6 width-col-18 fl" style="padding-left:2px;">
+										<input value="" id="det_address_detail" type="text" style="width:calc(100% - 100px);"/>
+									</div>
+								</div>
+								<div id="add_selectaddress" class="btn_sit_first mT20 height24 clearfix">
+									<div class="borderL borderT borderB borTLrad6 width-col-5 bgf3 fl">
+										<span>预定婚期</span>
+									</div>
+									<div class="borderL borderT borderB width-col-7 fl">
+										<input value="${info.marryMemo}" id="det_marry_memo" type="text" style="width:calc(100% - 20px);" placeholder="如：三个月内"/>
+									</div>
+									<div class="borderL borderT borderB borderR borTRrad6 width-col-11 fl pL10">
+										<input value="${info.marryTime}" id="det_marry_time" type="text" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" style="width:calc(100% - 20px);"/>
+									</div>
+								</div>
+								<div class="btn_sit_first height24 clearfix">
+									<div class="bgf3 borderL borderB borBLrad6 width-col-5 fl">
+										<span>预定拍摄时间</span>
+									</div>
+									<div class="borderL borderB width-col-7 fl">
+										<input value="${info.ypMemo}" id="det_yp_memo" type="text" style="width:calc(100% - 20px);" placeholder="如：三个月内"/>
+									</div>
+									<div class="borderL borderB borderR borBRrad6 width-col-11 fl pL10">
+										<input value="${info.ypTime}" id="det_yp_time" type="text" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" style="width:calc(100% - 20px);"/>
+									</div>
+								</div>
+								<div class="decri clearfix mT20 borderA">
+										<div class="de_left fl borderR textC" style="width:66px;background:#F9F9F9;height:225px;padding-top:20px;">
+											备注
+										</div>
+										<div class="de_right width-col-20 fl" style="width:calc(100% - 107px);padding:20px;">
+											<textarea style="height:180px;width:100%;" id="det_remark">${info.remark}</textarea>
+										</div>
+									</div>
+							</div>
+						</div>
+					</div>
+					<div class="floor_btn mT20">
+						<div class="group_form textC">
+							<div class="group_list width-col-3" style="display:inline-block;">
+								<input id="search_btn" type="text" class="cursorP" style="padding:0px;width:70px;border-radius: 6px;" value="保存" onclick="doSaveInfoDetail();">
+							</div>
+							<div class="group_list width-col-3" style="display:inline-block;">
+								<input id="close_wind" class="textC cursorP" onclick="closeSonWindow()" type="text" style="border:1px #ccc solid;border-radius: 6px;padding:0px;width:70px;" value="关闭">
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		
+		<div id="logs_info" class="detail_info jbxx_xxxx_xgrz_box xgrz_box hide" style="padding:0px 15px;">
+			<div id="logs_info" class="detail_info jbxx_xxxx_xgrz_box xgrz_box hide" style="padding:0px 15px;">
+				<#list logs as log>
+					<div class="box_main mT15 clearfix">
+						<div class="width-col-4" style="float: left;display: inline-block;">
+							<span style="color:#a1a1a1;">${log.operaTime}</span> 
+						</div>
+						<div class="width-col-4" style="float: left;display: inline-block;">
+							<span>-- 来自  ${log.operaName}</span>
+						</div>
+						<div class="width-col-16" style="float:left;"><h5 class="info" style="font-weight: 400;">${log.memo}</h5></div>
+					</div>
+				</#list>
+			</div>
+		</div>
+	</div>
+	<input id="address_hidden" type="hidden" value="${info.address}"/>
+	<input id="sex_hidden" type="hidden" value="${info.sex}"/>
+    <script type="text/javascript" src="../static/beidou3/js/plugin/jQueryAddress/jquery.cityselect.js"></script>
+    <script type="text/javascript" src="../static/beidou3/js/home/clientInfo.js"></script>
+    <script type="text/javascript" src="../static/beidou3/js/home/invite.js"></script>
+    <script type="text/javascript" src="../static/beidou3/js/common/detail.js"></script>
+</body>
+</html>

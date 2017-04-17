@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.crm.model.dao.NewsDao">
+	<resultMap id="News" type="com.crm.model.News">
+		<id column="ID" jdbcType="INTEGER" property="id" />
+		<result column="TYPE" jdbcType="VARCHAR" property="type" />
+		<result column="TITLE" jdbcType="INTEGER" property="title" />
+		<result column="SPARE1" jdbcType="VARCHAR" property="spare1" />
+		<result column="SPARE2" jdbcType="VARCHAR" property="spare2" />
+		<result column="SPARE3" jdbcType="VARCHAR" property="spare3" />
+		<result column="SPARE4" jdbcType="VARCHAR" property="spare4" />
+		<result column="SPARE5" jdbcType="VARCHAR" property="spare5" />
+		<result column="SPARE6" jdbcType="VARCHAR" property="spare6" />
+		<result column="STAFFID" jdbcType="INTEGER" property="staffId" />
+		<result column="STAFFNAME" jdbcType="VARCHAR" property="staffName" />
+		<result column="CREATETIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="CREATEIP" jdbcType="VARCHAR" property="createIp" />
+		<result column="COMPANYID" jdbcType="INTEGER" property="companyId" />
+		<result column="ISREAD" jdbcType="BOOLEAN" property="isRead" />
+	</resultMap>
+
+	<!-- 新增消息 -->
+	<insert id="addOneNew" useGeneratedKeys="true" parameterType="com.crm.model.News">
+		INSERT INTO hm_crm_news
+			(TYPE, TITLE, SPARE1, SPARE2, SPARE3, 
+			 SPARE4, SPARE5, SPARE6, STAFFID, CREATETIME, 
+			 CREATEIP, COMPANYID, ISREAD )
+		VALUES
+			(#{type}, #{title}, #{spare1}, #{spare2}, #{spare3},
+			 #{spare4}, #{spare5}, #{spare6}, #{staffId}, #{createTime}, 
+			 #{createIp}, #{companyId}, #{isRead} )
+	</insert>
+	
+	<!-- 批量新增消息 -->
+	<insert id="addNews" useGeneratedKeys="true" parameterType="java.util.List">
+		INSERT INTO hm_crm_news
+			(TYPE, TITLE, SPARE1, SPARE2, SPARE3, 
+			 SPARE4, SPARE5, SPARE6, STAFFID, CREATETIME, 
+			 CREATEIP, COMPANYID, ISREAD )
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.type}, #{item.title}, #{item.spare1}, #{item.spare2}, #{item.spare3},
+			 #{item.spare4}, #{item.spare5}, #{item.spare6}, #{item.staffId}, #{item.createTime}, 
+			 #{item.createIp}, #{item.companyId}, #{item.isRead} )
+		</foreach>
+	</insert>
+	
+	<!-- 消息标记为已读 -->
+	<update id="doUpdateNewsBeRead"  parameterType="com.crm.model.News">
+		UPDATE 
+			hm_crm_news	
+		SET	
+			ISREAD = 1 
+		WHERE ID = #{id} 
+		AND COMPANYID = #{companyId}
+    </update>
+    
+    <!-- 获取当前用户最新的三条未读消息 -->
+	<select id="getNewsOnlyThree" parameterType="com.crm.model.Staff" resultMap="News">
+		SELECT
+			*
+		FROM
+			hm_crm_news
+		WHERE
+			STAFFID = #{id}
+		AND COMPANYID = #{companyId}
+		AND ISREAD = 0
+		ORDER BY
+			CREATETIME DESC
+		LIMIT 0,3
+	</select>
+	
+	<!-- 获取当前用户所有未读消息 -->
+	<select id="getNewsNoReadAll" parameterType="com.crm.model.Staff" resultMap="News">
+		SELECT
+			*
+		FROM
+			hm_crm_news
+		WHERE
+			STAFFID = #{id}
+		AND COMPANYID = #{companyId}
+		AND ISREAD = 0
+		ORDER BY
+			CREATETIME DESC
+	</select>
+	
+	
+	<!-- 用户全部消息数量 -->
+	<select id="countNewsAll" parameterType="com.crm.model.Staff" resultType="Integer">
+		SELECT
+			count(*)
+		FROM
+			hm_crm_news
+		WHERE
+			STAFFID = #{id}
+		AND COMPANYID = #{companyId};
+	</select>
+	
+	
+	
+	<!-- 用户所有消息分页查询 -->
+	<select id="getNewsPage" parameterType="com.crm.model.Staff" resultMap="News">
+		SELECT
+			*
+		FROM
+			hm_crm_news
+		WHERE
+			STAFFID = #{id}
+		AND COMPANYID = #{companyId}
+		limit #{startIndex}, #{pageSize};
+	</select>
+</mapper>

@@ -1,0 +1,492 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.hanmu.crm</groupId>
+	<artifactId>hm-crm</artifactId>
+	<packaging>war</packaging>
+	<version>1.0-SNAPSHOT</version>
+	<name>hm-crm Maven Webapp</name>
+	<url>http://maven.apache.org</url>
+
+	<!-- 配置本地仓库 -->
+	<repositories>
+		<repository>
+			<id>data-local</id>
+			<name>data</name>
+			<url>file://${project.basedir}/repo</url>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+
+		<repository>
+			<id>goeasy</id>
+			<name>goeasy</name>
+			<url>http://maven.goeasy.io/content/repositories/releases/</url>
+		</repository>
+	</repositories>
+
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring.version>4.1.7.RELEASE</spring.version>
+		<mybatis.version>3.2.8</mybatis.version>
+		<mybatis.spring.version>1.2.2</mybatis.spring.version>
+		<slf4j.version>1.7.13</slf4j.version>
+		<mysql.version>5.1.34</mysql.version>
+		<commons.lang.version>2.6</commons.lang.version>
+		<junit.version>4.12</junit.version>
+		<commons.dbcp.version>1.4</commons.dbcp.version>
+		<fasterxml.version>2.5.0</fasterxml.version>
+		<freemarker.version>2.3.18</freemarker.version>
+	</properties>
+
+	<dependencies>
+		<!-- spring核心包 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-oxm</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<!-- springframe end -->
+
+		<!-- mybatis核心包 -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>${mybatis.version}</version>
+		</dependency>
+
+		<!-- mybatis/spring包 -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>${mybatis.spring.version}</version>
+		</dependency>
+
+		<!-- mysql驱动包 -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql.version}</version>
+		</dependency>
+
+		<!-- 日志文件管理包 -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>${commons.lang.version}</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>2.4</version>
+		</dependency>
+
+		<!-- junit测试包 -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+	    	<groupId>com.alibaba</groupId>
+	    	<artifactId>druid</artifactId>
+	    	<version>1.0.27</version>
+		</dependency>
+
+<!-- 		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>${commons.dbcp.version}</version>
+		</dependency> -->
+
+		<!-- json -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${fasterxml.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${fasterxml.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${fasterxml.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.1.40</version>
+		</dependency>
+
+		<!-- PageHelper分页插件 -->
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper</artifactId>
+			<version>4.0.1</version>
+		</dependency>
+		
+		<!-- freemarker -->
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>${freemarker.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alipay</groupId>
+			<artifactId>alipay-sdk</artifactId>
+			<version>java20160804120058</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.taobao</groupId>
+			<artifactId>taobao-sdk-java-auto_1455552377940</artifactId>
+			<version>20160505</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.checksum</groupId>
+			<artifactId>checksum-compute-0.2.0-jar-with</artifactId>
+			<version>dependencies</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com</groupId>
+			<artifactId>common</artifactId>
+			<version>utils</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>net.sourceforge.jexcelapi</groupId>
+		    <artifactId>jxl</artifactId>
+		    <version>2.6.12</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.4.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.9</version>
+		</dependency>
+
+		<dependency>
+			<groupId>jdom</groupId>
+			<artifactId>jdom</artifactId>
+			<version>1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.aliyun.oss</groupId>
+			<artifactId>aliyun-sdk-oss</artifactId>
+			<version>2.2.3</version>
+		</dependency>
+		
+		<dependency>
+		   <groupId>com.aliyun.openservices</groupId>
+		   <artifactId>ons-client</artifactId>
+		   <version>1.2.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.3.1</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-lang3</artifactId>
+		    <version>3.4</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>2.7.2</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.wiztools.commons</groupId>
+			<artifactId>wiztools-commons-lib</artifactId>
+			<version>0.2.0</version>
+		</dependency>
+
+<!-- 		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk15on</artifactId>
+			<version>1.52</version>
+		</dependency> -->
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+			<version>4.5.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.goeasy</groupId>
+			<artifactId>goeasy-sdk</artifactId>
+			<version>0.3.3</version>
+		</dependency>
+		
+<!-- 		<dependency>
+		    <groupId>org.bouncycastle</groupId>
+		    <artifactId>bcprov-jdk16</artifactId>
+		    <version>1.46</version>
+		</dependency> -->
+		
+		
+		<!--AOP相关jar包-->
+    	<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>1.8.9</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.8.9</version>
+		</dependency>
+        <dependency>
+			<groupId>aopalliance</groupId>
+			<artifactId>aopalliance</artifactId>
+			<version>1.0</version>
+		</dependency>
+    	<!--AOP相关jar包-->
+		
+		
+
+		<!-- 钉钉dependency -->
+		<dependency>
+		    <groupId>com.dingtalk.open</groupId>
+		    <artifactId>client-sdk.api</artifactId>
+		    <version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.dingtalk.open</groupId>
+		    <artifactId>client-sdk.common</artifactId>
+		    <version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.dingtalk.open</groupId>
+		    <artifactId>client-sdk.core</artifactId>
+		    <version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.dingtalk.open</groupId>
+		    <artifactId>client-sdk.spring</artifactId>
+		    <version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/com.ning/async-http-client -->
+		<dependency>
+    		<groupId>com.ning</groupId>
+    		<artifactId>async-http-client</artifactId>
+    		<version>1.9.32</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/io.netty/netty -->
+		<dependency>
+    		<groupId>io.netty</groupId>
+   			<artifactId>netty</artifactId>
+    		<version>3.10.5.Final</version>
+		</dependency>
+	</dependencies>
+	
+	
+
+	<profiles>
+		<profile>
+			<!-- 本地开发环境 -->
+			<id>dev</id>
+			<properties>
+				<!-- 测试数据库1 -->
+  				<profile.jdbc.url1>jdbc:mysql://114.55.36.99:3306/hm_crm?characterEncoding=utf-8</profile.jdbc.url1>
+				<profile.jdbc.username1>paikong</profile.jdbc.username1>
+				<profile.jdbc.password1>paikong</profile.jdbc.password1>  
+				<!-- 测试数据库2 -->
+  				<profile.jdbc.url2>jdbc:mysql://114.55.36.99:3306/hm_crm?characterEncoding=utf-8</profile.jdbc.url2>
+				<profile.jdbc.username2>paikong</profile.jdbc.username2>
+				<profile.jdbc.password2>paikong</profile.jdbc.password2>
+				
+<!-- 			数据库1
+ 				<profile.jdbc.url1>jdbc:mysql://rm-bp1h52d2zl6r587tjo.mysql.rds.aliyuncs.com:3306/qiein_crm?characterEncoding=utf-8</profile.jdbc.url1>
+				<profile.jdbc.username1>dev_crm</profile.jdbc.username1>
+				<profile.jdbc.password1>hm_dev_CRM</profile.jdbc.password1> 
+				数据库2
+				<profile.jdbc.url2>jdbc:mysql://rm-bp17ed55n17f3k37ro.mysql.rds.aliyuncs.com:3306/qiein_crm?characterEncoding=utf-8</profile.jdbc.url2>
+				<profile.jdbc.username2>dev_crm</profile.jdbc.username2>
+				<profile.jdbc.password2>hm_dev_CRM</profile.jdbc.password2> -->
+				
+				
+				<!-- 后端接口平台 -->
+				<profile.URL.API>http://127.0.0.1:8888/hm_crm/http/HttpService</profile.URL.API>
+				<!-- redis测试环境 -->
+				<profile.redis.host>114.55.34.116</profile.redis.host>
+				<profile.redis.password>hanmu1505AAA</profile.redis.password>
+
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<!-- 线上环境 -->
+			<id>pro</id>
+			<properties>
+				<!-- 测试数据库1 -->
+  				<profile.jdbc.url1>jdbc:mysql://114.55.36.99:3306/hm_crm?characterEncoding=utf-8</profile.jdbc.url1>
+				<profile.jdbc.username1>paikong</profile.jdbc.username1>
+				<profile.jdbc.password1>paikong</profile.jdbc.password1>  
+				<!-- 测试数据库2 -->
+  				<profile.jdbc.url2>jdbc:mysql://114.55.36.99:3306/hm_crm?characterEncoding=utf-8</profile.jdbc.url2>
+				<profile.jdbc.username2>paikong</profile.jdbc.username2>
+				<profile.jdbc.password2>paikong</profile.jdbc.password2>
+				
+<!-- 			数据库1
+ 				<profile.jdbc.url1>jdbc:mysql://rm-bp1h52d2zl6r587tjo.mysql.rds.aliyuncs.com:3306/qiein_crm?characterEncoding=utf-8</profile.jdbc.url1>
+				<profile.jdbc.username1>dev_crm</profile.jdbc.username1>
+				<profile.jdbc.password1>hm_dev_CRM</profile.jdbc.password1> 
+				数据库2
+				<profile.jdbc.url2>jdbc:mysql://rm-bp17ed55n17f3k37ro.mysql.rds.aliyuncs.com:3306/qiein_crm?characterEncoding=utf-8</profile.jdbc.url2>
+				<profile.jdbc.username2>dev_crm</profile.jdbc.username2>
+				<profile.jdbc.password2>hm_dev_CRM</profile.jdbc.password2> -->
+				
+				
+				<!-- 后端接口平台 -->
+				<profile.URL.API>http://127.0.0.1:8888/hm_crm/http/HttpService</profile.URL.API>
+				<!-- redis测试环境 -->
+				<profile.redis.host>114.55.34.116</profile.redis.host>
+				<profile.redis.password>hanmu1505AAA</profile.redis.password>
+			</properties>
+		</profile>
+	</profiles>
+
+	<build>
+
+		<finalName>${artifactId}</finalName>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.2</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<encoding>utf-8</encoding>
+				</configuration>
+			</plugin>
+		</plugins>
+
+	</build>
+
+</project>
